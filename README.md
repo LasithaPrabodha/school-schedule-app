@@ -6,6 +6,7 @@ Study Scheduler is companion for school, college or university. Keep track of cl
 ### Contributors
  
 * Lasitha Prabodha Weligampola, Weligampola Gedara
+* Manushi Chinthika Wijayagunawardana
 
 ### Features
 
