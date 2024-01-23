@@ -7,6 +7,7 @@ Study Scheduler is companion for school, college or university. Keep track of cl
  
 * Lasitha Prabodha Weligampola, Weligampola Gedara
 * Moises Guillermo Ponce Gamez
+* Manushi Chinthika Wijayagunawardana
 
 ### Features
 
