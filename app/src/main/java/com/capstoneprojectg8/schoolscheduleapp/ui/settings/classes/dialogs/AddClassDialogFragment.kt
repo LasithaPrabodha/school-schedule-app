@@ -5,7 +5,6 @@ import android.app.Dialog
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import com.capstoneprojectg8.schoolscheduleapp.MainActivity
@@ -24,6 +23,11 @@ class AddClassDialogFragment : DialogFragment() {
         val builder = AlertDialog.Builder(requireActivity())
         builder.setView(binding.root)
 
+        binding.addNewClassAddDialogBtn.setOnClickListener {
+            addClass()
+            Log.d("DialogFragment", "Test")
+        }
+
         return builder.create()
     }
 
@@ -33,16 +37,6 @@ class AddClassDialogFragment : DialogFragment() {
         classesViewModel = (activity as MainActivity).classesViewModel
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        binding.addNewClassAddDialogBtn.setOnClickListener {
-            addClass()
-            Log.d("DialogFragment", "Test")
-
-        }
-
-    }
 
     private fun addClass() {
         val classCode = binding.classCodeAddDialogInputText.text.toString().trim()
