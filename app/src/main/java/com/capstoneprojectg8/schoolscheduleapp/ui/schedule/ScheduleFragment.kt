@@ -4,6 +4,7 @@ import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -13,7 +14,6 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
-import androidx.core.view.children
 import androidx.core.view.marginStart
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -49,6 +49,7 @@ class ScheduleFragment : Fragment() {
         var dpWidth = displayMetrics.widthPixels
 
         val weekDaysLayout = binding.dayScroll
+        val scheduleScroll = binding.scheduleScroll
 
         dpWidth -= weekDaysLayout.marginStart
 
@@ -76,6 +77,9 @@ class ScheduleFragment : Fragment() {
 
         gridLayout.requestLayout()
 
+        val dip = resources.getDimensionPixelSize(R.dimen.grid_cell_layout_height)
+
+        scheduleScroll.post(Runnable { scheduleScroll.scrollTo(0, dip.toInt() * 9) })
 
         return root
     }
