@@ -13,11 +13,13 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
+import androidx.core.view.children
 import androidx.core.view.marginStart
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.capstoneprojectg8.schoolscheduleapp.R
 import com.capstoneprojectg8.schoolscheduleapp.databinding.FragmentScheduleBinding
+import com.capstoneprojectg8.schoolscheduleapp.models.ScheduleSlot
 import com.capstoneprojectg8.schoolscheduleapp.utils.DateHandler
 
 
@@ -28,6 +30,7 @@ class ScheduleFragment : Fragment() {
 
     private var cellWidth: Int = 0
     private val today = "12" //DateHandler.getToday("dd")
+    private lateinit var gridLayout: GridLayout
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,7 +44,7 @@ class ScheduleFragment : Fragment() {
         val root: View = binding.root
 
 
-        val gridLayout = binding.scheduleGrid
+        gridLayout = binding.scheduleGrid
         val displayMetrics = resources.displayMetrics
         var dpWidth = displayMetrics.widthPixels
 
@@ -58,16 +61,73 @@ class ScheduleFragment : Fragment() {
         }
 
         for (row in 0 until gridLayout.rowCount) {
-            for (col in 0 until gridLayout.columnCount) {
-                if (col == 0) {
-                    generateHourLabel(gridLayout, row)
-                } else {
-                    generateCells(gridLayout, row, col, dayOfWeek[col - 1])
-                }
+            generateHourLabel(gridLayout, row)
+        }
+
+        for (row in 0 until gridLayout.rowCount) {
+            for (col in 1 until gridLayout.columnCount) {
+                generateCells(gridLayout, row, col, dayOfWeek[col - 1])
             }
         }
 
+        for (slot in DummySlots.getSlots()) {
+            generateSlot(slot)
+        }
+
+        gridLayout.requestLayout()
+
+
         return root
+    }
+
+    private fun generateSlot(slot: ScheduleSlot) {
+
+        val linearLayout = LinearLayout(activity)
+        linearLayout.orientation = LinearLayout.VERTICAL
+
+        val className = TextView(activity)
+        val classRoom = TextView(activity)
+
+        className.text = slot.className
+        classRoom.text = slot.classRoom
+
+        val shape = ContextCompat.getDrawable(
+            requireContext(),
+            R.drawable.rounded_rectangle
+        ) as GradientDrawable
+
+        shape.setColor(ContextCompat.getColor(requireContext(), slot.color))
+        ViewCompat.setBackground(linearLayout, shape)
+
+        // Style the text views
+        className.textSize = resources.getDimension(R.dimen.medium_font_size)
+        className.setPadding(20, 25, 20, 0)
+        className.typeface = Typeface.DEFAULT_BOLD
+        val hourLayoutParams = LinearLayout.LayoutParams(
+            resources.getDimensionPixelSize(R.dimen.grid_cell_layout_width),
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+        className.layoutParams = hourLayoutParams
+
+        classRoom.textSize = resources.getDimension(R.dimen.small_font_size)
+        classRoom.setPadding(20, 15, 20, 15)
+
+        linearLayout.addView(className)
+        linearLayout.addView(classRoom)
+
+        val gridLayoutParams =
+            GridLayout.LayoutParams(
+                GridLayout.spec(slot.row, slot.rowSpan, 1f),
+                GridLayout.spec(slot.col)
+            );
+
+        gridLayoutParams.setGravity(Gravity.CENTER);
+        gridLayoutParams.width = cellWidth - 30
+        gridLayoutParams.height =
+            resources.getDimensionPixelSize(R.dimen.grid_cell_layout_height) * slot.rowSpan - 30
+
+
+        gridLayout.addView(linearLayout, gridLayoutParams)
     }
 
     private fun generateWeekDay(weekDaysLayout: LinearLayout, weekday: Map<String, String>) {
@@ -114,7 +174,12 @@ class ScheduleFragment : Fragment() {
         weekDaysLayout.addView(linearLayout, linearLayoutParams)
     }
 
-    private fun generateCells(gridLayout: GridLayout, row: Int, col: Int, weekday: Map<String, String>) {
+    private fun generateCells(
+        gridLayout: GridLayout,
+        row: Int,
+        col: Int,
+        weekday: Map<String, String>
+    ) {
         val linearLayout = LinearLayout(activity)
         linearLayout.orientation = LinearLayout.VERTICAL
 
