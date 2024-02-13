@@ -4,11 +4,11 @@ import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
-import android.util.TypedValue
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewGroup.LayoutParams
 import android.widget.GridLayout
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -16,7 +16,6 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.marginStart
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import com.capstoneprojectg8.schoolscheduleapp.R
 import com.capstoneprojectg8.schoolscheduleapp.databinding.FragmentScheduleBinding
 import com.capstoneprojectg8.schoolscheduleapp.models.ScheduleSlot
@@ -29,16 +28,17 @@ class ScheduleFragment : Fragment() {
     private val binding get() = _binding!!
 
     private var cellWidth: Int = 0
-    private val today = "12" //DateHandler.getToday("dd")
+    private val today = DateHandler.getToday("dd")
     private lateinit var gridLayout: GridLayout
+    private lateinit var weekDaysLayout: LinearLayout
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val scheduleViewModel =
-            ViewModelProvider(this).get(ScheduleViewModel::class.java)
+//        val scheduleViewModel =
+//            ViewModelProvider(this).get(ScheduleViewModel::class.java)
 
         _binding = FragmentScheduleBinding.inflate(inflater, container, false)
         val root: View = binding.root
@@ -48,17 +48,29 @@ class ScheduleFragment : Fragment() {
         val displayMetrics = resources.displayMetrics
         var dpWidth = displayMetrics.widthPixels
 
-        val weekDaysLayout = binding.dayScroll
+        weekDaysLayout = binding.dayScroll
         val scheduleScroll = binding.scheduleScroll
 
         dpWidth -= weekDaysLayout.marginStart
 
         cellWidth = dpWidth / 5
 
+        generateScheduleGrid()
+
+        gridLayout.requestLayout()
+
+        val dip = resources.getDimensionPixelSize(R.dimen.grid_cell_layout_height)
+
+        scheduleScroll.post { scheduleScroll.scrollTo(0, dip * 9) }
+
+        return root
+    }
+
+    private fun generateScheduleGrid() {
         val dayOfWeek = DateHandler.getWeekDates()
 
         for (i in 0 until dayOfWeek.size) {
-            generateWeekDay(weekDaysLayout, dayOfWeek[i])
+            generateWeekDay(dayOfWeek[i])
         }
 
         for (row in 0 until gridLayout.rowCount) {
@@ -75,14 +87,8 @@ class ScheduleFragment : Fragment() {
             generateSlot(slot)
         }
 
-        gridLayout.requestLayout()
-
-        val dip = resources.getDimensionPixelSize(R.dimen.grid_cell_layout_height)
-
-        scheduleScroll.post(Runnable { scheduleScroll.scrollTo(0, dip.toInt() * 9) })
-
-        return root
     }
+
 
     private fun generateSlot(slot: ScheduleSlot) {
 
@@ -95,6 +101,7 @@ class ScheduleFragment : Fragment() {
         className.text = slot.className
         classRoom.text = slot.classRoom
 
+        // set background rounded rectangle
         val shape = ContextCompat.getDrawable(
             requireContext(),
             R.drawable.rounded_rectangle
@@ -109,7 +116,7 @@ class ScheduleFragment : Fragment() {
         className.typeface = Typeface.DEFAULT_BOLD
         val hourLayoutParams = LinearLayout.LayoutParams(
             resources.getDimensionPixelSize(R.dimen.grid_cell_layout_width),
-            ViewGroup.LayoutParams.WRAP_CONTENT
+            LayoutParams.WRAP_CONTENT
         )
         className.layoutParams = hourLayoutParams
 
@@ -119,22 +126,19 @@ class ScheduleFragment : Fragment() {
         linearLayout.addView(className)
         linearLayout.addView(classRoom)
 
-        val gridLayoutParams =
-            GridLayout.LayoutParams(
-                GridLayout.spec(slot.row, slot.rowSpan, 1f),
-                GridLayout.spec(slot.col)
-            );
-
-        gridLayoutParams.setGravity(Gravity.CENTER);
-        gridLayoutParams.width = cellWidth - 30
-        gridLayoutParams.height =
-            resources.getDimensionPixelSize(R.dimen.grid_cell_layout_height) * slot.rowSpan - 30
-
+        val gridLayoutParams = generateGridLayoutParams(
+            slot.row,
+            slot.col,
+            cellWidth - 30,
+            resources.getDimensionPixelSize(R.dimen.grid_cell_layout_height) * slot.rowSpan - 30,
+            slot.rowSpan
+        )
+        gridLayoutParams.setGravity(Gravity.CENTER)
 
         gridLayout.addView(linearLayout, gridLayoutParams)
     }
 
-    private fun generateWeekDay(weekDaysLayout: LinearLayout, weekday: Map<String, String>) {
+    private fun generateWeekDay(weekday: Map<String, String>) {
         val linearLayout = LinearLayout(activity)
         linearLayout.orientation = LinearLayout.VERTICAL
 
@@ -167,8 +171,8 @@ class ScheduleFragment : Fragment() {
         weekDay.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
 
         val dateLayoutParams = LinearLayout.LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT
+            LayoutParams.MATCH_PARENT,
+            LayoutParams.WRAP_CONTENT
         )
         date.layoutParams = dateLayoutParams
 
@@ -188,12 +192,12 @@ class ScheduleFragment : Fragment() {
         linearLayout.orientation = LinearLayout.VERTICAL
 
         // set column cell width/height
-        val gridLayoutParams = GridLayout.LayoutParams()
-        gridLayoutParams.rowSpec = GridLayout.spec(row)
-        gridLayoutParams.columnSpec = GridLayout.spec(col)
-        gridLayoutParams.width = cellWidth
-        gridLayoutParams.height =
+        val gridLayoutParams = generateGridLayoutParams(
+            row,
+            col,
+            cellWidth,
             resources.getDimensionPixelSize(R.dimen.grid_cell_layout_height)
+        )
 
         // set layout width/height/gravity
         val linearLayoutParams = LinearLayout.LayoutParams(
@@ -218,7 +222,7 @@ class ScheduleFragment : Fragment() {
     private fun generateBorder(): View {
         val borderView = View(context)
         borderView.layoutParams = LinearLayout.LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT, 2
+            LayoutParams.MATCH_PARENT, 2
         )
         borderView.setBackgroundColor(Color.GRAY)
         return borderView
@@ -252,7 +256,7 @@ class ScheduleFragment : Fragment() {
         hour.textAlignment = TextView.TEXT_ALIGNMENT_VIEW_END
         val hourLayoutParams = LinearLayout.LayoutParams(
             resources.getDimensionPixelSize(R.dimen.grid_time_indicator_layout_width),
-            ViewGroup.LayoutParams.WRAP_CONTENT
+            LayoutParams.WRAP_CONTENT
         )
         hour.layoutParams = hourLayoutParams
 
@@ -274,18 +278,34 @@ class ScheduleFragment : Fragment() {
         linearLayout.addView(hour)
         linearLayout.addView(amPm)
 
-        val gridLayoutParams = GridLayout.LayoutParams()
-        gridLayoutParams.rowSpec = GridLayout.spec(row)
-        gridLayoutParams.columnSpec = GridLayout.spec(0)
-
-        // Set width and height
-        gridLayoutParams.width =
-            resources.getDimensionPixelSize(R.dimen.grid_time_indicator_layout_width)
-        gridLayoutParams.height =
+        val gridLayoutParams = generateGridLayoutParams(
+            row,
+            0,
+            resources.getDimensionPixelSize(R.dimen.grid_time_indicator_layout_width),
             resources.getDimensionPixelSize(R.dimen.grid_time_indicator_layout_height)
+        )
 
         // Add the LinearLayout to the GridLayout
         gridLayout.addView(linearLayout, gridLayoutParams)
+    }
+
+    private fun generateGridLayoutParams(
+        row: Int,
+        col: Int,
+        width: Int,
+        height: Int,
+        rowSpan: Int = 1
+    ): GridLayout.LayoutParams {
+        val gridLayoutParams = GridLayout.LayoutParams()
+        if (rowSpan > 1) {
+            gridLayoutParams.rowSpec = GridLayout.spec(row, rowSpan, 1f)
+        } else {
+            gridLayoutParams.rowSpec = GridLayout.spec(row)
+        }
+        gridLayoutParams.columnSpec = GridLayout.spec(col)
+        gridLayoutParams.width = width
+        gridLayoutParams.height = height
+        return gridLayoutParams
     }
 
     override fun onDestroyView() {
