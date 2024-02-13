@@ -1,6 +1,18 @@
 <resources>
     <string name="app_name">SchoolScheduleApp</string>
-    <string name="title_home">Home</string>
+    <string name="title_home">Today</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+    <string name="start_time_example">08:00 AM</string>
+    <string name="course_example">MGT 101 - Android</string>
+    <string name="room_example">Room 302</string>
+    <string name="cancel">Cancel</string>
+    <string name="add_assignment">+ Assignment</string>
+    <string name="end_time_example">10.00 AM</string>
+    <string name="arrow_icon_description">10.00 AM</string>
+    <string name="assignments_headings">Assignments</string>
+    <string name="checkList_title">CheckList Title1</string>
+    <string name="note_from_checklist">Note From Checklist</string>
+
+
 </resources>
