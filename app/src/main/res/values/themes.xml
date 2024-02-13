@@ -18,9 +18,15 @@
 
     </style>
 
+    <style name="Theme.SchoolScheduleApp.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
     <style name="Theme.SchoolScheduleApp.Toolbar" parent="ThemeOverlay.MaterialComponents.Toolbar.Primary">
         <!-- color used by navigation icon and overflow icon -->
         <item name="colorOnPrimary">@color/black</item>
         <item name="android:textColorPrimary">@color/black</item>
+
     </style>
 </resources>

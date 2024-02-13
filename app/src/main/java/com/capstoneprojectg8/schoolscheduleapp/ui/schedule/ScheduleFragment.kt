@@ -20,6 +20,7 @@ import com.capstoneprojectg8.schoolscheduleapp.R
 import com.capstoneprojectg8.schoolscheduleapp.databinding.FragmentScheduleBinding
 import com.capstoneprojectg8.schoolscheduleapp.models.ScheduleSlot
 import com.capstoneprojectg8.schoolscheduleapp.utils.DateHandler
+import kotlinx.coroutines.Dispatchers
 
 
 class ScheduleFragment : Fragment() {
