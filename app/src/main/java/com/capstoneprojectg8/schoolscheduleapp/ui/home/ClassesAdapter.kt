@@ -30,8 +30,8 @@ class ClassesAdapter(private val context: Context,private var items: List<ClassI
             binding.tvStartTime.text = classItem.startTime
             binding.tvCourseName.setTextColor(ContextCompat.getColor(context,classItem.color))
             binding.tvEndTime.text = classItem.endTime
-//            binding.tvEndTime.text = classItem.endTime
-
+            binding.tvRoom.text = classItem.room
+            binding.tvCourseName.text = classItem.courseName
         }
     }
 

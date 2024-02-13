@@ -46,45 +46,49 @@ class HomeViewModel : ViewModel() {
                 isCancelable = false,
                 color = R.color.green
             ),
-//            ClassItem(
-//                startTime = "01:00 PM",
-//                endTime = "03.00 PM",
-//                courseCode = "MTH102",
-//                courseName = "Capstone Project",
-//                room = "Room 221",
-//                assignments = dummyAssignments,
-//                isCancelable = true
-//
-//        ),
-//            ClassItem(
-//                startTime = "03:00 PM",
-//                endTime = "05.00 PM",
-//                courseCode = "MTH103",
-//                courseName = "Capstone Project",
-//                room = "Room 110",
-//                assignments = dummyAssignments,
-//                isCancelable = true
-//            ),
-//
-//            ClassItem(
-//                startTime = "05:00 PM",
-//                endTime = "07.00 PM",
-//                courseCode = "MTH103",
-//                courseName = "Capstone Project",
-//                room = "Room 110",
-//                assignments = dummyAssignments,
-//                isCancelable = true
-//            ),
-//
-//            ClassItem(
-//                startTime = "05:00 PM",
-//                endTime = "07.00 PM",
-//                courseCode = "MTH103",
-//                courseName = "Capstone Project",
-//                room = "Room 110",
-//                assignments = dummyAssignments,
-//                isCancelable = true
-//            ),
+
+            ClassItem(
+                startTime = "08:00 AM",
+                endTime = "10.00 AM",
+                courseCode = "MTH101",
+                courseName = "Android",
+                room = "Room 101",
+                assignments = dummyAssignments,
+                isCancelable = true,
+                color = R.color.purple
+            ),
+            ClassItem(
+                startTime = "08:00 AM",
+                endTime = "10.00 AM",
+                courseCode = "MTH101",
+                courseName = "Android",
+                room = "Room 201",
+                assignments = dummyAssignments,
+                isCancelable = true,
+                color = R.color.green
+            ),
+
+            ClassItem(
+                startTime = "08:00 AM",
+                endTime = "10.00 AM",
+                courseCode = "MTH101",
+                courseName = "Capstone Project",
+                room = "Room 111",
+                assignments = dummyAssignments,
+                isCancelable = true,
+                color = R.color.blue
+            ),
+
+            ClassItem(
+                startTime = "08:00 AM",
+                endTime = "10.00 AM",
+                courseCode = "MTH101",
+                courseName = "IOS",
+                room = "Room 211",
+                assignments = dummyAssignments,
+                isCancelable = true,
+                color = R.color.red
+            ),
             // Add more items...
         )
         _classes.value = dummyList
