@@ -13,6 +13,33 @@
     <string name="assignments_headings">Assignments</string>
     <string name="checkList_title">CheckList Title1</string>
     <string name="note_from_checklist">Note From Checklist</string>
+    <string name="title_settings">Settings</string>
+    <!-- Preference Titles -->
+    <string name="personal_settings_header">Personal Settings</string>
+    <string name="classes_header">Classes Settings</string>
+    <string name="app_settings_header">App Settings</string>
 
+    <!-- Personal Preferences -->
+    <string name="name">Your Name</string>
+    <string name="email">Your Email</string>
+
+    <!-- Classes Preferences -->
+    <string name="classes">Classes</string>
+    <string name="classes_summary">Manage your classes</string>
+
+    <!-- App Preferences -->
+    <string name="dark_mode_switch">Dark Mode</string>
+    <string name="allow_notifications">Allow Notifications</string>
+    <string name="classFragment_title">Classes Settings</string>
+    <string name="floatingBtnText">Add</string>
+    <string name="separation">-</string>
+    <string name="addClassDialogTitle">Add a new Class</string>
+    <string name="classCodeTextInput">Class code</string>
+    <string name="addBtnText">Add new class</string>
+    <string name="classNameTextInput">Class Name</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="saveChangesBtn">Save changes</string>
+    <string name="editClassDialogTitle">Edit/Delete Class</string>
 
 </resources>
