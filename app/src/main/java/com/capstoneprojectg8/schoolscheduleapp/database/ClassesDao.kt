@@ -7,7 +7,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import com.capstoneprojectg8.schoolscheduleapp.model.Class
+import com.capstoneprojectg8.schoolscheduleapp.models.Class
 
 @Dao
 interface ClassesDao {
@@ -15,7 +15,7 @@ interface ClassesDao {
     suspend fun  addClass(classes: Class)
 
     @Update
-    suspend fun editClass (classes: Class)
+    suspend fun editClass(classes: Class)
 
     @Delete
     suspend fun deleteClass(classes: Class)

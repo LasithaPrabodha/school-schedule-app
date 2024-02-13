@@ -1,4 +1,4 @@
-package com.capstoneprojectg8.schoolscheduleapp.model
+package com.capstoneprojectg8.schoolscheduleapp.models
 
 import android.os.Parcelable
 import androidx.room.Entity
@@ -10,8 +10,8 @@ import kotlinx.parcelize.Parcelize
 data class Class(
     @PrimaryKey(autoGenerate = true)
     val id: Int,
-    val classCode: String,
-    val className:String,
-    val colour: String
+    var classCode: String,
+    var className:String,
+    val colour: Int
 ):Parcelable
 

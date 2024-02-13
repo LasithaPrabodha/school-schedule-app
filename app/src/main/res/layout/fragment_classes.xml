@@ -41,7 +41,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:srcCompat="@drawable/baseline_add_24"
-            tools:ignore="HardcodedText,ImageContrastCheck" />
+            tools:ignore="HardcodedText,ImageContrastCheck"
+            />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

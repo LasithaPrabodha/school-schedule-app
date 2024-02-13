@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.capstoneprojectg8.schoolscheduleapp.MainActivity
 import com.capstoneprojectg8.schoolscheduleapp.databinding.FragmentClassesBinding
 import com.capstoneprojectg8.schoolscheduleapp.ui.settings.classes.dialogs.AddClassDialogFragment
+import com.capstoneprojectg8.schoolscheduleapp.ui.settings.classes.dialogs.EditDeleteClassDialogFragment
 
 class ClassesFragment : Fragment() {
 
@@ -45,6 +46,12 @@ class ClassesFragment : Fragment() {
 
         binding.addClassBtn.setOnClickListener {
             AddClassDialogFragment().show(parentFragmentManager, "dialog")
+        }
+
+        classesAdapter.onItemClick = {selectedClass ->
+            val editDeleteClassDialogFragment = EditDeleteClassDialogFragment.newInstance(selectedClass.id ,selectedClass.classCode, selectedClass.className, selectedClass.colour)
+            editDeleteClassDialogFragment.show(parentFragmentManager, "dialog2")
+
         }
     }
 

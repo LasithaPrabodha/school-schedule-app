@@ -3,7 +3,7 @@ package com.capstoneprojectg8.schoolscheduleapp.ui.settings.classes
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.capstoneprojectg8.schoolscheduleapp.model.Class
+import com.capstoneprojectg8.schoolscheduleapp.models.Class
 import com.capstoneprojectg8.schoolscheduleapp.repository.ClassesRepository
 import kotlinx.coroutines.launch
 

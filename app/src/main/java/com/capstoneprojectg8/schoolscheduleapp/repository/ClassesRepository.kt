@@ -1,7 +1,7 @@
 package com.capstoneprojectg8.schoolscheduleapp.repository
 
 import com.capstoneprojectg8.schoolscheduleapp.database.ClassesDatabase
-import com.capstoneprojectg8.schoolscheduleapp.model.Class
+import com.capstoneprojectg8.schoolscheduleapp.models.Class
 
 class ClassesRepository(private val db: ClassesDatabase) {
 

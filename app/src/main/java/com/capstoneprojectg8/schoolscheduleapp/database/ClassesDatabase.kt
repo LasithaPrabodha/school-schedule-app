@@ -4,9 +4,9 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.capstoneprojectg8.schoolscheduleapp.model.Class
+import com.capstoneprojectg8.schoolscheduleapp.models.Class
 
-@Database(entities = [Class::class], version = 1)
+@Database(entities = [Class::class], version = 2)
 abstract class ClassesDatabase : RoomDatabase() {
 
     abstract fun getClassesDao(): ClassesDao
@@ -29,6 +29,6 @@ abstract class ClassesDatabase : RoomDatabase() {
                 context.applicationContext,
                 ClassesDatabase::class.java,
                 "class_db"
-            ).build()
+            ).fallbackToDestructiveMigration().build()
     }
 }

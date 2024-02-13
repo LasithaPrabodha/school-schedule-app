@@ -2,13 +2,16 @@ package com.capstoneprojectg8.schoolscheduleapp.ui.settings.classes
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.capstoneprojectg8.schoolscheduleapp.R
 import com.capstoneprojectg8.schoolscheduleapp.databinding.ItemClassesBinding
-import com.capstoneprojectg8.schoolscheduleapp.model.Class
+import com.capstoneprojectg8.schoolscheduleapp.models.Class
 
 class ClassesRvAdapter: RecyclerView.Adapter<ClassesRvAdapter.ViewHolder>() {
 
     private val classesList: ArrayList<Class> = arrayListOf()
+    var onItemClick: ((Class) -> Unit)? = null
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -20,6 +23,9 @@ class ClassesRvAdapter: RecyclerView.Adapter<ClassesRvAdapter.ViewHolder>() {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val classes = classesList[position]
+        holder.itemView.setOnClickListener {
+            onItemClick?.invoke(classes)
+        }
         holder.bind(classes)
     }
 
@@ -36,6 +42,8 @@ class ClassesRvAdapter: RecyclerView.Adapter<ClassesRvAdapter.ViewHolder>() {
             binding.apply {
                 classCodeTv.text = classes.classCode
                 classNameTv.text = classes.className
+
+                constraintLayout.background = ContextCompat.getDrawable(root.context, classes.colour)
             }
         }
     }
