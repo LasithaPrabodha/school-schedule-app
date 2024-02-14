@@ -1,8 +1,9 @@
 <resources>
     <string name="app_name">SchoolScheduleApp</string>
+    <string name="title_schedule">Schedule</string>
     <string name="title_home">Today</string>
-    <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+
     <string name="start_time_example">08:00 AM</string>
     <string name="course_example">MGT 101 - Android</string>
     <string name="room_example">Room 302</string>
@@ -14,6 +15,11 @@
     <string name="checkList_title">CheckList Title1</string>
     <string name="note_from_checklist">Note From Checklist</string>
     <string name="title_settings">Settings</string>
+
+    <string name="_12">12</string>
+    <string name="_0">0%1$s</string>
+
+
     <!-- Preference Titles -->
     <string name="personal_settings_header">Personal Settings</string>
     <string name="classes_header">Classes Settings</string>
@@ -30,7 +36,7 @@
     <!-- App Preferences -->
     <string name="dark_mode_switch">Dark Mode</string>
     <string name="allow_notifications">Allow Notifications</string>
-    <string name="classFragment_title">Classes Settings</string>
+    <string name="class_settings_title">Class Settings</string>
     <string name="floatingBtnText">Add</string>
     <string name="separation">-</string>
     <string name="addClassDialogTitle">Add a new Class</string>

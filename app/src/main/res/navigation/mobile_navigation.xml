@@ -12,25 +12,13 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="com.capstoneprojectg8.schoolscheduleapp.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        android:id="@+id/navigation_schedule"
+        android:name="com.capstoneprojectg8.schoolscheduleapp.ui.schedule.ScheduleFragment"
+        android:label="@string/title_schedule"
+        tools:layout="@layout/fragment_schedule" />
 
     <fragment
         android:id="@+id/navigation_settings"
         android:name="com.capstoneprojectg8.schoolscheduleapp.ui.settings.SettingsFragment"
-        android:label="@string/title_settings" >
-        <action
-            android:id="@+id/action_navigation_settings_to_classesFragment"
-            app:destination="@id/classesFragment" />
-        <action
-            android:id="@+id/action_navigation_settings_to_navigation_dashboard"
-            app:destination="@id/navigation_dashboard" />
-    </fragment>
-    <fragment
-        android:id="@+id/classesFragment"
-        android:name="com.capstoneprojectg8.schoolscheduleapp.ui.settings.classes.ClassesFragment"
-        android:label="@string/classFragment_title"
-        tools:layout="@layout/fragment_classes" />
+        android:label="@string/title_settings"  />
 </navigation>

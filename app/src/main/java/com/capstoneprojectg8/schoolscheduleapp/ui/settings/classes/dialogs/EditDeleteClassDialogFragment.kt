@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.activityViewModels
 import com.capstoneprojectg8.schoolscheduleapp.MainActivity
 import com.capstoneprojectg8.schoolscheduleapp.databinding.FragmentEditDeleteClassDialogBinding
 import com.capstoneprojectg8.schoolscheduleapp.models.Class
@@ -14,7 +15,7 @@ import com.capstoneprojectg8.schoolscheduleapp.ui.settings.classes.ClassesViewMo
 class EditDeleteClassDialogFragment : DialogFragment() {
 
     private lateinit var binding: FragmentEditDeleteClassDialogBinding
-    private lateinit var classesViewModel: ClassesViewModel
+    private val classesViewModel: ClassesViewModel by activityViewModels()
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         binding = FragmentEditDeleteClassDialogBinding.inflate(LayoutInflater.from(context))
@@ -42,12 +43,6 @@ class EditDeleteClassDialogFragment : DialogFragment() {
         return builder.create()
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        classesViewModel = (activity as MainActivity).classesViewModel
-
-    }
 
     private fun editClass(classId: Int, classColour: Int) {
         val editedCode = binding.classCodeEditDialogInputText.text.toString().trim()

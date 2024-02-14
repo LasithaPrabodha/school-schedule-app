@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.activityViewModels
 import com.capstoneprojectg8.schoolscheduleapp.MainActivity
 import com.capstoneprojectg8.schoolscheduleapp.R
 import com.capstoneprojectg8.schoolscheduleapp.databinding.AddClassDialogBinding
@@ -16,10 +17,10 @@ import kotlin.random.Random
 class AddClassDialogFragment : DialogFragment() {
 
     private lateinit var binding: AddClassDialogBinding
-    private lateinit var classesViewModel: ClassesViewModel
+    private val classesViewModel: ClassesViewModel by activityViewModels()
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        binding = AddClassDialogBinding.inflate(LayoutInflater.from(context))
+        binding = AddClassDialogBinding.inflate(layoutInflater)
 
         val builder = AlertDialog.Builder(requireActivity())
         builder.setView(binding.root)
@@ -31,11 +32,6 @@ class AddClassDialogFragment : DialogFragment() {
         return builder.create()
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        classesViewModel = (activity as MainActivity).classesViewModel
-    }
 
 
     private fun addClass() {

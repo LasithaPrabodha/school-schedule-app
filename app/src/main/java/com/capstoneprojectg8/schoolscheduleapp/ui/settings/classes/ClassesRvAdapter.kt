@@ -8,7 +8,7 @@ import com.capstoneprojectg8.schoolscheduleapp.R
 import com.capstoneprojectg8.schoolscheduleapp.databinding.ItemClassesBinding
 import com.capstoneprojectg8.schoolscheduleapp.models.Class
 
-class ClassesRvAdapter: RecyclerView.Adapter<ClassesRvAdapter.ViewHolder>() {
+class ClassesRvAdapter : RecyclerView.Adapter<ClassesRvAdapter.ViewHolder>() {
 
     private val classesList: ArrayList<Class> = arrayListOf()
     var onItemClick: ((Class) -> Unit)? = null
@@ -31,19 +31,21 @@ class ClassesRvAdapter: RecyclerView.Adapter<ClassesRvAdapter.ViewHolder>() {
 
     override fun getItemCount(): Int = classesList.size
 
-    fun appendClass(newMovie: List<Class>){
+    fun appendClass(newMovie: List<Class>) {
         classesList.clear()
         classesList.addAll(newMovie)
         notifyDataSetChanged()
     }
 
-    class ViewHolder(private val binding: ItemClassesBinding): RecyclerView.ViewHolder(binding.root){
-        fun bind(classes: Class){
+    class ViewHolder(private val binding: ItemClassesBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(classes: Class) {
             binding.apply {
                 classCodeTv.text = classes.classCode
                 classNameTv.text = classes.className
 
-                constraintLayout.background = ContextCompat.getDrawable(root.context, classes.colour)
+                constraintLayout.background =
+                    ContextCompat.getDrawable(root.context, classes.colour)
             }
         }
     }

@@ -1,10 +1,10 @@
-package com.capstoneprojectg8.schoolscheduleapp.ui.dashboard
+package com.capstoneprojectg8.schoolscheduleapp.ui.schedule
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class DashboardViewModel : ViewModel() {
+class ScheduleViewModel : ViewModel() {
 
     private val _text = MutableLiveData<String>().apply {
         value = "This is dashboard Fragment"

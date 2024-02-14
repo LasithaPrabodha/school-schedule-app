@@ -4,7 +4,7 @@
     <!-- Border -->
     <stroke
         android:width="1dp"
-        android:color="@color/light_blue" /> <!-- Change to the desired light blue color -->
+        android:color="@color/blue" /> <!-- Change to the desired light blue color -->
 
     <!-- Background Color -->
     <solid android:color="@android:color/transparent" /> <!-- Transparent background -->
