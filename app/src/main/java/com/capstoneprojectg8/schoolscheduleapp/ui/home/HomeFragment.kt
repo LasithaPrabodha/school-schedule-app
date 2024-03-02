@@ -81,6 +81,7 @@ class HomeFragment : Fragment() {
         val homeViewModel = ViewModelProvider(this)[HomeViewModel::class.java]
         homeViewModel.loadClassItems()
         setupRecyclerView(homeViewModel)
+
     }
 
     private fun generateWeekDay(weekday: Map<String, String>) {

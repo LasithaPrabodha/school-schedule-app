@@ -22,8 +22,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var appBarConfiguration: AppBarConfiguration
 
-    lateinit var classesViewModel: ClassesViewModel
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -43,7 +41,7 @@ class MainActivity : AppCompatActivity() {
 
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.navigation_home, R.id.navigation_schedule, R.id.navigation_settings
+                R.id.navigation_home, R.id.navigation_schedule, R.id.navigation_assignments ,R.id.navigation_settings
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)

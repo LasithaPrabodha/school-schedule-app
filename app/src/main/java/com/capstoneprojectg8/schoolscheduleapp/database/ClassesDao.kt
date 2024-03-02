@@ -6,7 +6,9 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Transaction
 import androidx.room.Update
+import com.capstoneprojectg8.schoolscheduleapp.database.relations.ClassWithAssignments
 import com.capstoneprojectg8.schoolscheduleapp.models.Class
 
 @Dao
@@ -20,6 +22,10 @@ interface ClassesDao {
     @Delete
     suspend fun deleteClass(classes: Class)
 
-    @Query("SELECT * FROM CLASSES ORDER BY id DESC")
+    @Query("SELECT * FROM CLASSES ORDER BY id ASC")
     fun getAllClasses(): LiveData<List<Class>>
+
+//    @Transaction
+//    @Query("SELECT * FROM ASSIGNMENT WHERE classId = :id")
+//    fun getAssignmentListByClass(id: Int): List<ClassWithAssignments>
 }

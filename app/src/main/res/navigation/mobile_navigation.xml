@@ -21,4 +21,9 @@
         android:id="@+id/navigation_settings"
         android:name="com.capstoneprojectg8.schoolscheduleapp.ui.settings.SettingsFragment"
         android:label="@string/title_settings"  />
+    <fragment
+        android:id="@+id/navigation_assignments"
+        android:name="com.capstoneprojectg8.schoolscheduleapp.ui.assignments.AssignmentsFragment"
+        android:label="fragment_assignments"
+        tools:layout="@layout/fragment_assignments" />
 </navigation>

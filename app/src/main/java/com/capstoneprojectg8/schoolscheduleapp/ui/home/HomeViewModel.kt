@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.capstoneprojectg8.schoolscheduleapp.R
-import com.capstoneprojectg8.schoolscheduleapp.models.Assignment
+import com.capstoneprojectg8.schoolscheduleapp.models.Assignments
 import com.capstoneprojectg8.schoolscheduleapp.models.ClassItem
 
 class HomeViewModel : ViewModel() {
@@ -21,8 +21,8 @@ class HomeViewModel : ViewModel() {
     fun loadClassItems() {
 
         val dummyAssignments = listOf(
-            Assignment("Homework 1", isChecked = false, note = "Chapter 3"),
-            Assignment("Read book", isChecked = true, note = "Chapter 4")
+            Assignments("Homework 1", isChecked = false, note = "Chapter 3"),
+            Assignments("Read book", isChecked = true, note = "Chapter 4")
         )
 
         val dummyList = listOf(
@@ -33,7 +33,6 @@ class HomeViewModel : ViewModel() {
                 courseName = "Android",
                 room = "Room 101",
                 assignments = dummyAssignments,
-                isCancelable = true,
                 color = R.color.blue
             ),
             ClassItem(
@@ -43,7 +42,6 @@ class HomeViewModel : ViewModel() {
                 courseName = "IOS",
                 room = "Room 201",
                 assignments = dummyAssignments,
-                isCancelable = false,
                 color = R.color.green
             ),
 
@@ -54,7 +52,6 @@ class HomeViewModel : ViewModel() {
                 courseName = "Android",
                 room = "Room 101",
                 assignments = dummyAssignments,
-                isCancelable = true,
                 color = R.color.purple
             ),
             ClassItem(
@@ -64,7 +61,6 @@ class HomeViewModel : ViewModel() {
                 courseName = "Android",
                 room = "Room 201",
                 assignments = dummyAssignments,
-                isCancelable = true,
                 color = R.color.green
             ),
 
@@ -75,7 +71,6 @@ class HomeViewModel : ViewModel() {
                 courseName = "Capstone Project",
                 room = "Room 111",
                 assignments = dummyAssignments,
-                isCancelable = true,
                 color = R.color.blue
             ),
 
@@ -86,10 +81,8 @@ class HomeViewModel : ViewModel() {
                 courseName = "IOS",
                 room = "Room 211",
                 assignments = dummyAssignments,
-                isCancelable = true,
                 color = R.color.red
-            ),
-            // Add more items...
+            )
         )
         _classes.value = dummyList
     }

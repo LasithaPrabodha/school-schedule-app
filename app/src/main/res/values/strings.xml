@@ -40,12 +40,16 @@
     <string name="floatingBtnText">Add</string>
     <string name="separation">-</string>
     <string name="addClassDialogTitle">Add a new Class</string>
-    <string name="classCodeTextInput">Class code</string>
+    <string name="classCodeTextInput">Class Code</string>
     <string name="addBtnText">Add new class</string>
     <string name="classNameTextInput">Class Name</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="saveChangesBtn">Save changes</string>
     <string name="editClassDialogTitle">Edit/Delete Class</string>
+    <string name="assignments">Assignments</string>
+    <string name="roomNameTextInput">Classroom</string>
+    <string name="addAsignmentTextButton">+ Assignment</string>
+    <string name="capstone_project">Capstone Project</string>
 
 </resources>

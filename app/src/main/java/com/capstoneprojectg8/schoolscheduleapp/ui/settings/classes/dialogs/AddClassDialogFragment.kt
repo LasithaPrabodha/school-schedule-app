@@ -39,7 +39,7 @@ class AddClassDialogFragment : DialogFragment() {
         val className = binding.classNameAddDialogInputText.text.toString().trim()
 
         if (classCode.isNotEmpty() && className.isNotEmpty()) {
-            val classes = Class(0, classCode, className, getRandomColorName())
+            val classes = Class(0, classCode, className, getRandomColorName(), "", "", "")
             classesViewModel.addClass(classes)
             Toast.makeText(context, "Class added", Toast.LENGTH_LONG).show()
             dismiss()

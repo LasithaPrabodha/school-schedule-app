@@ -12,6 +12,11 @@
         android:title="@string/title_schedule" />
 
     <item
+        android:id="@+id/navigation_assignments"
+        android:icon="@drawable/baseline_format_list_bulleted_24"
+        android:title="@string/assignments" />
+
+    <item
         android:id="@+id/navigation_settings"
         android:icon="@drawable/baseline_settings_24"
         android:title="@string/title_settings" />

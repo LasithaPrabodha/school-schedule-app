@@ -10,4 +10,6 @@ class ClassesRepository(private val db: ClassesDatabase) {
     suspend fun deleteClass(classes: Class) = db.getClassesDao().deleteClass(classes)
 
     fun getAllClasses() = db.getClassesDao().getAllClasses()
+
+//    fun getAssignmentByClass(id: Int) = db.getClassesDao().getAssignmentListByClass(id)
 }
