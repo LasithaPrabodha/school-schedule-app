@@ -6,9 +6,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
+    android:background="#FFFFFF"
     app:cardCornerRadius="8dp"
     app:cardElevation="4dp">
-
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -19,6 +19,7 @@
             android:id="@+id/ivArrow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:contentDescription="@null"
             android:src="@drawable/ic_baseline_arrow_forward_ios_24"
             app:layout_constraintBottom_toBottomOf="@id/tvStartTime"
             app:layout_constraintStart_toStartOf="parent"
@@ -32,7 +33,7 @@
             android:fontFamily="sans-serif"
             android:text="@string/start_time_example"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:textSize="10sp"
+            android:textSize="11sp"
             app:layout_constraintStart_toEndOf="@id/ivArrow"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -45,7 +46,7 @@
             android:fontFamily="sans-serif"
             android:text="@string/end_time_example"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:textSize="10sp"
+            android:textSize="11sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
@@ -105,7 +106,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView"
+                android:id="@+id/AssignmentRv"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="8dp"
@@ -123,10 +124,10 @@
                 android:text="@string/cancel"
                 android:textAllCaps="false"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/recyclerView" />
+                app:layout_constraintTop_toBottomOf="@+id/AssignmentRv" />
 
             <Button
-                android:id="@+id/addAsignmentBtn"
+                android:id="@+id/addAssignmentBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -135,7 +136,7 @@
                 android:textAllCaps="false"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/cancelBtn"
-                app:layout_constraintTop_toBottomOf="@+id/recyclerView" />
+                app:layout_constraintTop_toBottomOf="@+id/AssignmentRv" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

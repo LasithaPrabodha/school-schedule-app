@@ -51,5 +51,12 @@
     <string name="roomNameTextInput">Classroom</string>
     <string name="addAsignmentTextButton">+ Assignment</string>
     <string name="capstone_project">Capstone Project</string>
+    <string name="start_time">Start time</string>
+    <string name="end_time">End time</string>
+    <string name="assignmentName_hint">Assignment title</string>
+    <string name="details">Details</string>
+    <string name="select">Select</string>
+    <string name="add_new_assignment_btn">Add New Assignment</string>
+    <string name="checkBoxText">Set as priority</string>
 
 </resources>

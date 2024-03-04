@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.capstoneprojectg8.schoolscheduleapp.models.Class
 
-@Database(entities = [Class::class], version = 3)
+@Database(entities = [Class::class], version = 4)
 abstract class ClassesDatabase : RoomDatabase() {
 
     abstract fun getClassesDao(): ClassesDao

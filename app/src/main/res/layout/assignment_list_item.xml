@@ -6,7 +6,7 @@
     android:layout_height="wrap_content">
 
     <CheckBox
-        android:id="@+id/checkBox"
+        android:id="@+id/assignmentCheckBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="4dp"

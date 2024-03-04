@@ -15,6 +15,7 @@ data class Class(
     val colour: Int,
     val room: String,
     val startTime: String,
-    val endTime: String
+    val endTime: String,
+    var isExpandable: Boolean = false,
 ):Parcelable
 
