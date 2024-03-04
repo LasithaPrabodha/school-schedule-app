@@ -6,12 +6,11 @@ import java.time.format.DateTimeFormatter
 import java.time.temporal.TemporalAdjusters
 
 object DateHandler {
-    fun getWeekDates(): MutableList<Map<String, String>> {
-        val today = LocalDate.now()
-        val currentWeekStart = if (today.dayOfWeek == DayOfWeek.SATURDAY || today.dayOfWeek == DayOfWeek.SUNDAY) {
-            today.with(TemporalAdjusters.next(DayOfWeek.MONDAY)) // Start of next week
+    fun getWeekDates(start: LocalDate = LocalDate.now()): MutableList<Map<String, String>> {
+        val currentWeekStart = if (start.dayOfWeek == DayOfWeek.SATURDAY || start.dayOfWeek == DayOfWeek.SUNDAY) {
+            start.with(TemporalAdjusters.next(DayOfWeek.MONDAY)) // Start of next week
         } else {
-            today.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY)) // Start of current week
+            start.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY)) // Start of current week
         }
 
         val weekData = mutableListOf<Map<String, String>>()

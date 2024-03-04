@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/previous"
+        android:icon="@drawable/baseline_arrow_back_ios_new_24"
+        android:title="Previous"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/current_week"
+        android:title="This Week"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/next"
+        android:title="Next"
+        android:icon="@drawable/baseline_arrow_forward_ios_24"
+        app:showAsAction="ifRoom" />
+</menu>

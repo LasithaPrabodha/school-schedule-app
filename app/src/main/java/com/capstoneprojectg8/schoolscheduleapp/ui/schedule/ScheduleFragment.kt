@@ -4,8 +4,13 @@ import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
+import android.util.Log
+import android.util.TypedValue
 import android.view.Gravity
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams
@@ -13,9 +18,12 @@ import android.widget.GridLayout
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.core.view.ViewCompat
 import androidx.core.view.marginStart
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import com.capstoneprojectg8.schoolscheduleapp.R
 import com.capstoneprojectg8.schoolscheduleapp.databinding.FragmentScheduleBinding
 import com.capstoneprojectg8.schoolscheduleapp.models.ScheduleSlot
@@ -67,12 +75,37 @@ class ScheduleFragment : Fragment() {
         return root
     }
 
-    private fun generateScheduleGrid() {
-        val dayOfWeek = DateHandler.getWeekDates()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val menuHost: MenuHost = requireActivity()
 
-        for (i in 0 until dayOfWeek.size) {
-            generateWeekDay(dayOfWeek[i])
-        }
+        menuHost.addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                // Add menu items here
+                menuInflater.inflate(R.menu.calendar_nav, menu)
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                // Handle the menu selection
+                return when (menuItem.itemId) {
+                    R.id.next -> {
+
+                        true
+                    }
+
+                    R.id.previous -> {
+                        // loadTasks(true)
+                        true
+                    }
+
+                    else -> false
+                }
+            }
+        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+    }
+
+    private fun generateScheduleGrid(dayOfWeek: MutableList<Map<String, String>> = DateHandler.getWeekDates()) {
+
 
         for (row in 0 until gridLayout.rowCount) {
             generateHourLabel(gridLayout, row)
@@ -82,6 +115,10 @@ class ScheduleFragment : Fragment() {
             for (col in 1 until gridLayout.columnCount) {
                 generateCells(gridLayout, row, col, dayOfWeek[col - 1])
             }
+        }
+
+        for (i in 0 until dayOfWeek.size) {
+            generateWeekDay(dayOfWeek[i])
         }
 
         for (slot in DummySlots.getSlots()) {
@@ -112,7 +149,10 @@ class ScheduleFragment : Fragment() {
         ViewCompat.setBackground(linearLayout, shape)
 
         // Style the text views
-        className.textSize = resources.getDimension(R.dimen.medium_font_size)
+        className.setTextSize(
+            TypedValue.COMPLEX_UNIT_PX,
+            resources.getDimension(R.dimen.medium_font_size)
+        )
         className.setPadding(20, 25, 20, 0)
         className.typeface = Typeface.DEFAULT_BOLD
         val hourLayoutParams = LinearLayout.LayoutParams(
@@ -121,7 +161,10 @@ class ScheduleFragment : Fragment() {
         )
         className.layoutParams = hourLayoutParams
 
-        classRoom.textSize = resources.getDimension(R.dimen.small_font_size)
+        classRoom.setTextSize(
+            TypedValue.COMPLEX_UNIT_PX,
+            resources.getDimension(R.dimen.small_font_size)
+        )
         classRoom.setPadding(20, 15, 20, 15)
 
         linearLayout.addView(className)
@@ -166,9 +209,15 @@ class ScheduleFragment : Fragment() {
         weekDay.text = weekday["weekday"]
 
         date.typeface = Typeface.DEFAULT_BOLD
-        date.textSize = resources.getDimension(R.dimen.large_font_size)
+        date.setTextSize(
+            TypedValue.COMPLEX_UNIT_PX,
+            resources.getDimension(R.dimen.large_font_size)
+        )
         date.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-        weekDay.textSize = resources.getDimension(R.dimen.medium_font_size)
+        weekDay.setTextSize(
+            TypedValue.COMPLEX_UNIT_PX,
+            resources.getDimension(R.dimen.medium_font_size)
+        )
         weekDay.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
 
         val dateLayoutParams = LinearLayout.LayoutParams(
@@ -246,7 +295,10 @@ class ScheduleFragment : Fragment() {
         amPm.text = if (row < 12) "AM" else "PM"
 
         // Style the text views
-        hour.textSize = resources.getDimension(R.dimen.medium_font_size)
+        hour.setTextSize(
+            TypedValue.COMPLEX_UNIT_PX,
+            resources.getDimension(R.dimen.medium_font_size)
+        )
         hour.setPadding(
             0,
             0,
@@ -262,7 +314,10 @@ class ScheduleFragment : Fragment() {
         hour.layoutParams = hourLayoutParams
 
         amPm.textAlignment = TextView.TEXT_ALIGNMENT_VIEW_END
-        amPm.textSize = resources.getDimension(R.dimen.small_font_size)
+        amPm.setTextSize(
+            TypedValue.COMPLEX_UNIT_PX,
+            resources.getDimension(R.dimen.small_font_size)
+        )
         amPm.setPadding(
             0,
             0,

@@ -4,6 +4,7 @@ import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -45,6 +46,8 @@ class HomeFragment : Fragment() {
         val root: View = binding.root
 
 
+        setHasOptionsMenu(true);
+
         val displayMetrics = resources.displayMetrics
         var dpWidth = displayMetrics.widthPixels
 
@@ -75,6 +78,7 @@ class HomeFragment : Fragment() {
             adapter.updateData(classList)
         }
     }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -110,9 +114,9 @@ class HomeFragment : Fragment() {
         weekDay.text = weekday["weekday"]
 
         date.typeface = Typeface.DEFAULT_BOLD
-        date.textSize = resources.getDimension(R.dimen.large_font_size)
+        date.setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(R.dimen.large_font_size))
         date.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-        weekDay.textSize = resources.getDimension(R.dimen.medium_font_size)
+        weekDay.setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(R.dimen.medium_font_size))
         weekDay.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
 
         val dateLayoutParams = LinearLayout.LayoutParams(
