@@ -20,6 +20,11 @@ import com.capstoneprojectg8.schoolscheduleapp.R
 import com.capstoneprojectg8.schoolscheduleapp.database.ClassesDatabase
 import com.capstoneprojectg8.schoolscheduleapp.databinding.FragmentHomeBinding
 import com.capstoneprojectg8.schoolscheduleapp.repository.ClassesRepository
+import com.capstoneprojectg8.schoolscheduleapp.ui.assignments.AssignmentsViewModel
+import com.capstoneprojectg8.schoolscheduleapp.ui.assignments.addassignment.AddNewAssignmentViewModel
+import com.capstoneprojectg8.schoolscheduleapp.ui.assignments.addassignment.AddNewAssignmentViewModelProvider
+import com.capstoneprojectg8.schoolscheduleapp.ui.settings.classes.ClassesViewModel
+import com.capstoneprojectg8.schoolscheduleapp.ui.settings.classes.ClassesViewModelFactory
 import com.capstoneprojectg8.schoolscheduleapp.utils.DateHandler
 
 class HomeFragment : Fragment() {
@@ -32,7 +37,8 @@ class HomeFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var classAdapter: ClassesAdapter
-    private lateinit var viewModel: HomeViewModel
+    private lateinit var classViewModel: HomeViewModel
+    private lateinit var classesRepository: ClassesRepository
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -59,23 +65,24 @@ class HomeFragment : Fragment() {
             generateWeekDay(dayOfWeek[i])
         }
 
-        setUpViewModel()
+        setUpClassViewModel()
         setupClassRecyclerView()
 
         return root
     }
 
     private fun setupClassRecyclerView() {
-        classAdapter = ClassesAdapter(requireContext(), this::onAddAssignmentClick, emptyList())
+        classesRepository = ClassesRepository(ClassesDatabase(requireContext()))
+        classAdapter = ClassesAdapter(requireContext(), this::onAddAssignmentClick, emptyList(), classViewModel)
         binding.rvAssignments.apply {
             layoutManager = LinearLayoutManager(context)
             this.adapter = classAdapter
         }
 
-        viewModel.getAllClasses().observe(viewLifecycleOwner) {classes ->
+        classViewModel.getAllClasses().observe(viewLifecycleOwner) {classes ->
             classAdapter.updateData(classes)
-
         }
+
     }
 
 
@@ -120,21 +127,18 @@ class HomeFragment : Fragment() {
         linearLayout.addView(date)
         linearLayout.addView(weekDay)
 
-//        val randomColor = generateRandomColor()
-//        date.setTextColor(randomColor)
-//        weekDay.setTextColor(randomColor)
-
         weekDaysLayout.addView(linearLayout, linearLayoutParams)
     }
 
-    private fun onAddAssignmentClick(position: Int){
+    private fun onAddAssignmentClick(position: Int) {
+        //val selectedClassId = classAdapter.getItemId(position).toInt()
         findNavController().navigate(R.id.action_navigation_home_to_addNewAssignmentFragment)
     }
 
-    private fun setUpViewModel() {
+    private fun setUpClassViewModel() {
         val classesRepository = ClassesRepository(ClassesDatabase(requireContext()))
         val viewModelProviderFactory = HomeViewModelFactory(requireActivity().application, classesRepository)
-        viewModel = ViewModelProvider(this, viewModelProviderFactory)[HomeViewModel::class.java]
+        classViewModel = ViewModelProvider(this, viewModelProviderFactory)[HomeViewModel::class.java]
     }
 
 

@@ -65,8 +65,6 @@ class ClassSettingsActivity : AppCompatActivity() {
             layoutManager = LinearLayoutManager(context)
             adapter = classesAdapter
         }
-
-
     }
 
     private fun setUpViewModel(){

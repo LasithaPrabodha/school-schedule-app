@@ -4,9 +4,10 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.capstoneprojectg8.schoolscheduleapp.models.Assignment
 import com.capstoneprojectg8.schoolscheduleapp.models.Class
 
-@Database(entities = [Class::class], version = 4)
+@Database(entities = [Class::class, Assignment::class], version = 5)
 abstract class ClassesDatabase : RoomDatabase() {
 
     abstract fun getClassesDao(): ClassesDao

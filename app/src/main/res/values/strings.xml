@@ -55,7 +55,7 @@
     <string name="end_time">End time</string>
     <string name="assignmentName_hint">Assignment title</string>
     <string name="details">Details</string>
-    <string name="select">Select</string>
+    <string name="select">Select class</string>
     <string name="add_new_assignment_btn">Add New Assignment</string>
     <string name="checkBoxText">Set as priority</string>
 

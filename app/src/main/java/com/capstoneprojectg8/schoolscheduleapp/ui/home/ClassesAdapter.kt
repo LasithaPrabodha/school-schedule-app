@@ -1,41 +1,67 @@
 package com.capstoneprojectg8.schoolscheduleapp.ui.home
 
-import android.annotation.SuppressLint
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.findViewTreeLifecycleOwner
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.capstoneprojectg8.schoolscheduleapp.databinding.ItemClassBinding
+import com.capstoneprojectg8.schoolscheduleapp.models.Assignment
 import com.capstoneprojectg8.schoolscheduleapp.models.Class
 
 
 class ClassesAdapter(
     private val context: Context,
     private val onAddAssignmentClickListener: (Int) -> Unit,
-    private var items: List<Class>
+    private var items: List<Class>,
+    private val classViewModel: HomeViewModel
 ) : RecyclerView.Adapter<ClassesAdapter.ViewHolder>() {
 
 
+    private lateinit var assignmentList: List<Assignment>
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ItemClassBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ViewHolder(binding)
+        val viewHolder = ViewHolder(binding)
+
+        viewHolder.binding.AssignmentRv.layoutManager = LinearLayoutManager(parent.context)
+
+        return viewHolder
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = items[position]
+
         holder.itemView.setOnClickListener {
             isAnyItemExpanded(position)
             item.isExpandable = !item.isExpandable
+            if (item.isExpandable) {
+                holder.itemView.findViewTreeLifecycleOwner()?.let { it1 ->
+                    classViewModel.getAssignmentListByClassId(item.id)
+                        .observe(it1) { assignments ->
+                            assignmentList = assignments ?: emptyList()
+                            val assignmentAdapter = AssignmentsAdapter(assignmentList, classViewModel)
+                            holder.binding.AssignmentRv.adapter = assignmentAdapter
+                            assignmentAdapter.updateData(assignmentList)
+                            Log.d("AssignmentsAdapter", "Assignment List Size: ${assignmentList.size}")
+                        }
+                }
+            }
             notifyItemChanged(position, Unit)
         }
+
         holder.bind(item)
 
         holder.binding.addAssignmentBtn.setOnClickListener {
             onAddAssignmentClickListener.invoke(position)
+        }
 
+        holder.binding.cancelBtn.setOnClickListener {
+            item.isExpandable = false
+            notifyItemChanged(position, Unit)
         }
     }
 
@@ -50,20 +76,6 @@ class ClassesAdapter(
     override fun getItemCount(): Int = items.size
 
     inner class ViewHolder(val binding: ItemClassBinding) : RecyclerView.ViewHolder(binding.root) {
-
-        private val assignmentAdapter: AssignmentsAdapter = AssignmentsAdapter()
-
-        init {
-            setupAssignmentRecyclerView()
-        }
-
-        private fun setupAssignmentRecyclerView() {
-            binding.AssignmentRv.apply {
-                layoutManager = LinearLayoutManager(context)
-                adapter = assignmentAdapter
-            }
-        }
-
 
         fun bind(classItem: Class) {
             binding.apply {
@@ -81,10 +93,6 @@ class ClassesAdapter(
 
         fun collapseExpandedViews() {
             binding.expandableAssignmentContainter.visibility = View.GONE
-        }
-
-        fun getAssignmentAdapter(): AssignmentsAdapter {
-            return assignmentAdapter
         }
     }
 
