@@ -28,4 +28,10 @@ class HomeViewModel(val app: Application, private val classesRepository: Classes
         }
     }
 
+    fun editAssignment(assignment: Assignment){
+        viewModelScope.launch(Dispatchers.IO) {
+            classesRepository.editAssignment(assignment)
+        }
+    }
+
 }

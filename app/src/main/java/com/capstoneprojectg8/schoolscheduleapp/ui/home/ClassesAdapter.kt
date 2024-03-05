@@ -1,10 +1,10 @@
 package com.capstoneprojectg8.schoolscheduleapp.ui.home
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.findViewTreeLifecycleOwner
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -43,10 +43,9 @@ class ClassesAdapter(
                     classViewModel.getAssignmentListByClassId(item.id)
                         .observe(it1) { assignments ->
                             assignmentList = assignments ?: emptyList()
-                            val assignmentAdapter = AssignmentsAdapter(assignmentList, classViewModel)
+                            val assignmentAdapter = AssignmentsAdapter(assignmentList, classViewModel, context)
                             holder.binding.AssignmentRv.adapter = assignmentAdapter
                             assignmentAdapter.updateData(assignmentList)
-                            Log.d("AssignmentsAdapter", "Assignment List Size: ${assignmentList.size}")
                         }
                 }
             }

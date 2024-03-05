@@ -66,7 +66,7 @@ class AddNewAssignmentFragment : Fragment() {
         val isPriority = binding.setPriorityCheckBox.isChecked
 
         if (assignmentTitle.isNotEmpty()){
-            val assignment = Assignment(0, assignmentTitle, assignmentDetail, isPriority, 1)
+            val assignment = Assignment(0, assignmentTitle, assignmentDetail, isPriority, false, 1)
             assignmentViewModel.addAssignment(assignment)
             Toast.makeText(context, "Assignment added", Toast.LENGTH_LONG).show()
             closeFragment()
