@@ -19,14 +19,14 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.capstoneprojectg8.schoolscheduleapp.R
 import com.capstoneprojectg8.schoolscheduleapp.databinding.FragmentHomeBinding
-import com.capstoneprojectg8.schoolscheduleapp.utils.DateHandler
+import com.capstoneprojectg8.schoolscheduleapp.utils.DateHelper
 
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private lateinit var weekDaysLayout: LinearLayout
     private var cellWidth: Int = 0
-    private val today = DateHandler.getToday("dd")
+    private val today = DateHelper.getToday("dd")
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -57,7 +57,7 @@ class HomeFragment : Fragment() {
 
         cellWidth = dpWidth / 5
 
-        val dayOfWeek = DateHandler.getWeekDates()
+        val dayOfWeek = DateHelper.generateDaysOfTheWeek()
 
         for (i in 0 until dayOfWeek.size) {
             generateWeekDay(dayOfWeek[i])

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/row"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="@dimen/grid_time_indicator_layout_width"
+            android:layout_height="@dimen/grid_time_indicator_layout_height"
+            android:paddingStart="0dp"
+            android:paddingEnd="4dp">
+
+            <TextView
+                app:layout_constraintTop_toTopOf="parent"
+                android:id="@+id/hour"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="viewEnd"
+                android:textSize="@dimen/medium_font_size"
+                android:textStyle="bold" />
+
+            <TextView
+                app:layout_constraintTop_toBottomOf="@+id/hour"
+                android:id="@+id/amPm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="viewEnd"
+                android:textSize="@dimen/small_font_size" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/grid_time_indicator_layout_height"
+            android:baselineAligned="false"
+            android:orientation="horizontal">
+
+            <View
+                android:id="@+id/monday"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal" />
+
+            <View
+                android:id="@+id/tuesday"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal" />
+
+            <View
+                android:id="@+id/wednesday"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal" />
+
+            <View
+                android:id="@+id/thursday"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal" />
+
+            <View
+                android:id="@+id/friday"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <View
+        app:layout_constraintTop_toBottomOf="@+id/row"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/grey" />
+</androidx.constraintlayout.widget.ConstraintLayout>

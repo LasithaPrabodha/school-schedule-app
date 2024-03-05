@@ -8,6 +8,7 @@
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/current_week"
+        android:icon="@drawable/baseline_calendar_today_24"
         android:title="This Week"
         app:showAsAction="ifRoom" />
     <item
