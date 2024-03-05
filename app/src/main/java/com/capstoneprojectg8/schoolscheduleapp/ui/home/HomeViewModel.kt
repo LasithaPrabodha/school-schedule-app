@@ -48,8 +48,8 @@ class HomeViewModel : ViewModel() {
             ),
 
             ClassItem(
-                startTime = "08:00 AM",
-                endTime = "10.00 AM",
+                startTime = "12:00 AM",
+                endTime = "02.00 PM",
                 courseCode = "MTH101",
                 courseName = "Android",
                 room = "Room 101",
@@ -58,8 +58,8 @@ class HomeViewModel : ViewModel() {
                 color = R.color.purple
             ),
             ClassItem(
-                startTime = "08:00 AM",
-                endTime = "10.00 AM",
+                startTime = "02:00 AM",
+                endTime = "04.00 PM",
                 courseCode = "MTH101",
                 courseName = "Android",
                 room = "Room 201",
@@ -69,8 +69,8 @@ class HomeViewModel : ViewModel() {
             ),
 
             ClassItem(
-                startTime = "08:00 AM",
-                endTime = "10.00 AM",
+                startTime = "04:00 PM",
+                endTime = "06.00 PM",
                 courseCode = "MTH101",
                 courseName = "Capstone Project",
                 room = "Room 111",
@@ -80,8 +80,8 @@ class HomeViewModel : ViewModel() {
             ),
 
             ClassItem(
-                startTime = "08:00 AM",
-                endTime = "10.00 AM",
+                startTime = "06:00 PM",
+                endTime = "10.00 PM",
                 courseCode = "MTH101",
                 courseName = "IOS",
                 room = "Room 211",

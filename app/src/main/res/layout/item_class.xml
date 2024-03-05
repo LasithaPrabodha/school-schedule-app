@@ -28,11 +28,9 @@
             android:id="@+id/tvStartTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="14dp"
             android:text="@string/start_time_example"
-            android:fontFamily="sans-serif"
-            android:textSize="10sp"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textSize="@dimen/medium_font_size"
             app:layout_constraintStart_toEndOf="@id/ivArrow"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -41,11 +39,10 @@
             android:id="@+id/tvEndTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="35dp"
+            android:layout_marginStart="33dp"
             android:layout_marginTop="20dp"
             android:text="@string/end_time_example"
-            android:fontFamily="serif"
-            android:textSize="10sp"
+            android:textSize="@dimen/medium_font_size"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvStartTime"/>
@@ -67,9 +64,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:text="@string/course_example"
-            android:fontFamily="sans-serif"
             android:textStyle="bold"
-            android:textFontWeight="@integer/material_motion_duration_medium_2"
             app:layout_constraintStart_toEndOf="@id/dividerLine"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -80,8 +75,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="@string/room_example"
-            android:fontFamily="sans-serif"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small"
             app:layout_constraintStart_toStartOf="@id/tvCourseName"
             app:layout_constraintTop_toBottomOf="@id/tvCourseName" />
 
