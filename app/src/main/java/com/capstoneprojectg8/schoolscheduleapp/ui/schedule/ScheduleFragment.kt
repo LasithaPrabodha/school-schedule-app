@@ -22,12 +22,19 @@ import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.capstoneprojectg8.schoolscheduleapp.R
+import com.capstoneprojectg8.schoolscheduleapp.database.ClassesDatabase
 import com.capstoneprojectg8.schoolscheduleapp.databinding.FragmentScheduleBinding
 import com.capstoneprojectg8.schoolscheduleapp.models.ScheduleSlot
+import com.capstoneprojectg8.schoolscheduleapp.repository.ClassesRepository
+import com.capstoneprojectg8.schoolscheduleapp.ui.schedule.add_slot.AddClassSlotViewModel
 import com.capstoneprojectg8.schoolscheduleapp.utils.DateHelper
 import com.capstoneprojectg8.schoolscheduleapp.utils.DummySlots
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -43,14 +50,15 @@ class ScheduleFragment : Fragment() {
     private lateinit var weekGrid: RelativeLayout
     private lateinit var weekTimelineAdapter: WeekTimelineAdapter
     private lateinit var calendarRowAdapter: CalendarRowAdapter
-    private lateinit var viewModel: ScheduleViewModel
+    private val viewModel: ScheduleViewModel by lazy {
+        ScheduleViewModel(ClassesRepository(ClassesDatabase(requireContext())))
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        viewModel = ViewModelProvider(this).get(ScheduleViewModel::class.java)
         _binding = FragmentScheduleBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
@@ -63,6 +71,8 @@ class ScheduleFragment : Fragment() {
         generateSlots()
 
         scrollToFirstSlot()
+
+        setupListeners()
 
         return root
     }
@@ -92,7 +102,7 @@ class ScheduleFragment : Fragment() {
                         true
                     }
 
-                    R.id.current_week ->{
+                    R.id.current_week -> {
                         step = 0
                         updateCalendar()
                         true
@@ -104,26 +114,38 @@ class ScheduleFragment : Fragment() {
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 
+    private fun setupListeners() {
+        binding.addClassToScheduleBtn.setOnClickListener {
+            findNavController().navigate(
+                ScheduleFragmentDirections.actionNavigationScheduleToAddClassSlot()
+            )
+        }
+    }
+
     private fun generateSlots() {
         val today = LocalDate.now()
         val startDate = today.plusWeeks(step.toLong()).with(DayOfWeek.MONDAY)
-        val dummies = DummySlots.getSlots()
+        viewModel.getAllClassSlots().observe(viewLifecycleOwner) { slots ->
 
-        val startOfWeek = DateHelper.startOfTheWeek(startDate)
-        val endOfWeek = DateHelper.endOfTheWeek(startDate)
 
-        val filtered = dummies.filter { slot ->
-            val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-            val ld = LocalDate.parse(slot.date, formatter)
+            Log.d("SCH", slots.toString())
+            val startOfWeek = DateHelper.startOfTheWeek(startDate)
+            val endOfWeek = DateHelper.endOfTheWeek(startDate)
 
-            ld >= startOfWeek && ld <= endOfWeek
+            val filtered = slots.filter { slot ->
+                val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+                val ld = LocalDate.parse(slot.date, formatter)
+
+                ld >= startOfWeek && ld <= endOfWeek
+            }
+
+            weekGrid.removeViews(1, weekGrid.childCount - 1)
+
+            for (slot in filtered) {
+                generateSlot(slot)
+            }
         }
 
-        weekGrid.removeViews(1, weekGrid.childCount - 1)
-
-        for (slot in filtered) {
-            generateSlot(slot)
-        }
     }
 
     private fun setCellWidth() {

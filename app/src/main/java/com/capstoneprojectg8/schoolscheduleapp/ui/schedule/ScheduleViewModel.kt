@@ -1,10 +1,17 @@
 package com.capstoneprojectg8.schoolscheduleapp.ui.schedule
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.capstoneprojectg8.schoolscheduleapp.models.HourRow
+import com.capstoneprojectg8.schoolscheduleapp.models.ScheduleSlot
+import com.capstoneprojectg8.schoolscheduleapp.repository.ClassesRepository
 
-class ScheduleViewModel : ViewModel() {
+class ScheduleViewModel(private val classesRepository: ClassesRepository) : ViewModel() {
+    private val _classSlots = MutableLiveData<List<ScheduleSlot>>()
+    val classSlots: LiveData<List<ScheduleSlot>> = _classSlots
 
+    fun getAllClassSlots() = classesRepository.getAllClassSlots()
     fun generateHourRows(isCurrentWeek: Boolean): MutableList<HourRow> {
         val list = mutableListOf<HourRow>()
         for (index in 0..24) {
