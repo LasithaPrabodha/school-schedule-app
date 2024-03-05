@@ -119,6 +119,9 @@ class AddClassSlotFragment : Fragment() {
             }
 
         }
+        binding.buttonCancel.setOnClickListener {
+            requireActivity().onBackPressedDispatcher.onBackPressed()
+        }
     }
 
     private fun showDatePicker() {
