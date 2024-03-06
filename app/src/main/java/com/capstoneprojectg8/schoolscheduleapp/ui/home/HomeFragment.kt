@@ -19,10 +19,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.capstoneprojectg8.schoolscheduleapp.R
 import com.capstoneprojectg8.schoolscheduleapp.database.ClassesDatabase
 import com.capstoneprojectg8.schoolscheduleapp.databinding.FragmentHomeBinding
-import com.capstoneprojectg8.schoolscheduleapp.models.Class
 import com.capstoneprojectg8.schoolscheduleapp.repository.ClassesRepository
 import com.capstoneprojectg8.schoolscheduleapp.utils.DateHelper
 import android.util.TypedValue
+import com.capstoneprojectg8.schoolscheduleapp.models.ScheduleSlot
 
 
 class HomeFragment : Fragment() {
@@ -79,8 +79,8 @@ class HomeFragment : Fragment() {
             this.adapter = classAdapter
         }
 
-        classViewModel.getAllClasses().observe(viewLifecycleOwner) {classes ->
-            classAdapter.updateData(classes)
+        classViewModel.getAllClassSlots().observe(viewLifecycleOwner) {classSlot ->
+            classAdapter.updateData(classSlot)
         }
 
     }
@@ -134,7 +134,7 @@ class HomeFragment : Fragment() {
         weekDaysLayout.addView(linearLayout, linearLayoutParams)
     }
 
-    private fun onAddAssignmentClick(classId: Class) {
+    private fun onAddAssignmentClick(classId: ScheduleSlot) {
         val action = HomeFragmentDirections.actionNavigationHomeToAddNewAssignmentFragment(classId.id)
         findNavController().navigate(action)
     }

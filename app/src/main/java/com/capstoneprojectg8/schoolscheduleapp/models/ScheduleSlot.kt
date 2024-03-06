@@ -17,4 +17,5 @@ data class ScheduleSlot(
     val classRoom: String,
     val color: Int,
     val date: String,
+    var isExpandable: Boolean = false
 ) : Parcelable

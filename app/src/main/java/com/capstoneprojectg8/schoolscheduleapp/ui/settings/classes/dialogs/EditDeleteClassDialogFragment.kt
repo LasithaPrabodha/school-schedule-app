@@ -49,7 +49,7 @@ class EditDeleteClassDialogFragment : DialogFragment() {
         val editedName = binding.classNameEditDialogInputText.text.toString().trim()
 
         if(editedCode.isNotEmpty() && editedName.isNotEmpty()){
-            val editedClass = Class(classId, editedCode, editedName, classColour, "", "", "")
+            val editedClass = Class(classId, editedCode, editedName, classColour)
             classesViewModel.editClass(editedClass)
             Toast.makeText(context, "Class edited", Toast.LENGTH_LONG).show()
             dismiss()
@@ -60,7 +60,7 @@ class EditDeleteClassDialogFragment : DialogFragment() {
     }
 
     private fun deleteClass(classId: Int, classCode: String, className:String, classColour:Int){
-        val currentClass = Class(classId, classCode, className, classColour, "", "", "")
+        val currentClass = Class(classId, classCode, className, classColour)
         AlertDialog.Builder(activity).apply {
             setTitle("Delete class")
             setMessage("Are you sure you want to delete this class")

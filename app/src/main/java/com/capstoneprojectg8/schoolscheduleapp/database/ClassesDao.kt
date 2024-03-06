@@ -10,6 +10,7 @@ import androidx.room.Transaction
 import androidx.room.Update
 import com.capstoneprojectg8.schoolscheduleapp.models.Assignment
 import com.capstoneprojectg8.schoolscheduleapp.models.Class
+import com.capstoneprojectg8.schoolscheduleapp.models.ScheduleSlot
 
 @Dao
 interface ClassesDao {
@@ -42,6 +43,6 @@ interface ClassesDao {
     fun getAssignmentListByClass(id: Int): LiveData<List<Assignment>>
 
     @Transaction
-    @Query("SELECT * FROM CLASSES WHERE id = :id")
-    fun getDefaultListValue(id: Int): LiveData<Class>
+    @Query("SELECT * FROM CLASS_SLOTS WHERE id = :id")
+    fun getDefaultListValue(id: Int): LiveData<ScheduleSlot>
 }

@@ -30,4 +30,6 @@ class ClassesViewModel(val app: Application, private val classesRepository: Clas
 
     fun getAllClasses() = classesRepository.getAllClasses()
 
+    fun getAllClassSlots() = classesRepository.getAllClassSlots()
+
 }

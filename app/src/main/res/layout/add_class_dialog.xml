@@ -50,47 +50,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/classCodeAddDialogInputText"
                 tools:ignore="Autofill" />
 
-            <EditText
-                android:id="@+id/roomNameAddDialogInputText"
-                android:layout_width="308dp"
-                android:layout_height="48dp"
-                android:layout_marginTop="24dp"
-                android:ems="10"
-                android:hint="@string/roomNameTextInput"
-                android:inputType="text"
-                android:minHeight="48dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/classNameAddDialogInputText"
-                tools:ignore="Autofill" />
-
-            <EditText
-                android:id="@+id/startTimeAddDialogInputText"
-                android:layout_width="308dp"
-                android:layout_height="48dp"
-                android:layout_marginTop="24dp"
-                android:ems="10"
-                android:hint="@string/start_time"
-                android:inputType="time"
-                android:minHeight="48dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/roomNameAddDialogInputText"
-                tools:ignore="Autofill" />
-
-            <EditText
-                android:id="@+id/endTimeAddDialogInputText"
-                android:layout_width="308dp"
-                android:layout_height="48dp"
-                android:layout_marginTop="24dp"
-                android:ems="10"
-                android:hint="@string/end_time"
-                android:inputType="time"
-                android:minHeight="48dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/startTimeAddDialogInputText"
-                tools:ignore="Autofill" />
 
             <Button
                 android:id="@+id/addNewClassAddDialogBtn"
@@ -99,11 +58,12 @@
                 android:layout_marginTop="24dp"
                 android:layout_marginBottom="16dp"
                 android:text="@string/addBtnText"
+                android:textAllCaps="false"
                 app:cornerRadius="16dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/endTimeAddDialogInputText" />
+                app:layout_constraintTop_toBottomOf="@+id/classNameAddDialogInputText" />
 
             <TextView
                 android:id="@+id/textView"

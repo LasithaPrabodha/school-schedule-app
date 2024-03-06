@@ -15,6 +15,7 @@ import com.capstoneprojectg8.schoolscheduleapp.database.ClassesDatabase
 import com.capstoneprojectg8.schoolscheduleapp.databinding.FragmentAddNewAssignmentBinding
 import com.capstoneprojectg8.schoolscheduleapp.models.Assignment
 import com.capstoneprojectg8.schoolscheduleapp.models.Class
+import com.capstoneprojectg8.schoolscheduleapp.models.ScheduleSlot
 import com.capstoneprojectg8.schoolscheduleapp.repository.ClassesRepository
 import com.capstoneprojectg8.schoolscheduleapp.ui.settings.classes.ClassesViewModel
 import com.capstoneprojectg8.schoolscheduleapp.ui.settings.classes.ClassesViewModelFactory
@@ -25,7 +26,7 @@ class AddNewAssignmentFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var assignmentViewModel: AddNewAssignmentViewModel
     private lateinit var classesViewModel: ClassesViewModel
-    private lateinit var selectedClass: Class
+    private lateinit var selectedClass: ScheduleSlot
 
 
 
@@ -44,22 +45,22 @@ class AddNewAssignmentFragment : Fragment() {
 
         val autocomplete = binding.autoCompleteClass
 
-        classesViewModel.getAllClasses().observe(viewLifecycleOwner) { classes ->
+        classesViewModel.getAllClassSlots().observe(viewLifecycleOwner) { classes ->
             if (classId != null) {
                 assignmentViewModel.getDefaultListValue(classId).observe(viewLifecycleOwner){
-                    autocomplete.setText("${it.classCode} - ${it.className}", false)
+                    autocomplete.setText("${it.className}", false)
                     selectedClass = it
                 }
             }
 
-            val classNameAndCode = classes.map { "${it.classCode} - ${it.className}" }
+            val classNameAndCode = classes.map { it.className }
             val adapter = ArrayAdapter(requireContext(), R.layout.list_class_item, classNameAndCode)
             autocomplete.setAdapter(adapter)
 
             autocomplete.onItemClickListener = AdapterView.OnItemClickListener { adapterView, _, i, _ ->
                 val itemSelected = adapterView.getItemAtPosition(i) as String
-                val classCode = itemSelected.split(" - ")[0]
-                selectedClass = classes.find { it.classCode == classCode }!!
+                val className = itemSelected.split(" - ")[0]
+                selectedClass = classes.find { it.className == className }!!
             }
         }
 
@@ -74,7 +75,7 @@ class AddNewAssignmentFragment : Fragment() {
         return binding.root
     }
 
-    private fun addAssignment(selectedClass: Class) {
+    private fun addAssignment(selectedClass: ScheduleSlot) {
         val assignmentTitle = binding.assignmentTitleInputText.text.toString().trim()
         val assignmentDetail = binding.detailsTextInput.text.toString().trim()
         val isPriority = binding.setPriorityCheckBox.isChecked

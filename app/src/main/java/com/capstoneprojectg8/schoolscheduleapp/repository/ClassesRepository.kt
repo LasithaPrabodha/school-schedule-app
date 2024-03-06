@@ -24,7 +24,7 @@ class ClassesRepository(private val db: ClassesDatabase) {
 
     fun getAssignmentListByClass(id: Int): LiveData<List<Assignment>> = db.getClassesDao().getAssignmentListByClass(id)
 
-    fun getDefaultListValue(id: Int): LiveData<Class> = db.getClassesDao().getDefaultListValue(id)
+    fun getDefaultListValue(id: Int): LiveData<ScheduleSlot> = db.getClassesDao().getDefaultListValue(id)
 
     suspend fun addClassSlot(classSlot: ScheduleSlot) = db.getClassSlotDao().addClassSlot(classSlot)
     suspend fun editClassSlot(classSlot: ScheduleSlot) = db.getClassSlotDao().editClassSlot(classSlot)

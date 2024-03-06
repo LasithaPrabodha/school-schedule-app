@@ -13,12 +13,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.capstoneprojectg8.schoolscheduleapp.databinding.ItemClassBinding
 import com.capstoneprojectg8.schoolscheduleapp.models.Assignment
 import com.capstoneprojectg8.schoolscheduleapp.models.Class
+import com.capstoneprojectg8.schoolscheduleapp.models.ScheduleSlot
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 
 class ClassesAdapter(
     private val context: Context,
-    private val onItemClicked: (Class) -> Unit,
-    private var items: List<Class>,
+    private val onItemClicked: (ScheduleSlot) -> Unit,
+    private var items: List<ScheduleSlot>,
     private val classViewModel: HomeViewModel
 ) : RecyclerView.Adapter<ClassesAdapter.ViewHolder>() {
 
@@ -76,16 +80,20 @@ class ClassesAdapter(
 
     inner class ViewHolder(val binding: ItemClassBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(classItem: Class) {
+        fun bind(classItem: ScheduleSlot) {
             binding.apply {
-                tvStartTime.text = classItem.startTime
-                tvCourseName.setTextColor(ContextCompat.getColor(context, classItem.colour))
-                tvEndTime.text = classItem.endTime
-                tvRoom.text = "Room: " + classItem.room
+                val startTime = classItem.startingHour
+                val endTime = classItem.startingHour + classItem.noOfHours
+                val sdf = SimpleDateFormat("hh:mm a", Locale.getDefault())
+
+                tvStartTime.text = sdf.format(Date().apply { hours = startTime; minutes = 0 })
+                tvCourseName.setTextColor(ContextCompat.getColor(context, classItem.color))
+                tvEndTime.text = sdf.format(Date().apply { hours = endTime; minutes = 0 })
+                tvRoom.text = "Room: " + classItem.classRoom
                 tvCourseName.text = classItem.className
                 expandableAssignmentContainter.visibility =
                     if (classItem.isExpandable) View.VISIBLE else View.GONE
-                dividerLine.setBackgroundColor(ContextCompat.getColor(context, classItem.colour))
+                dividerLine.setBackgroundColor(ContextCompat.getColor(context, classItem.color))
 
             }
         }
@@ -95,7 +103,7 @@ class ClassesAdapter(
         }
     }
 
-    fun updateData(newItems: List<Class>) {
+    fun updateData(newItems: List<ScheduleSlot>) {
         items = newItems
         notifyDataSetChanged()
     }

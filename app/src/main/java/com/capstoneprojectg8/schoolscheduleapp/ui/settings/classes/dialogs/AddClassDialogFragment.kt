@@ -25,13 +25,6 @@ class AddClassDialogFragment : DialogFragment() {
         val builder = AlertDialog.Builder(requireActivity())
         builder.setView(binding.root)
 
-        binding.startTimeAddDialogInputText.setOnClickListener {
-            showStartTimePickerDialog()
-        }
-
-        binding.endTimeAddDialogInputText.setOnClickListener {
-            showEndTimePickerDialog()
-        }
 
         binding.addNewClassAddDialogBtn.setOnClickListener {
             addClass()
@@ -40,36 +33,15 @@ class AddClassDialogFragment : DialogFragment() {
         return builder.create()
     }
 
-    private fun showStartTimePickerDialog() {
-        val timePicker = TimePickerFragment {onStartTimeSelected(it)}
-        timePicker.show(childFragmentManager, "time")
-    }
-
-    private fun onStartTimeSelected(time: String){
-        binding.startTimeAddDialogInputText.setText(time)
-
-    }
-
-    private fun showEndTimePickerDialog() {
-        val timePicker = TimePickerFragment {onEndTimeSelected(it)}
-        timePicker.show(childFragmentManager, "time")
-    }
-
-    private fun onEndTimeSelected(time: String){
-        binding.endTimeAddDialogInputText.setText(time)
-
-    }
 
 
     private fun addClass() {
         val classCode = binding.classCodeAddDialogInputText.text.toString().trim()
         val className = binding.classNameAddDialogInputText.text.toString().trim()
-        val room = binding.roomNameAddDialogInputText.text.toString().trim()
-        val startTime = binding.startTimeAddDialogInputText.text.toString().trim()
-        val endTime = binding.endTimeAddDialogInputText.text.toString().trim()
+
 
         if (classCode.isNotEmpty() && className.isNotEmpty()) {
-            val classes = Class(0, classCode, className, getRandomColorName(), room, startTime, endTime)
+            val classes = Class(0, classCode, className, getRandomColorName())
             classesViewModel.addClass(classes)
             Toast.makeText(context, "Class added", Toast.LENGTH_LONG).show()
             dismiss()
