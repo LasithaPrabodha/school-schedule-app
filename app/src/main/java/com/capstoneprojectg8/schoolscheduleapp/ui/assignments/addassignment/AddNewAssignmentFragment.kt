@@ -14,6 +14,7 @@ import com.capstoneprojectg8.schoolscheduleapp.R
 import com.capstoneprojectg8.schoolscheduleapp.database.ClassesDatabase
 import com.capstoneprojectg8.schoolscheduleapp.databinding.FragmentAddNewAssignmentBinding
 import com.capstoneprojectg8.schoolscheduleapp.models.Assignment
+import com.capstoneprojectg8.schoolscheduleapp.models.Class
 import com.capstoneprojectg8.schoolscheduleapp.repository.ClassesRepository
 import com.capstoneprojectg8.schoolscheduleapp.ui.settings.classes.ClassesViewModel
 import com.capstoneprojectg8.schoolscheduleapp.ui.settings.classes.ClassesViewModelFactory
@@ -24,13 +25,19 @@ class AddNewAssignmentFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var assignmentViewModel: AddNewAssignmentViewModel
     private lateinit var classesViewModel: ClassesViewModel
+    private lateinit var selectedClass: Class
+
 
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
+
         _binding = FragmentAddNewAssignmentBinding.inflate(inflater, container, false)
+
+        val classId = arguments?.getInt("classId", 0)
 
         setUpClassesViewModel()
         setUpAssignmentsViewModel()
@@ -38,19 +45,26 @@ class AddNewAssignmentFragment : Fragment() {
         val autocomplete = binding.autoCompleteClass
 
         classesViewModel.getAllClasses().observe(viewLifecycleOwner) { classes ->
-            val classNamesAndCode = classes.map { "${it.classCode} - ${it.className}" }
-            val adapter = ArrayAdapter(requireContext(), R.layout.list_class_item, classNamesAndCode)
+            if (classId != null) {
+                assignmentViewModel.getDefaultListValue(classId).observe(viewLifecycleOwner){
+                    autocomplete.setText("${it.classCode} - ${it.className}", false)
+                }
+            }
+
+            val classNameAndCode = classes.map { "${it.classCode} - ${it.className}" }
+            val adapter = ArrayAdapter(requireContext(), R.layout.list_class_item, classNameAndCode)
             autocomplete.setAdapter(adapter)
-        }
 
-        autocomplete.onItemClickListener = AdapterView.OnItemClickListener { adapterView, _, i, _ ->
-                val itemSelected = adapterView.getItemAtPosition(i)
+            autocomplete.onItemClickListener = AdapterView.OnItemClickListener { adapterView, _, i, _ ->
+                val itemSelected = adapterView.getItemAtPosition(i) as String
+                val classCode = itemSelected.split(" - ")[0]
+                selectedClass = classes.find { it.classCode == classCode }!!
 
-
+            }
         }
 
         binding.addNewAssignmentBtn.setOnClickListener {
-            addAssignment()
+            addAssignment(selectedClass)
         }
 
         binding.cancelAddAssignmentBtn.setOnClickListener {
@@ -60,18 +74,18 @@ class AddNewAssignmentFragment : Fragment() {
         return binding.root
     }
 
-    private fun addAssignment() {
+    private fun addAssignment(selectedClass: Class) {
         val assignmentTitle = binding.assignmentTitleInputText.text.toString().trim()
         val assignmentDetail = binding.detailsTextInput.text.toString().trim()
         val isPriority = binding.setPriorityCheckBox.isChecked
 
         if (assignmentTitle.isNotEmpty()){
-            val assignment = Assignment(0, assignmentTitle, assignmentDetail, isPriority, false, 1)
-            assignmentViewModel.addAssignment(assignment)
-            Toast.makeText(context, "Assignment added", Toast.LENGTH_LONG).show()
+            val newAssignment = Assignment(0, assignmentTitle, assignmentDetail, isPriority, false, selectedClass.id)
+            assignmentViewModel.addAssignment(newAssignment)
+            Toast.makeText(context, "Assignment added", Toast.LENGTH_SHORT).show()
             closeFragment()
         } else {
-            Toast.makeText(context, "Insert assignment title", Toast.LENGTH_LONG).show()
+            Toast.makeText(context, "Insert assignment title", Toast.LENGTH_SHORT).show()
         }
     }
 

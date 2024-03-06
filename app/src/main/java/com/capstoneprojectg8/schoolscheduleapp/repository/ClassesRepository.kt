@@ -22,4 +22,6 @@ class ClassesRepository(private val db: ClassesDatabase) {
     fun getAllClasses() = db.getClassesDao().getAllClasses()
 
     fun getAssignmentListByClass(id: Int): LiveData<List<Assignment>> = db.getClassesDao().getAssignmentListByClass(id)
+
+    fun getDefaultListValue(id: Int): LiveData<Class> = db.getClassesDao().getDefaultListValue(id)
 }

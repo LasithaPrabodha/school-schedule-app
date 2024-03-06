@@ -13,7 +13,7 @@ data class Assignment(
     val title: String,
     val detail: String,
     val isPriority: Boolean = false,
-    val isCompleted: Boolean = false,
+    val isCompleted: Boolean,
     val classId: Int
 ):Parcelable
 

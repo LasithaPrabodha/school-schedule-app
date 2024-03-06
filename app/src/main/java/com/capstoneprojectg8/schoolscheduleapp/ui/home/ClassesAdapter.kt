@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.findViewTreeLifecycleOwner
+import androidx.navigation.NavArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.capstoneprojectg8.schoolscheduleapp.databinding.ItemClassBinding
@@ -16,11 +17,10 @@ import com.capstoneprojectg8.schoolscheduleapp.models.Class
 
 class ClassesAdapter(
     private val context: Context,
-    private val onAddAssignmentClickListener: (Int) -> Unit,
+    private val onItemClicked: (Class) -> Unit,
     private var items: List<Class>,
     private val classViewModel: HomeViewModel
 ) : RecyclerView.Adapter<ClassesAdapter.ViewHolder>() {
-
 
     private lateinit var assignmentList: List<Assignment>
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -55,7 +55,7 @@ class ClassesAdapter(
         holder.bind(item)
 
         holder.binding.addAssignmentBtn.setOnClickListener {
-            onAddAssignmentClickListener.invoke(position)
+            onItemClicked.invoke(item)
         }
 
         holder.binding.cancelBtn.setOnClickListener {

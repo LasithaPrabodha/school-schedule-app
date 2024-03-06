@@ -8,7 +8,6 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
-import com.capstoneprojectg8.schoolscheduleapp.database.relations.ClassWithAssignments
 import com.capstoneprojectg8.schoolscheduleapp.models.Assignment
 import com.capstoneprojectg8.schoolscheduleapp.models.Class
 
@@ -41,4 +40,8 @@ interface ClassesDao {
     @Transaction
     @Query("SELECT * FROM ASSIGNMENT WHERE classId = :id")
     fun getAssignmentListByClass(id: Int): LiveData<List<Assignment>>
+
+    @Transaction
+    @Query("SELECT * FROM CLASSES WHERE id = :id")
+    fun getDefaultListValue(id: Int): LiveData<Class>
 }

@@ -16,4 +16,12 @@ class AddNewAssignmentViewModel(val app: Application, private val classesReposit
         }
     }
 
+    fun editAssignment(assignment: Assignment){
+        viewModelScope.launch(Dispatchers.IO) {
+            classesRepository.editAssignment(assignment)
+        }
+    }
+
+    fun getDefaultListValue(id: Int) = classesRepository.getDefaultListValue(id)
+
 }

@@ -34,5 +34,9 @@
         android:id="@+id/addNewAssignmentFragment"
         android:name="com.capstoneprojectg8.schoolscheduleapp.ui.assignments.addassignment.AddNewAssignmentFragment"
         android:label="New Assignment"
-        tools:layout="@layout/fragment_add_new_assignment" />
+        tools:layout="@layout/fragment_add_new_assignment" >
+        <argument
+            android:name="classId"
+            app:argType="integer" />
+    </fragment>
 </navigation>

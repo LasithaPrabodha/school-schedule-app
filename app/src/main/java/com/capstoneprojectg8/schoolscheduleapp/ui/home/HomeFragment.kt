@@ -19,10 +19,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.capstoneprojectg8.schoolscheduleapp.R
 import com.capstoneprojectg8.schoolscheduleapp.database.ClassesDatabase
 import com.capstoneprojectg8.schoolscheduleapp.databinding.FragmentHomeBinding
+import com.capstoneprojectg8.schoolscheduleapp.models.Class
 import com.capstoneprojectg8.schoolscheduleapp.repository.ClassesRepository
 import com.capstoneprojectg8.schoolscheduleapp.ui.assignments.AssignmentsViewModel
 import com.capstoneprojectg8.schoolscheduleapp.ui.assignments.addassignment.AddNewAssignmentViewModel
 import com.capstoneprojectg8.schoolscheduleapp.ui.assignments.addassignment.AddNewAssignmentViewModelProvider
+import com.capstoneprojectg8.schoolscheduleapp.ui.home.HomeFragmentDirections
 import com.capstoneprojectg8.schoolscheduleapp.ui.settings.classes.ClassesViewModel
 import com.capstoneprojectg8.schoolscheduleapp.ui.settings.classes.ClassesViewModelFactory
 import com.capstoneprojectg8.schoolscheduleapp.utils.DateHandler
@@ -73,7 +75,7 @@ class HomeFragment : Fragment() {
 
     private fun setupClassRecyclerView() {
         classesRepository = ClassesRepository(ClassesDatabase(requireContext()))
-        classAdapter = ClassesAdapter(requireContext(), this::onAddAssignmentClick, emptyList(), classViewModel)
+        classAdapter = ClassesAdapter(requireContext(), onItemClicked = { onAddAssignmentClick(it) }, emptyList(), classViewModel)
         binding.rvAssignments.apply {
             layoutManager = LinearLayoutManager(context)
             this.adapter = classAdapter
@@ -130,9 +132,9 @@ class HomeFragment : Fragment() {
         weekDaysLayout.addView(linearLayout, linearLayoutParams)
     }
 
-    private fun onAddAssignmentClick(position: Int) {
-        //val selectedClassId = classAdapter.getItemId(position).toInt()
-        findNavController().navigate(R.id.action_navigation_home_to_addNewAssignmentFragment)
+    private fun onAddAssignmentClick(classId: Class) {
+        val action = HomeFragmentDirections.actionNavigationHomeToAddNewAssignmentFragment(classId.id)
+        findNavController().navigate(action)
     }
 
     private fun setUpClassViewModel() {
