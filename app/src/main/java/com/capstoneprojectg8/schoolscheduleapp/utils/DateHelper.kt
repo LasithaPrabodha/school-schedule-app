@@ -2,8 +2,11 @@ package com.capstoneprojectg8.schoolscheduleapp.utils
 
 import java.time.DayOfWeek
 import java.time.LocalDate
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.time.temporal.TemporalAdjusters
+import java.util.Date
+
 
 object DateHelper {
     fun startOfTheWeek(date: LocalDate): LocalDate {
@@ -45,5 +48,11 @@ object DateHelper {
     fun getToday(pattern: String = "yyyy-MM-dd"): String {
         val today = LocalDate.now()
         return today.format(DateTimeFormatter.ofPattern(pattern))
+    }
+
+    fun convert(date: Date): LocalDate {
+        return date.toInstant()
+            .atZone(ZoneId.of("UTC"))
+            .toLocalDate()
     }
 }

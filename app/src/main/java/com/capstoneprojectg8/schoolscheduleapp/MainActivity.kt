@@ -58,6 +58,16 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+        navView.setOnItemSelectedListener {
+            when (it.itemId) {
+                R.id.navigation_home -> navController.navigate(R.id.navigation_home)
+                R.id.navigation_schedule -> navController.navigate(R.id.navigation_schedule)
+                R.id.navigation_settings -> navController.navigate(R.id.navigation_settings)
+
+            }
+            true
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {

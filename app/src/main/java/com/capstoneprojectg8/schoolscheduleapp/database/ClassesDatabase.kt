@@ -5,11 +5,13 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.capstoneprojectg8.schoolscheduleapp.models.Class
+import com.capstoneprojectg8.schoolscheduleapp.models.ScheduleSlot
 
-@Database(entities = [Class::class], version = 2)
+@Database(entities = [Class::class, ScheduleSlot::class], version = 3)
 abstract class ClassesDatabase : RoomDatabase() {
 
     abstract fun getClassesDao(): ClassesDao
+    abstract fun getClassSlotDao(): ClassSlotDao
 
     companion object {
         @Volatile
