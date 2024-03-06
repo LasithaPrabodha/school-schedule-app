@@ -70,6 +70,7 @@
             android:fontFamily="sans-serif"
             android:text="@string/course_example"
             android:textFontWeight="@integer/material_motion_duration_medium_2"
+            android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@id/dividerLine"
             app:layout_constraintTop_toTopOf="parent" />
