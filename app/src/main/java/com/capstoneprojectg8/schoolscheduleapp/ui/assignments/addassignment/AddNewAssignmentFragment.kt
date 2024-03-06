@@ -48,6 +48,7 @@ class AddNewAssignmentFragment : Fragment() {
             if (classId != null) {
                 assignmentViewModel.getDefaultListValue(classId).observe(viewLifecycleOwner){
                     autocomplete.setText("${it.classCode} - ${it.className}", false)
+                    selectedClass = it
                 }
             }
 
@@ -59,7 +60,6 @@ class AddNewAssignmentFragment : Fragment() {
                 val itemSelected = adapterView.getItemAtPosition(i) as String
                 val classCode = itemSelected.split(" - ")[0]
                 selectedClass = classes.find { it.classCode == classCode }!!
-
             }
         }
 
