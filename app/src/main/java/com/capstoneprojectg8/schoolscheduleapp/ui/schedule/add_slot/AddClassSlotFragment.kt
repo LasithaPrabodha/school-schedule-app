@@ -86,22 +86,22 @@ class AddClassSlotFragment : Fragment() {
             val formattedDate = dateFormat.format(calendar.time)
             val formattedTime = timeFormat.format(calendar.time)
 
+
+            if ((duration == null || duration <= 0) || roomNumber.isBlank() || selectedClass.isBlank() || selectedClass.isNotEmpty()) {
+                if (duration == null || duration <= 0) {
+                    binding.editTextDuration.error = "Please enter a valid duration"
+                }
+
+                if (roomNumber.isBlank()) {
+                    binding.editTextRoom.error = "Please enter a valid room number"
+                }
+
+                if (selectedClass.isBlank()) {
+                    binding.editTextRoom.error = "Please select a class"
+                }
+                return@setOnClickListener
+            }
             val color = classList.find { it.className == selectedClass }!!.colour
-
-            if (duration == null || duration <= 0) {
-                binding.editTextDuration.error = "Please enter a valid duration"
-                return@setOnClickListener
-            }
-
-            if (roomNumber.isBlank()) {
-                binding.editTextRoom.error = "Please enter a valid room number"
-                return@setOnClickListener
-            }
-
-            if (selectedClass.isBlank()) {
-                binding.editTextRoom.error = "Please select a class"
-                return@setOnClickListener
-            }
 
             val classSlot = ScheduleSlot(
                 id = 0,
