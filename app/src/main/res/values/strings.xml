@@ -40,7 +40,7 @@
     <string name="floatingBtnText">Add</string>
     <string name="separation">-</string>
     <string name="addClassDialogTitle">Add a new Class</string>
-    <string name="classCodeTextInput">Class Code</string>
+    <string name="classCodeTextInput">Class code</string>
     <string name="addBtnText">Add new class</string>
     <string name="classNameTextInput">Class Name</string>
     <!-- TODO: Remove or change this placeholder text -->
@@ -58,5 +58,6 @@
     <string name="select">Select class</string>
     <string name="add_new_assignment_btn">Add New Assignment</string>
     <string name="checkBoxText">Set as priority</string>
+    <string name="add_class_slot">Add Class Slot</string>
 
 </resources>

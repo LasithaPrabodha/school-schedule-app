@@ -19,7 +19,18 @@
         android:id="@+id/navigation_schedule"
         android:name="com.capstoneprojectg8.schoolscheduleapp.ui.schedule.ScheduleFragment"
         android:label="@string/title_schedule"
-        tools:layout="@layout/fragment_schedule" />
+        tools:layout="@layout/fragment_schedule" >
+        <action
+            android:id="@+id/action_navigation_schedule_to_add_class_slot"
+            app:destination="@id/navigation_add_class_slot"
+            />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_add_class_slot"
+        android:name="com.capstoneprojectg8.schoolscheduleapp.ui.schedule.add_slot.AddClassSlotFragment"
+        android:label="@string/add_class_slot"
+        tools:layout="@layout/fragment_add_class_slot"  />
 
     <fragment
         android:id="@+id/navigation_settings"

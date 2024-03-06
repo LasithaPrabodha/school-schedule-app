@@ -182,8 +182,12 @@ class AddClassDialogFragment : DialogFragment() {
             R.color.Teal,
             R.color.Tomato,
             R.color.Violet,
-            R.color.YellowGreen
+            R.color.YellowGreen,
+            R.color.orange,
+            R.color.green,
+            R.color.blue,
         )
+
 
         val randomArrayIndex = Random.nextInt(colorNames.size)
         return colorNames[randomArrayIndex]

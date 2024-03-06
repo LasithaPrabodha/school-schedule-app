@@ -24,8 +24,17 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        supportActionBar?.setBackgroundDrawable(ColorDrawable(ContextCompat.getColor(this, R.color.transparent)))
-        supportActionBar?.setDisplayHomeAsUpEnabled(true);
+        setSupportActionBar(findViewById(R.id.toolbar))
+
+        supportActionBar?.setBackgroundDrawable(
+            ColorDrawable(
+                ContextCompat.getColor(
+                    this,
+                    R.color.transparent
+                )
+            )
+        )
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
@@ -42,6 +51,16 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+        navView.setOnItemSelectedListener {
+            when (it.itemId) {
+                R.id.navigation_home -> navController.navigate(R.id.navigation_home)
+                R.id.navigation_schedule -> navController.navigate(R.id.navigation_schedule)
+                R.id.navigation_settings -> navController.navigate(R.id.navigation_settings)
+
+            }
+            true
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {

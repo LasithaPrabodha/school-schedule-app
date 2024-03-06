@@ -33,5 +33,4 @@ class HomeViewModel(val app: Application, private val classesRepository: Classes
             classesRepository.editAssignment(assignment)
         }
     }
-
 }
