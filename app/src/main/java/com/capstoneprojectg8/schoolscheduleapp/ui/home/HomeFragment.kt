@@ -79,8 +79,11 @@ class HomeFragment : Fragment() {
             this.adapter = classAdapter
         }
 
+        val today = DateHelper.getToday()
+
         classViewModel.getAllClassSlots().observe(viewLifecycleOwner) {classSlot ->
-            classAdapter.updateData(classSlot)
+            val filtered = classSlot.filter { it.date == today  }
+            classAdapter.updateData(filtered)
         }
 
     }
