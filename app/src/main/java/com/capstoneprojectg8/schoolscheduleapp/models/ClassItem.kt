@@ -6,12 +6,12 @@ data class ClassItem(
     val courseCode: String,
     val courseName: String,
     val room: String,
-    val assignments: List<Assignment>,
-    val isCancelable: Boolean,
+    val assignments: List<Assignments>,
+    var isExpandable: Boolean = false,
     val color: Int
 )
 
-data class Assignment(
+data class Assignments(
     val title: String,
     val isChecked: Boolean,
     val note: String?

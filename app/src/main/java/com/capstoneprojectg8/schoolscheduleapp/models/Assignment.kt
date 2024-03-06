@@ -5,14 +5,15 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import kotlinx.parcelize.Parcelize
 
-@Entity(tableName = "classes")
+@Entity(tableName = "assignment")
 @Parcelize
-data class Class(
+data class Assignment(
     @PrimaryKey(autoGenerate = true)
     val id: Int,
-    var classCode: String,
-    var className:String,
-    val colour: Int,
-    var isExpandable: Boolean = false,
+    val title: String,
+    val detail: String,
+    val isPriority: Boolean = false,
+    val isCompleted: Boolean,
+    val classId: Int
 ):Parcelable
 

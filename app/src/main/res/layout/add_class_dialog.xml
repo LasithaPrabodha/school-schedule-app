@@ -50,6 +50,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/classCodeAddDialogInputText"
                 tools:ignore="Autofill" />
 
+
             <Button
                 android:id="@+id/addNewClassAddDialogBtn"
                 android:layout_width="wrap_content"
@@ -57,6 +58,7 @@
                 android:layout_marginTop="24dp"
                 android:layout_marginBottom="16dp"
                 android:text="@string/addBtnText"
+                android:textAllCaps="false"
                 app:cornerRadius="16dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

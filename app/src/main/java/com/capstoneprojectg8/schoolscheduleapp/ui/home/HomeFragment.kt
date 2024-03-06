@@ -1,10 +1,8 @@
 package com.capstoneprojectg8.schoolscheduleapp.ui.home
 
-import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
-import android.util.TypedValue
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -16,10 +14,16 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.marginStart
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.capstoneprojectg8.schoolscheduleapp.R
+import com.capstoneprojectg8.schoolscheduleapp.database.ClassesDatabase
 import com.capstoneprojectg8.schoolscheduleapp.databinding.FragmentHomeBinding
+import com.capstoneprojectg8.schoolscheduleapp.repository.ClassesRepository
 import com.capstoneprojectg8.schoolscheduleapp.utils.DateHelper
+import android.util.TypedValue
+import com.capstoneprojectg8.schoolscheduleapp.models.ScheduleSlot
+
 
 class HomeFragment : Fragment() {
 
@@ -28,19 +32,17 @@ class HomeFragment : Fragment() {
     private var cellWidth: Int = 0
     private val today = DateHelper.getToday("dd")
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
-    private lateinit var adapter: ClassesAdapter
+    private lateinit var classAdapter: ClassesAdapter
+    private lateinit var classViewModel: HomeViewModel
+    private lateinit var classesRepository: ClassesRepository
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val homeViewModel =
-            ViewModelProvider(this).get(HomeViewModel::class.java)
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
@@ -63,29 +65,29 @@ class HomeFragment : Fragment() {
             generateWeekDay(dayOfWeek[i])
         }
 
+        setUpClassViewModel()
+        setupClassRecyclerView()
+
         return root
     }
 
-    private fun setupRecyclerView(viewModel: HomeViewModel) {
-        adapter = ClassesAdapter(requireContext(), emptyList())
-
-        binding.rvAssignments.apply{
+    private fun setupClassRecyclerView() {
+        classesRepository = ClassesRepository(ClassesDatabase(requireContext()))
+        classAdapter = ClassesAdapter(requireContext(), onItemClicked = { onAddAssignmentClick(it) }, emptyList(), classViewModel)
+        binding.rvAssignments.apply {
             layoutManager = LinearLayoutManager(context)
-            adapter= this@HomeFragment.adapter
+            this.adapter = classAdapter
         }
 
-        viewModel.classes.observe(viewLifecycleOwner) {classList ->
-            adapter.updateData(classList)
+        val today = DateHelper.getToday()
+
+        classViewModel.getAllClassSlots().observe(viewLifecycleOwner) {classSlot ->
+            val filtered = classSlot.filter { it.date == today  }
+            classAdapter.updateData(filtered)
         }
+
     }
 
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        val homeViewModel = ViewModelProvider(this)[HomeViewModel::class.java]
-        homeViewModel.loadClassItems()
-        setupRecyclerView(homeViewModel)
-    }
 
     private fun generateWeekDay(weekday: Map<String, String>) {
         val linearLayout = LinearLayout(activity)
@@ -135,11 +137,19 @@ class HomeFragment : Fragment() {
         weekDaysLayout.addView(linearLayout, linearLayoutParams)
     }
 
-    private fun generateRandomColor(): Int {
-        val rnd = java.util.Random()
-        return Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256))
+    private fun onAddAssignmentClick(classId: ScheduleSlot) {
+        val action = HomeFragmentDirections.actionNavigationHomeToAddNewAssignmentFragment(classId.id)
+        findNavController().navigate(action)
     }
-        override fun onDestroyView() {
+
+    private fun setUpClassViewModel() {
+        val classesRepository = ClassesRepository(ClassesDatabase(requireContext()))
+        val viewModelProviderFactory = HomeViewModelFactory(requireActivity().application, classesRepository)
+        classViewModel = ViewModelProvider(this, viewModelProviderFactory)[HomeViewModel::class.java]
+    }
+
+
+    override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
