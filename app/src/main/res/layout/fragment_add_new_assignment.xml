@@ -5,8 +5,10 @@
     android:id="@+id/ConstraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp"
 
-    tools:context=".ui.assignments.addassignment.AddNewAssignmentFragment" >
+    tools:context=".ui.assignments.addassignment.AddNewAssignmentFragment">
 
     <com.google.android.material.textfield.TextInputLayout
 
@@ -14,9 +16,7 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="32dp"
+        android:layout_marginTop="16dp"
         android:hint="@string/assignmentName_hint"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -36,9 +36,7 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="32dp"
+        android:layout_marginTop="16dp"
         android:hint="@string/select"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -48,8 +46,9 @@
             android:id="@+id/auto_complete_class"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="none"
             android:focusable="false"
+            android:enabled="false"
+            android:inputType="none"
             tools:ignore="LabelFor,VisualLintTextFieldSize,SpeakableTextPresentCheck" />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -60,9 +59,7 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="32dp"
+        android:layout_marginTop="16dp"
         android:hint="@string/details"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -83,40 +80,48 @@
             tools:ignore="VisualLintTextFieldSize,TextContrastCheck" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <CheckBox
-        android:id="@+id/setPriorityCheckBox"
-        android:layout_width="wrap_content"
+<!--    <CheckBox-->
+<!--        android:id="@+id/setPriorityCheckBox"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="16dp"-->
+<!--        android:minHeight="48dp"-->
+<!--        android:text="@string/checkBoxText"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/detailsInputLayout" />-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
-        android:minHeight="48dp"
-        android:text="@string/checkBoxText"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/detailsInputLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/detailsInputLayout"
+        android:layout_marginTop="24dp"
+        android:gravity="end">
 
-    <Button
-        android:id="@+id/addNewAssignmentBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="64dp"
-        android:backgroundTint="@color/color_action"
-        android:text="@string/add_new_assignment_btn"
-        android:textAllCaps="false"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/setPriorityCheckBox" />
 
-    <Button
-        android:id="@+id/cancelAddAssignmentBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="64dp"
-        android:layout_marginTop="32dp"
-        android:text="@string/cancel"
-        android:textAllCaps="false"
-        app:layout_constraintEnd_toStartOf="@+id/addNewAssignmentBtn"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/setPriorityCheckBox" />
+        <Button
+            android:id="@+id/cancelAddAssignmentBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="@string/cancel"
+            style="?attr/materialButtonOutlinedStyle"
+            android:textAllCaps="false"
+            app:layout_constraintEnd_toStartOf="@+id/addNewAssignmentBtn"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/setPriorityCheckBox" />
 
+        <Button
+            android:id="@+id/addNewAssignmentBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/color_action"
+            android:layout_marginStart="12dp"
+            android:text="@string/add_new_assignment_btn"
+            android:textAllCaps="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/setPriorityCheckBox" />
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

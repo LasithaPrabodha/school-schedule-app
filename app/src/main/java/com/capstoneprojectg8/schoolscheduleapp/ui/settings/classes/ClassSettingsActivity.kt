@@ -27,7 +27,6 @@ class ClassSettingsActivity : AppCompatActivity() {
 
         setSupportActionBar(findViewById(R.id.toolbar))
 
-        supportActionBar?.setHomeAsUpIndicator(R.drawable.baseline_arrow_back_ios_new_24)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
 
