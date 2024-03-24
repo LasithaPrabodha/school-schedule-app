@@ -46,7 +46,7 @@ class MainActivity : AppCompatActivity() {
 
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.navigation_home, R.id.navigation_schedule, R.id.navigation_assignments ,R.id.navigation_settings, R.id.addNewAssignmentFragment
+                R.id.navigation_home, R.id.navigation_schedule, R.id.navigation_assignments ,R.id.navigation_settings
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -57,6 +57,8 @@ class MainActivity : AppCompatActivity() {
                 R.id.navigation_home -> navController.navigate(R.id.navigation_home)
                 R.id.navigation_schedule -> navController.navigate(R.id.navigation_schedule)
                 R.id.navigation_settings -> navController.navigate(R.id.navigation_settings)
+                R.id.navigation_assignments -> navController.navigate(R.id.navigation_assignments)
+
 
             }
             true

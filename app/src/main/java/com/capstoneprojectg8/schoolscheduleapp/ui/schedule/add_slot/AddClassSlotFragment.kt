@@ -18,8 +18,10 @@ import com.capstoneprojectg8.schoolscheduleapp.databinding.FragmentAddClassSlotB
 import com.capstoneprojectg8.schoolscheduleapp.models.Class
 import com.capstoneprojectg8.schoolscheduleapp.models.ScheduleSlot
 import com.capstoneprojectg8.schoolscheduleapp.repository.ClassesRepository
+import com.capstoneprojectg8.schoolscheduleapp.utils.DateHelper
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
+import java.time.LocalDate
 import java.util.Calendar
 import java.util.Locale
 
@@ -43,7 +45,6 @@ class AddClassSlotFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentAddClassSlotBinding.inflate(inflater, container, false)
-        (activity as AppCompatActivity?)!!.supportActionBar!!.title = "New class slot"
         return binding.root
     }
 
@@ -68,6 +69,13 @@ class AddClassSlotFragment : Fragment() {
 
 
         calendar = Calendar.getInstance()
+        val today = LocalDate.now()
+        val localDate = DateHelper.startOfTheWeek(today)
+        if (localDate > today) {
+            calendar.set(localDate.year, localDate.monthValue - 1, localDate.dayOfMonth, 9, 0)
+        } else {
+            calendar.set(today.year, today.monthValue - 1, today.dayOfMonth, 9, 0)
+        }
 
         val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         binding.editTextDate.setText(dateFormat.format(calendar.time))
@@ -143,7 +151,7 @@ class AddClassSlotFragment : Fragment() {
     }
 
     private fun showTimePicker() {
-        val hour = calendar.get(Calendar.HOUR_OF_DAY)
+        val hour = 9
         val minute = 0
 
         val timePickerDialog = TimePickerDialog(

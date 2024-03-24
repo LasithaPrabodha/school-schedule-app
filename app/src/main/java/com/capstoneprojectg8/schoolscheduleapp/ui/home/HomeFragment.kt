@@ -23,14 +23,14 @@ import com.capstoneprojectg8.schoolscheduleapp.repository.ClassesRepository
 import com.capstoneprojectg8.schoolscheduleapp.utils.DateHelper
 import android.util.TypedValue
 import com.capstoneprojectg8.schoolscheduleapp.models.ScheduleSlot
+import com.capstoneprojectg8.schoolscheduleapp.ui.schedule.WeekTimelineAdapter
 
 
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
-    private lateinit var weekDaysLayout: LinearLayout
     private var cellWidth: Int = 0
-    private val today = DateHelper.getToday("dd")
+    private lateinit var weekTimelineAdapter: WeekTimelineAdapter
 
     private val binding get() = _binding!!
 
@@ -48,21 +48,17 @@ class HomeFragment : Fragment() {
         val root: View = binding.root
 
 
-        setHasOptionsMenu(true);
+        setCellWidth()
 
-        val displayMetrics = resources.displayMetrics
-        var dpWidth = displayMetrics.widthPixels
+        val dayOfWeek: MutableList<Map<String, String>> = DateHelper.generateDaysOfTheWeek()
+        weekTimelineAdapter = WeekTimelineAdapter(requireContext(), dayOfWeek, cellWidth)
 
-        weekDaysLayout = binding.dayScroll
-
-        dpWidth -= weekDaysLayout.marginStart
-
-        cellWidth = dpWidth / 5
-
-        val dayOfWeek = DateHelper.generateDaysOfTheWeek()
-
-        for (i in 0 until dayOfWeek.size) {
-            generateWeekDay(dayOfWeek[i])
+        binding.dayList.apply {
+            layoutManager = LinearLayoutManager(
+                requireContext(),
+                LinearLayoutManager.HORIZONTAL, false
+            )
+            adapter = weekTimelineAdapter
         }
 
         setUpClassViewModel()
@@ -87,54 +83,12 @@ class HomeFragment : Fragment() {
         }
 
     }
+    private fun setCellWidth() {
+        val displayMetrics = resources.displayMetrics
 
-
-    private fun generateWeekDay(weekday: Map<String, String>) {
-        val linearLayout = LinearLayout(activity)
-        linearLayout.orientation = LinearLayout.VERTICAL
-
-        val linearLayoutParams = LinearLayout.LayoutParams(
-            cellWidth,
-            resources.getDimensionPixelSize(R.dimen.grid_cell_layout_height)
-        )
-
-        linearLayout.layoutParams = linearLayoutParams
-        linearLayout.gravity = Gravity.CENTER_VERTICAL
-
-        if (today == weekday["date"]) {
-            val shape = GradientDrawable()
-            shape.shape = GradientDrawable.RECTANGLE
-            shape.setColor(ContextCompat.getColor(requireContext(), R.color.background))
-            shape.cornerRadii = floatArrayOf(16f, 16f, 16f, 16f, 0f, 0f, 0f, 0f)
-            ViewCompat.setBackground(linearLayout, shape)
-        }
-
-        val date = TextView(activity)
-        val weekDay = TextView(activity)
-
-        date.text = weekday["date"]
-        weekDay.text = weekday["weekday"]
-
-        date.typeface = Typeface.DEFAULT_BOLD
-        date.setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(R.dimen.large_font_size))
-        date.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-        weekDay.setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(R.dimen.medium_font_size))
-        weekDay.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-
-        val dateLayoutParams = LinearLayout.LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT
-        )
-        date.layoutParams = dateLayoutParams
-
-        linearLayout.addView(date)
-        linearLayout.addView(weekDay)
-
-//        val randomColor = generateRandomColor()
-//        date.setTextColor(randomColor)
-//        weekDay.setTextColor(randomColor)
-
-        weekDaysLayout.addView(linearLayout, linearLayoutParams)
+        var dpWidth = displayMetrics.widthPixels
+        dpWidth -= resources.getDimension(R.dimen.grid_time_indicator_layout_width).toInt()
+        cellWidth = dpWidth / 5
     }
 
     private fun onAddAssignmentClick(classId: ScheduleSlot) {

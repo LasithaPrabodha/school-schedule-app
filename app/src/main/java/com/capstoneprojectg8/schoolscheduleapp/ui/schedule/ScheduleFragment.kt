@@ -124,7 +124,7 @@ class ScheduleFragment : Fragment() {
 
     private fun generateSlots() {
         val today = LocalDate.now()
-        val startDate = today.plusWeeks(step.toLong()).with(DayOfWeek.MONDAY)
+        val startDate =  DateHelper.startOfTheWeek(today).plusWeeks(step.toLong()).with(DayOfWeek.MONDAY)
         viewModel.getAllClassSlots().observe(viewLifecycleOwner) { slots ->
 
 
