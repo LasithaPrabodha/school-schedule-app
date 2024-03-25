@@ -25,15 +25,14 @@ import android.util.TypedValue
 import androidx.recyclerview.widget.RecyclerView
 import com.capstoneprojectg8.schoolscheduleapp.models.CalendarData
 import com.capstoneprojectg8.schoolscheduleapp.models.ScheduleSlot
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 
 
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(), CalendarAdapter.CalendarInterface {
 
     private var _binding: FragmentHomeBinding? = null
-    private lateinit var weekDaysLayout: RecyclerView
-    private var cellWidth: Int = 0
-    private val today = DateHelper.getToday("dd")
-
     private val binding get() = _binding!!
 
     private lateinit var classAdapter: ClassesAdapter
@@ -42,6 +41,8 @@ class HomeFragment : Fragment() {
     private lateinit var calendarAdapter: CalendarAdapter
 
     private val calendarList = ArrayList<CalendarData>()
+    private val cal = Calendar.getInstance(Locale.ENGLISH)
+    private var mStartD: Date? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -52,25 +53,9 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-
-        setHasOptionsMenu(true);
-
-        val displayMetrics = resources.displayMetrics
-        var dpWidth = displayMetrics.widthPixels
-
-        weekDaysLayout = binding.calendarView
-
-        dpWidth -= weekDaysLayout.marginStart
-
-        cellWidth = dpWidth / 5
-
-        val dayOfWeek = DateHelper.generateDaysOfTheWeek()
-
-        for (i in 0 until dayOfWeek.size) {
-            generateWeekDay(dayOfWeek[i])
-        }
-
         setUpClassViewModel()
+        setupCalendarRecyclerView()
+        initCalendar()
         setupClassRecyclerView()
 
         return root
@@ -93,53 +78,44 @@ class HomeFragment : Fragment() {
 
     }
 
+    private fun setupCalendarRecyclerView(){
+        calendarAdapter = CalendarAdapter(this, arrayListOf())
+        binding.apply {
+            calendarView.setHasFixedSize(true)
+            calendarView.adapter = calendarAdapter
+        }
+    }
 
-    private fun generateWeekDay(weekday: Map<String, String>) {
-        val linearLayout = LinearLayout(activity)
-        linearLayout.orientation = LinearLayout.VERTICAL
+    private fun initCalendar(){
+        mStartD = Date()
+        cal.time = Date()
+        getDates()
+    }
 
-        val linearLayoutParams = LinearLayout.LayoutParams(
-            cellWidth,
-            resources.getDimensionPixelSize(R.dimen.grid_cell_layout_height)
-        )
 
-        linearLayout.layoutParams = linearLayoutParams
-        linearLayout.gravity = Gravity.CENTER_VERTICAL
+    private fun getDates() {
+        val dateList = ArrayList<CalendarData>()
+        val dates = ArrayList<Date>()
+        val monthCalendar = cal.clone() as Calendar
+        val maxDaysInMonth = cal.getActualMaximum(Calendar.DAY_OF_MONTH)
+        monthCalendar.set(Calendar.DAY_OF_MONTH, 1)
 
-        if (today == weekday["date"]) {
-            val shape = GradientDrawable()
-            shape.shape = GradientDrawable.RECTANGLE
-            shape.setColor(ContextCompat.getColor(requireContext(), R.color.background))
-            shape.cornerRadii = floatArrayOf(16f, 16f, 16f, 16f, 0f, 0f, 0f, 0f)
-            ViewCompat.setBackground(linearLayout, shape)
+        while(dates.size < maxDaysInMonth) {
+            dates.add(monthCalendar.time)
+            dateList.add(CalendarData(monthCalendar.time))
+            monthCalendar.add(Calendar.DAY_OF_MONTH, 1)
         }
 
-        val date = TextView(activity)
-        val weekDay = TextView(activity)
+        calendarList.clear()
+        calendarList.addAll(dateList)
+        calendarAdapter.updateData(dateList)
 
-        date.text = weekday["date"]
-        weekDay.text = weekday["weekday"]
-
-        date.typeface = Typeface.DEFAULT_BOLD
-        date.setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(R.dimen.large_font_size))
-        date.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-        weekDay.setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(R.dimen.medium_font_size))
-        weekDay.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-
-        val dateLayoutParams = LinearLayout.LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT
-        )
-        date.layoutParams = dateLayoutParams
-
-        linearLayout.addView(date)
-        linearLayout.addView(weekDay)
-
-//        val randomColor = generateRandomColor()
-//        date.setTextColor(randomColor)
-//        weekDay.setTextColor(randomColor)
-
-        weekDaysLayout.addView(linearLayout, linearLayoutParams)
+        for (item in dateList.indices) {
+            if(dateList[item].data == mStartD) {
+                calendarAdapter.setPosition(item)
+                binding.calendarView.scrollToPosition(item)
+            }
+        }
     }
 
     private fun onAddAssignmentClick(classId: ScheduleSlot) {
@@ -157,5 +133,12 @@ class HomeFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onSelect(calendarData: CalendarData, position: Int, day: TextView) {
+        calendarList.forEachIndexed { index, calendarData ->
+            calendarData.isSelected = index == position
+        }
+        calendarAdapter.updateData(calendarList)
     }
 }

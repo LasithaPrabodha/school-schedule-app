@@ -1,9 +1,13 @@
 package com.capstoneprojectg8.schoolscheduleapp.ui.home
 
+import android.graphics.drawable.GradientDrawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.capstoneprojectg8.schoolscheduleapp.R
 import com.capstoneprojectg8.schoolscheduleapp.databinding.ItemDayOfWeekBinding
 import com.capstoneprojectg8.schoolscheduleapp.models.CalendarData
 
@@ -44,9 +48,16 @@ class CalendarAdapter(
                 }
                 if (calendarDataModel.isSelected) {
                     pos = -1
-                    // Set style
+                    val shape = GradientDrawable()
+                    shape.shape = GradientDrawable.RECTANGLE
+                    shape.setColor(ContextCompat.getColor(binding.root.context, R.color.background))
+                    shape.cornerRadii = floatArrayOf(16f, 16f, 16f, 16f, 0f, 0f, 0f, 0f)
+                    ViewCompat.setBackground(linearLayout, shape)
                 } else {
-                    // set style not selected
+                    val shape = GradientDrawable()
+                    shape.shape = GradientDrawable.RECTANGLE
+                    shape.setColor(ContextCompat.getColor(binding.root.context, R.color.white))
+                    ViewCompat.setBackground(linearLayout, shape)
                 }
 
                 date.text = calendarDataModel.calendarDate
