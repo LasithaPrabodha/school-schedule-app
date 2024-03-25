@@ -22,13 +22,15 @@ import com.capstoneprojectg8.schoolscheduleapp.databinding.FragmentHomeBinding
 import com.capstoneprojectg8.schoolscheduleapp.repository.ClassesRepository
 import com.capstoneprojectg8.schoolscheduleapp.utils.DateHelper
 import android.util.TypedValue
+import androidx.recyclerview.widget.RecyclerView
+import com.capstoneprojectg8.schoolscheduleapp.models.CalendarData
 import com.capstoneprojectg8.schoolscheduleapp.models.ScheduleSlot
 
 
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
-    private lateinit var weekDaysLayout: LinearLayout
+    private lateinit var weekDaysLayout: RecyclerView
     private var cellWidth: Int = 0
     private val today = DateHelper.getToday("dd")
 
@@ -37,6 +39,9 @@ class HomeFragment : Fragment() {
     private lateinit var classAdapter: ClassesAdapter
     private lateinit var classViewModel: HomeViewModel
     private lateinit var classesRepository: ClassesRepository
+    private lateinit var calendarAdapter: CalendarAdapter
+
+    private val calendarList = ArrayList<CalendarData>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -53,7 +58,7 @@ class HomeFragment : Fragment() {
         val displayMetrics = resources.displayMetrics
         var dpWidth = displayMetrics.widthPixels
 
-        weekDaysLayout = binding.dayScroll
+        weekDaysLayout = binding.calendarView
 
         dpWidth -= weekDaysLayout.marginStart
 
