@@ -1,14 +1,22 @@
 package com.capstoneprojectg8.schoolscheduleapp.utils
 
+import com.capstoneprojectg8.schoolscheduleapp.databinding.FragmentHomeBinding
+import com.capstoneprojectg8.schoolscheduleapp.models.CalendarData
+import com.capstoneprojectg8.schoolscheduleapp.ui.home.CalendarAdapter
+import java.text.SimpleDateFormat
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.time.temporal.TemporalAdjusters
+import java.util.Calendar
 import java.util.Date
 
 
 object DateHelper {
+
+    private val dateFormat = SimpleDateFormat("yyyy-MM-dd")
+
     fun startOfTheWeek(date: LocalDate): LocalDate {
         return if (date.dayOfWeek == DayOfWeek.SATURDAY || date.dayOfWeek == DayOfWeek.SUNDAY) {
             date.with(TemporalAdjusters.next(DayOfWeek.MONDAY)) // Start of next week
@@ -49,6 +57,46 @@ object DateHelper {
         val today = LocalDate.now()
         return today.format(DateTimeFormatter.ofPattern(pattern))
     }
+
+    fun getDates(mStartD: Date?, calendarList: ArrayList<CalendarData>, calendarAdapter: CalendarAdapter, binding: FragmentHomeBinding) {
+        val dateList = ArrayList<CalendarData>()
+        val dates = ArrayList<Date>()
+        val calendar = Calendar.getInstance()
+
+        val maxDaysToShow = 100
+
+        calendar.time = mStartD ?: Date()
+        calendar.set(Calendar.DAY_OF_MONTH, 1)
+        val firstDayOfMonth = calendar.get(Calendar.DAY_OF_WEEK)
+
+        val prevMonthDays = firstDayOfMonth - 1
+        val totalDays = maxDaysToShow - prevMonthDays
+
+        calendar.add(Calendar.DATE, -prevMonthDays)
+
+        for (i in 0 until totalDays) {
+            dates.add(calendar.time)
+            dateList.add(CalendarData(calendar.time))
+            calendar.add(Calendar.DATE, 1)
+        }
+
+        calendarList.clear()
+        calendarList.addAll(dateList)
+        calendarAdapter.updateData(dateList)
+
+        for (item in dateList.indices) {
+            if (dateList[item].data == mStartD) {
+                calendarAdapter.setPosition(item)
+                binding.calendarView.scrollToPosition(item)
+            }
+        }
+    }
+
+    fun formatDate(date: Date): String {
+        return dateFormat.format(date)
+    }
+
+
 
     fun convert(date: Date): LocalDate {
         return date.toInstant()
