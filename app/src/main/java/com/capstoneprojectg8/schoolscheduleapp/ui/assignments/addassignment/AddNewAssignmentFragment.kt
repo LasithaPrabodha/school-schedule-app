@@ -78,10 +78,8 @@ class AddNewAssignmentFragment : Fragment() {
     private fun addAssignment(selectedClass: ScheduleSlot) {
         val assignmentTitle = binding.assignmentTitleInputText.text.toString().trim()
         val assignmentDetail = binding.detailsTextInput.text.toString().trim()
-        val isPriority = binding.setPriorityCheckBox.isChecked
-
         if (assignmentTitle.isNotEmpty()){
-            val newAssignment = Assignment(0, assignmentTitle, assignmentDetail, isPriority, false, selectedClass.id)
+            val newAssignment = Assignment(0, assignmentTitle, assignmentDetail, false, false, selectedClass.id)
             assignmentViewModel.addAssignment(newAssignment)
             Toast.makeText(context, "Assignment added", Toast.LENGTH_SHORT).show()
             closeFragment()

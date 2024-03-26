@@ -69,7 +69,6 @@
             android:layout_marginStart="16dp"
             android:fontFamily="sans-serif"
             android:text="@string/course_example"
-            android:textFontWeight="@integer/material_motion_duration_medium_2"
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@id/dividerLine"
@@ -123,6 +122,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:text="@string/cancel"
+                style="?attr/materialButtonOutlinedStyle"
                 android:textAllCaps="false"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/AssignmentRv" />
@@ -131,6 +131,7 @@
                 android:id="@+id/addAssignmentBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
                 android:layout_marginTop="8dp"
                 android:backgroundTint="@color/color_action"
                 android:text="@string/addAsignmentTextButton"

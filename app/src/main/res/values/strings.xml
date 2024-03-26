@@ -58,6 +58,6 @@
     <string name="select">Select class</string>
     <string name="add_new_assignment_btn">Add New Assignment</string>
     <string name="checkBoxText">Set as priority</string>
-    <string name="add_class_slot">Add Class Slot</string>
+    <string name="new_class_slot">New Class Slot</string>
 
 </resources>
