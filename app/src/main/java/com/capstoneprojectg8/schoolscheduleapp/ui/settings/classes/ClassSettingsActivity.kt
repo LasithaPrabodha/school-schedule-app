@@ -4,20 +4,21 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
-import androidx.lifecycle.ViewModelProvider
+import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.capstoneprojectg8.schoolscheduleapp.R
-import com.capstoneprojectg8.schoolscheduleapp.database.ClassesDatabase
 import com.capstoneprojectg8.schoolscheduleapp.databinding.ActivityClassSettingsBinding
-import com.capstoneprojectg8.schoolscheduleapp.repository.ClassesRepository
 import com.capstoneprojectg8.schoolscheduleapp.ui.settings.classes.dialogs.AddClassDialogFragment
 import com.capstoneprojectg8.schoolscheduleapp.ui.settings.classes.dialogs.EditDeleteClassDialogFragment
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class ClassSettingsActivity : AppCompatActivity() {
     private var _binding: ActivityClassSettingsBinding? = null
     private val binding get() = _binding!!
     private lateinit var classesAdapter: ClassesRvAdapter
-    private lateinit var viewModel: ClassesViewModel
+    private val viewModel: ClassSettingsViewModel by viewModels<ClassSettingsViewModel>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -30,7 +31,6 @@ class ClassSettingsActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
 
-        setUpViewModel()
         setUpAdapter()
         initRecyclerView()
 
@@ -53,6 +53,8 @@ class ClassSettingsActivity : AppCompatActivity() {
             editDeleteClassDialogFragment.show(supportFragmentManager, "dialog2")
 
         }
+
+
     }
 
     private fun setUpAdapter() {
@@ -66,11 +68,6 @@ class ClassSettingsActivity : AppCompatActivity() {
         }
     }
 
-    private fun setUpViewModel(){
-        val classesRepository = ClassesRepository(ClassesDatabase(this))
-        val viewModelProviderFactory = ClassesViewModelFactory(application, classesRepository)
-        viewModel = ViewModelProvider(this, viewModelProviderFactory)[ClassesViewModel::class.java]
-    }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {

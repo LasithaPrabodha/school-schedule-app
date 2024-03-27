@@ -1,38 +1,44 @@
 package com.capstoneprojectg8.schoolscheduleapp.ui.home
 
-import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.capstoneprojectg8.schoolscheduleapp.models.Assignment
-import com.capstoneprojectg8.schoolscheduleapp.repository.ClassesRepository
+import com.capstoneprojectg8.schoolscheduleapp.database.repository.ClassRepository
 import com.capstoneprojectg8.schoolscheduleapp.models.Class
+import com.capstoneprojectg8.schoolscheduleapp.models.Assignment
+import com.capstoneprojectg8.schoolscheduleapp.utils.toEntity
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-
-class HomeViewModel(val app: Application, private val classesRepository: ClassesRepository) : ViewModel() {
+@HiltViewModel
+class HomeViewModel @Inject constructor(
+    private val classRepository: ClassRepository
+) :
+    ViewModel() {
 
 
     private var _classes = MutableLiveData<List<Class>>()
     val classes: LiveData<List<Class>> = _classes
 
-    fun getAllClasses() = classesRepository.getAllClasses()
+    fun getAllClasses() = classRepository.getAllClasses()
 
-    fun getAssignmentListByClassId(classId: Int) = classesRepository.getAssignmentListByClass(classId)
+    fun getAssignmentListByClassId(classId: Int) =
+        classRepository.getAssignmentListByClass(classId)
 
-    fun deleteAssignment(assignment: Assignment){
+    fun deleteAssignment(assignment: Assignment) {
         viewModelScope.launch(Dispatchers.IO) {
-            classesRepository.deleteAssignment(assignment)
+            classRepository.deleteAssignment(assignment.toEntity())
         }
     }
 
-    fun editAssignment(assignment: Assignment){
+    fun editAssignment(assignment: Assignment) {
         viewModelScope.launch(Dispatchers.IO) {
-            classesRepository.editAssignment(assignment)
+            classRepository.editAssignment(assignment.toEntity())
         }
     }
 
-    fun getAllClassSlots() = classesRepository.getAllClassSlots()
+    fun getAllClassSlots() = classRepository.getAllClassSlots()
 }

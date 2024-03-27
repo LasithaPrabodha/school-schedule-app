@@ -4,14 +4,20 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.capstoneprojectg8.schoolscheduleapp.models.HourRow
-import com.capstoneprojectg8.schoolscheduleapp.models.ScheduleSlot
-import com.capstoneprojectg8.schoolscheduleapp.repository.ClassesRepository
+import com.capstoneprojectg8.schoolscheduleapp.database.repository.ClassRepository
+import com.capstoneprojectg8.schoolscheduleapp.models.ClassSlot
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class ScheduleViewModel(private val classesRepository: ClassesRepository) : ViewModel() {
-    private val _classSlots = MutableLiveData<List<ScheduleSlot>>()
-    val classSlots: LiveData<List<ScheduleSlot>> = _classSlots
+@HiltViewModel
+class ScheduleViewModel @Inject constructor(private val classRepository: ClassRepository) :
+    ViewModel() {
+    private val _classSlots = MutableLiveData<List<ClassSlot>>()
+    val classSlots: LiveData<List<ClassSlot>> = _classSlots
 
-    fun getAllClassSlots() = classesRepository.getAllClassSlots()
+    fun getAllClassSlots() =
+        classRepository.getAllClassSlots()
+
     fun generateHourRows(isCurrentWeek: Boolean): MutableList<HourRow> {
         val list = mutableListOf<HourRow>()
         for (index in 0..24) {
