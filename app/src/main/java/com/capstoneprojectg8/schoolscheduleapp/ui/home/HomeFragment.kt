@@ -1,42 +1,38 @@
 package com.capstoneprojectg8.schoolscheduleapp.ui.home
 
-import android.graphics.Typeface
-import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.core.content.ContextCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.marginStart
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.capstoneprojectg8.schoolscheduleapp.R
 import com.capstoneprojectg8.schoolscheduleapp.database.ClassesDatabase
 import com.capstoneprojectg8.schoolscheduleapp.databinding.FragmentHomeBinding
 import com.capstoneprojectg8.schoolscheduleapp.repository.ClassesRepository
 import com.capstoneprojectg8.schoolscheduleapp.utils.DateHelper
-import android.util.TypedValue
+import com.capstoneprojectg8.schoolscheduleapp.models.CalendarData
 import com.capstoneprojectg8.schoolscheduleapp.models.ScheduleSlot
-import com.capstoneprojectg8.schoolscheduleapp.ui.schedule.WeekTimelineAdapter
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 
 
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(), CalendarAdapter.CalendarInterface {
 
     private var _binding: FragmentHomeBinding? = null
-    private var cellWidth: Int = 0
-    private lateinit var weekTimelineAdapter: WeekTimelineAdapter
-
     private val binding get() = _binding!!
 
     private lateinit var classAdapter: ClassesAdapter
     private lateinit var classViewModel: HomeViewModel
     private lateinit var classesRepository: ClassesRepository
+    private lateinit var calendarAdapter: CalendarAdapter
+
+    private val calendarList = ArrayList<CalendarData>()
+    private val cal = Calendar.getInstance(Locale.ENGLISH)
+    private var mStartD: Date? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,21 +43,9 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-
-        setCellWidth()
-
-        val dayOfWeek: MutableList<Map<String, String>> = DateHelper.generateDaysOfTheWeek()
-        weekTimelineAdapter = WeekTimelineAdapter(requireContext(), dayOfWeek, cellWidth)
-
-        binding.dayList.apply {
-            layoutManager = LinearLayoutManager(
-                requireContext(),
-                LinearLayoutManager.HORIZONTAL, false
-            )
-            adapter = weekTimelineAdapter
-        }
-
         setUpClassViewModel()
+        setupCalendarRecyclerView()
+        initCalendar()
         setupClassRecyclerView()
 
         return root
@@ -83,12 +67,19 @@ class HomeFragment : Fragment() {
         }
 
     }
-    private fun setCellWidth() {
-        val displayMetrics = resources.displayMetrics
 
-        var dpWidth = displayMetrics.widthPixels
-        dpWidth -= resources.getDimension(R.dimen.grid_time_indicator_layout_width).toInt()
-        cellWidth = dpWidth / 5
+    private fun setupCalendarRecyclerView(){
+        calendarAdapter = CalendarAdapter(this, arrayListOf())
+        binding.apply {
+            calendarView.setHasFixedSize(true)
+            calendarView.adapter = calendarAdapter
+        }
+    }
+
+    private fun initCalendar(){
+        mStartD = Date()
+        cal.time = Date()
+        DateHelper.getDates(mStartD, calendarList, calendarAdapter, binding)
     }
 
     private fun onAddAssignmentClick(classId: ScheduleSlot) {
@@ -102,6 +93,21 @@ class HomeFragment : Fragment() {
         classViewModel = ViewModelProvider(this, viewModelProviderFactory)[HomeViewModel::class.java]
     }
 
+
+    override fun onSelect(calendarData: CalendarData, position: Int, day: TextView) {
+        calendarList.forEachIndexed { index, calendarData ->
+            calendarData.isSelected = index == position
+        }
+        calendarAdapter.updateData(calendarList)
+
+        val selectedDate = calendarData.data
+        val formattedDate = DateHelper.formatDate(selectedDate)
+
+        classViewModel.getAllClassSlots().observe(viewLifecycleOwner) { classSlot ->
+            val filtered = classSlot.filter { it.date == formattedDate }
+            classAdapter.updateData(filtered)
+        }
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()

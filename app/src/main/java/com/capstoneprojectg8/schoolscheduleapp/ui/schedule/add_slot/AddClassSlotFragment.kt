@@ -95,7 +95,7 @@ class AddClassSlotFragment : Fragment() {
             val formattedTime = timeFormat.format(calendar.time)
 
 
-            if ((duration == null || duration <= 0) || roomNumber.isBlank() || selectedClass.isBlank() || selectedClass.isNotEmpty()) {
+            if ((duration == null || duration <= 0) || roomNumber.isBlank() || selectedClass.isBlank()) {
                 if (duration == null || duration <= 0) {
                     binding.editTextDuration.error = "Please enter a valid duration"
                 }
