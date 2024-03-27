@@ -1,17 +1,16 @@
-package com.capstoneprojectg8.schoolscheduleapp.models
+package com.capstoneprojectg8.schoolscheduleapp.database.entities
 
-import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import kotlinx.parcelize.Parcelize
 
-@Parcelize
-data class Assignment(
+@Entity(tableName = "assignment")
+data class AssignmentEntity(
+    @PrimaryKey(autoGenerate = true)
     val id: Int,
     val title: String,
     val detail: String,
     val isPriority: Boolean = false,
     val isCompleted: Boolean,
     val classId: Int
-):Parcelable
+)
 

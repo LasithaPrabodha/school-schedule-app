@@ -4,16 +4,13 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.findViewTreeLifecycleOwner
-import androidx.navigation.NavArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.capstoneprojectg8.schoolscheduleapp.databinding.ItemClassBinding
 import com.capstoneprojectg8.schoolscheduleapp.models.Assignment
-import com.capstoneprojectg8.schoolscheduleapp.models.Class
-import com.capstoneprojectg8.schoolscheduleapp.models.ScheduleSlot
+import com.capstoneprojectg8.schoolscheduleapp.models.ClassSlot
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -21,8 +18,8 @@ import java.util.Locale
 
 class ClassesAdapter(
     private val context: Context,
-    private val onItemClicked: (ScheduleSlot) -> Unit,
-    private var items: List<ScheduleSlot>,
+    private val onItemClicked: (ClassSlot) -> Unit,
+    private var items: List<ClassSlot>,
     private val classViewModel: HomeViewModel
 ) : RecyclerView.Adapter<ClassesAdapter.ViewHolder>() {
 
@@ -80,7 +77,7 @@ class ClassesAdapter(
 
     inner class ViewHolder(val binding: ItemClassBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(classItem: ScheduleSlot) {
+        fun bind(classItem: ClassSlot) {
             binding.apply {
                 val startTime = classItem.startingHour
                 val endTime = classItem.startingHour + classItem.noOfHours
@@ -103,7 +100,7 @@ class ClassesAdapter(
         }
     }
 
-    fun updateData(newItems: List<ScheduleSlot>) {
+    fun updateData(newItems: List<ClassSlot>) {
         items = newItems
         notifyDataSetChanged()
     }

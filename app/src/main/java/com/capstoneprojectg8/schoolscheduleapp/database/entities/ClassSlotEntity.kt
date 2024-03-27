@@ -1,13 +1,10 @@
-package com.capstoneprojectg8.schoolscheduleapp.models
+package com.capstoneprojectg8.schoolscheduleapp.database.entities
 
-import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import kotlinx.parcelize.Parcelize
 
 @Entity(tableName = "class_slots")
-@Parcelize
-data class ScheduleSlot(
+data class ClassSlotEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int,
     val startingHour: Int,
@@ -18,4 +15,4 @@ data class ScheduleSlot(
     val color: Int,
     val date: String,
     var isExpandable: Boolean = false
-) : Parcelable
+)

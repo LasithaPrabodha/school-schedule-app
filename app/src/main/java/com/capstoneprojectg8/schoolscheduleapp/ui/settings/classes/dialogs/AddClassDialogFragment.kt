@@ -3,21 +3,19 @@ package com.capstoneprojectg8.schoolscheduleapp.ui.settings.classes.dialogs
 import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
-import com.capstoneprojectg8.schoolscheduleapp.MainActivity
 import com.capstoneprojectg8.schoolscheduleapp.R
 import com.capstoneprojectg8.schoolscheduleapp.databinding.AddClassDialogBinding
 import com.capstoneprojectg8.schoolscheduleapp.models.Class
-import com.capstoneprojectg8.schoolscheduleapp.ui.settings.classes.ClassesViewModel
+import com.capstoneprojectg8.schoolscheduleapp.ui.settings.classes.ClassSettingsViewModel
 import kotlin.random.Random
 
 class AddClassDialogFragment : DialogFragment() {
 
     private lateinit var binding: AddClassDialogBinding
-    private val classesViewModel: ClassesViewModel by activityViewModels()
+    private val classSettingsViewModel: ClassSettingsViewModel by activityViewModels()
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         binding = AddClassDialogBinding.inflate(layoutInflater)
@@ -41,8 +39,8 @@ class AddClassDialogFragment : DialogFragment() {
 
 
         if (classCode.isNotEmpty() && className.isNotEmpty()) {
-            val classes = Class(0, classCode, className, getRandomColorName())
-            classesViewModel.addClass(classes)
+            val newClass = Class(0, classCode, className, getRandomColorName())
+            classSettingsViewModel.addClass(newClass)
             Toast.makeText(context, "Class added", Toast.LENGTH_LONG).show()
             dismiss()
         }

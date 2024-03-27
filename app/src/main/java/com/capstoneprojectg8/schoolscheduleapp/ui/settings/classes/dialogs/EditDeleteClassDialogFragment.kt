@@ -7,15 +7,14 @@ import android.view.LayoutInflater
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
-import com.capstoneprojectg8.schoolscheduleapp.MainActivity
 import com.capstoneprojectg8.schoolscheduleapp.databinding.FragmentEditDeleteClassDialogBinding
 import com.capstoneprojectg8.schoolscheduleapp.models.Class
-import com.capstoneprojectg8.schoolscheduleapp.ui.settings.classes.ClassesViewModel
+import com.capstoneprojectg8.schoolscheduleapp.ui.settings.classes.ClassSettingsViewModel
 
 class EditDeleteClassDialogFragment : DialogFragment() {
 
     private lateinit var binding: FragmentEditDeleteClassDialogBinding
-    private val classesViewModel: ClassesViewModel by activityViewModels()
+    private val classSettingsViewModel: ClassSettingsViewModel by activityViewModels()
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         binding = FragmentEditDeleteClassDialogBinding.inflate(LayoutInflater.from(context))
@@ -50,7 +49,7 @@ class EditDeleteClassDialogFragment : DialogFragment() {
 
         if(editedCode.isNotEmpty() && editedName.isNotEmpty()){
             val editedClass = Class(classId, editedCode, editedName, classColour)
-            classesViewModel.editClass(editedClass)
+            classSettingsViewModel.editClass(editedClass)
             Toast.makeText(context, "Class edited", Toast.LENGTH_LONG).show()
             dismiss()
         } else {
@@ -65,7 +64,7 @@ class EditDeleteClassDialogFragment : DialogFragment() {
             setTitle("Delete class")
             setMessage("Are you sure you want to delete this class")
             setPositiveButton("Delete"){_,_ ->
-                classesViewModel.deleteClass(currentClass)
+                classSettingsViewModel.deleteClass(currentClass)
                 Toast.makeText(context, "Class deleted", Toast.LENGTH_LONG).show()
                 dismiss()
             }

@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import com.capstoneprojectg8.schoolscheduleapp.R
 
 class AssignmentsFragment : Fragment() {
@@ -14,7 +15,7 @@ class AssignmentsFragment : Fragment() {
         fun newInstance() = AssignmentsFragment()
     }
 
-    private val viewModel: AssignmentsViewModel by viewModels()
+    private val viewModel: AssignmentsViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

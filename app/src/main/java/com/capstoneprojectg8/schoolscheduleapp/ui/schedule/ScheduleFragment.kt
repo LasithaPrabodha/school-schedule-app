@@ -3,7 +3,6 @@ package com.capstoneprojectg8.schoolscheduleapp.ui.schedule
 import android.graphics.Typeface
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
-import android.util.Log
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.Menu
@@ -20,21 +19,14 @@ import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.capstoneprojectg8.schoolscheduleapp.R
-import com.capstoneprojectg8.schoolscheduleapp.database.ClassesDatabase
 import com.capstoneprojectg8.schoolscheduleapp.databinding.FragmentScheduleBinding
-import com.capstoneprojectg8.schoolscheduleapp.models.ScheduleSlot
-import com.capstoneprojectg8.schoolscheduleapp.repository.ClassesRepository
-import com.capstoneprojectg8.schoolscheduleapp.ui.schedule.add_slot.AddClassSlotViewModel
+import com.capstoneprojectg8.schoolscheduleapp.models.ClassSlot
 import com.capstoneprojectg8.schoolscheduleapp.utils.DateHelper
-import com.capstoneprojectg8.schoolscheduleapp.utils.DummySlots
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -50,9 +42,7 @@ class ScheduleFragment : Fragment() {
     private lateinit var weekGrid: RelativeLayout
     private lateinit var weekTimelineAdapter: WeekTimelineAdapter
     private lateinit var calendarRowAdapter: CalendarRowAdapter
-    private val viewModel: ScheduleViewModel by lazy {
-        ScheduleViewModel(ClassesRepository(ClassesDatabase(requireContext())))
-    }
+    private val viewModel: ScheduleViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -126,9 +116,6 @@ class ScheduleFragment : Fragment() {
         val today = LocalDate.now()
         val startDate =  DateHelper.startOfTheWeek(today).plusWeeks(step.toLong()).with(DayOfWeek.MONDAY)
         viewModel.getAllClassSlots().observe(viewLifecycleOwner) { slots ->
-
-
-            Log.d("SCH", slots.toString())
             val startOfWeek = DateHelper.startOfTheWeek(startDate)
             val endOfWeek = DateHelper.endOfTheWeek(startDate)
 
@@ -199,7 +186,7 @@ class ScheduleFragment : Fragment() {
 
     }
 
-    private fun generateSlot(slot: ScheduleSlot) {
+    private fun generateSlot(slot: ClassSlot) {
         val linearLayout = LinearLayout(requireActivity())
         linearLayout.orientation = LinearLayout.VERTICAL
 
