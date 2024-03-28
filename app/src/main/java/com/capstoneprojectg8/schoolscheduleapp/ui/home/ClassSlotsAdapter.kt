@@ -8,7 +8,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.findViewTreeLifecycleOwner
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.capstoneprojectg8.schoolscheduleapp.databinding.ItemClassBinding
+import com.capstoneprojectg8.schoolscheduleapp.databinding.ItemClassHomeBinding
 import com.capstoneprojectg8.schoolscheduleapp.models.Assignment
 import com.capstoneprojectg8.schoolscheduleapp.models.ClassSlot
 import java.text.SimpleDateFormat
@@ -16,19 +16,19 @@ import java.util.Date
 import java.util.Locale
 
 
-class ClassesAdapter(
+class ClassSlotsAdapter(
     private val context: Context,
     private val onItemClicked: (ClassSlot) -> Unit,
     private var items: List<ClassSlot>,
     private val classViewModel: HomeViewModel
-) : RecyclerView.Adapter<ClassesAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<ClassSlotsAdapter.ViewHolder>() {
 
     private lateinit var assignmentList: List<Assignment>
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = ItemClassBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = ItemClassHomeBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         val viewHolder = ViewHolder(binding)
 
-        viewHolder.binding.AssignmentRv.layoutManager = LinearLayoutManager(parent.context)
+        viewHolder.binding.rvHomeAssignments.layoutManager = LinearLayoutManager(parent.context)
 
         return viewHolder
     }
@@ -45,7 +45,7 @@ class ClassesAdapter(
                         .observe(it1) { assignments ->
                             assignmentList = assignments ?: emptyList()
                             val assignmentAdapter = AssignmentsAdapter(assignmentList, classViewModel, context)
-                            holder.binding.AssignmentRv.adapter = assignmentAdapter
+                            holder.binding.rvHomeAssignments.adapter = assignmentAdapter
                             assignmentAdapter.updateData(assignmentList)
                         }
                 }
@@ -75,7 +75,7 @@ class ClassesAdapter(
 
     override fun getItemCount(): Int = items.size
 
-    inner class ViewHolder(val binding: ItemClassBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class ViewHolder(val binding: ItemClassHomeBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(classItem: ClassSlot) {
             binding.apply {

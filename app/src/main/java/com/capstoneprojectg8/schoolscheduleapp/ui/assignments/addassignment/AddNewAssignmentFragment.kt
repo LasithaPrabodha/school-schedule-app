@@ -22,7 +22,7 @@ class AddNewAssignmentFragment : Fragment() {
     private val binding get() = _binding!!
     private val assignmentViewModel: AddNewAssignmentViewModel by activityViewModels()
     private val classSettingsViewModel: ClassSettingsViewModel by activityViewModels()
-    private lateinit var selectedClass: ClassSlot
+    private var selectedClass: ClassSlot? = null
 
 
     override fun onCreateView(
@@ -39,11 +39,13 @@ class AddNewAssignmentFragment : Fragment() {
         val autocomplete = binding.autoCompleteClass
 
         classSettingsViewModel.getAllClassSlots().observe(viewLifecycleOwner) { classes ->
-            if (classId != null) {
+            if (classId != null && classId != 0) {
                 assignmentViewModel.getDefaultListValue(classId).observe(viewLifecycleOwner) {
                     autocomplete.setText(it.className, false)
                     selectedClass = it
                 }
+            } else {
+                binding.autoCompleteClass.isEnabled = true
             }
 
             val classNameAndCode = classes.map { it.className }
@@ -59,7 +61,7 @@ class AddNewAssignmentFragment : Fragment() {
         }
 
         binding.addNewAssignmentBtn.setOnClickListener {
-            addAssignment(selectedClass)
+            addAssignment()
         }
 
         binding.cancelAddAssignmentBtn.setOnClickListener {
@@ -69,18 +71,26 @@ class AddNewAssignmentFragment : Fragment() {
         return binding.root
     }
 
-    private fun addAssignment(selectedClass: ClassSlot) {
+    private fun addAssignment() {
         val assignmentTitle = binding.assignmentTitleInputText.text.toString().trim()
         val assignmentDetail = binding.detailsTextInput.text.toString().trim()
-        if (assignmentTitle.isNotEmpty()) {
-            val newAssignment =
-                Assignment(0, assignmentTitle, assignmentDetail, false, false, selectedClass.id)
-            assignmentViewModel.addAssignment(newAssignment)
-            Toast.makeText(context, "Assignment added", Toast.LENGTH_SHORT).show()
-            closeFragment()
-        } else {
-            Toast.makeText(context, "Insert assignment title", Toast.LENGTH_SHORT).show()
+
+        if (assignmentTitle.isEmpty()) {
+            binding.assignmentTitleInputLayout.error = "Please insert assignment title"
         }
+
+        if (selectedClass == null) {
+            binding.classListInputLayout.error = "Please select class"
+        }
+
+        if(assignmentTitle.isEmpty() || selectedClass == null) return
+
+        val newAssignment =
+            Assignment(0, assignmentTitle, assignmentDetail, false, false, selectedClass!!.id)
+        assignmentViewModel.addAssignment(newAssignment)
+        Toast.makeText(context, "Assignment added", Toast.LENGTH_SHORT).show()
+        closeFragment()
+
     }
 
     private fun closeFragment() {

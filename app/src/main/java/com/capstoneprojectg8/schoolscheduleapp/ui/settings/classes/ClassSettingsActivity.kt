@@ -46,8 +46,8 @@ class ClassSettingsActivity : AppCompatActivity() {
         classesAdapter.onItemClick = { selectedClass ->
             val editDeleteClassDialogFragment = EditDeleteClassDialogFragment.newInstance(
                 selectedClass.id,
-                selectedClass.classCode,
-                selectedClass.className,
+                selectedClass.code,
+                selectedClass.name,
                 selectedClass.colour
             )
             editDeleteClassDialogFragment.show(supportFragmentManager, "dialog2")

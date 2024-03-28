@@ -1,16 +1,15 @@
 package com.capstoneprojectg8.schoolscheduleapp.models
 
 import android.os.Parcelable
-import androidx.room.Entity
-import androidx.room.PrimaryKey
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class Class(
+data class SClass(
     val id: Int,
-    var classCode: String,
-    var className: String,
+    var code: String,
+    var name: String,
     val colour: Int,
     var isExpandable: Boolean = false,
+    var assignments: List<Assignment> = listOf()
 ) : Parcelable
 

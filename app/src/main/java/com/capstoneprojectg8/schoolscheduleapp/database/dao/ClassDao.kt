@@ -11,6 +11,7 @@ import androidx.room.Update
 import com.capstoneprojectg8.schoolscheduleapp.database.entities.AssignmentEntity
 import com.capstoneprojectg8.schoolscheduleapp.database.entities.ClassEntity
 import com.capstoneprojectg8.schoolscheduleapp.database.entities.ClassSlotEntity
+import com.capstoneprojectg8.schoolscheduleapp.database.relations.ClassWithAssignments
 
 @Dao
 interface ClassDao {
@@ -25,6 +26,10 @@ interface ClassDao {
 
     @Query("SELECT * FROM CLASSES ORDER BY id ASC")
     fun getAllClasses(): LiveData<List<ClassEntity>>
+
+    @Transaction
+    @Query("SELECT * FROM CLASSES ORDER BY id ASC")
+    fun getAllAssignmentsWithClasses(): LiveData<List<ClassWithAssignments>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addAssignment(assignmentEntity: AssignmentEntity)

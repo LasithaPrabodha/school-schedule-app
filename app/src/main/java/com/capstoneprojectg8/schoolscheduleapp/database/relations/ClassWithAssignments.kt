@@ -6,10 +6,10 @@ import com.capstoneprojectg8.schoolscheduleapp.database.entities.AssignmentEntit
 import com.capstoneprojectg8.schoolscheduleapp.database.entities.ClassEntity
 
 data class ClassWithAssignments(
-    @Embedded val classes: ClassEntity,
+    @Embedded val sclass: ClassEntity,
     @Relation(
         parentColumn = "id",
         entityColumn = "classId"
     )
-    val assignmentEntities: List<AssignmentEntity>
+    val assignments: List<AssignmentEntity>
 )

@@ -23,7 +23,7 @@ class HomeFragment : Fragment(), CalendarAdapter.CalendarInterface {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var classAdapter: ClassesAdapter
+    private lateinit var classAdapter: ClassSlotsAdapter
     private val classViewModel: HomeViewModel by activityViewModels()
     private lateinit var calendarAdapter: CalendarAdapter
 
@@ -48,13 +48,13 @@ class HomeFragment : Fragment(), CalendarAdapter.CalendarInterface {
     }
 
     private fun setupClassRecyclerView() {
-        classAdapter = ClassesAdapter(
+        classAdapter = ClassSlotsAdapter(
             requireContext(),
             onItemClicked = { onAddAssignmentClick(it) },
             emptyList(),
             classViewModel
         )
-        binding.rvAssignments.apply {
+        binding.rvHomeAssignments.apply {
             layoutManager = LinearLayoutManager(context)
             this.adapter = classAdapter
         }

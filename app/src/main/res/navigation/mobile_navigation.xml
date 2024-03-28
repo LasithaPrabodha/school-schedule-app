@@ -39,8 +39,12 @@
     <fragment
         android:id="@+id/navigation_assignments"
         android:name="com.capstoneprojectg8.schoolscheduleapp.ui.assignments.AssignmentsFragment"
-        android:label="fragment_assignments"
-        tools:layout="@layout/fragment_assignments" />
+        android:label="Assignments"
+        tools:layout="@layout/fragment_assignments" >
+        <action
+            android:id="@+id/action_navigation_assignments_to_addNewAssignmentFragment"
+            app:destination="@id/navigation_add_new_assignment" />
+    </fragment>
     <fragment
         android:id="@+id/navigation_add_new_assignment"
         android:name="com.capstoneprojectg8.schoolscheduleapp.ui.assignments.addassignment.AddNewAssignmentFragment"
@@ -48,6 +52,7 @@
         tools:layout="@layout/fragment_add_new_assignment" >
         <argument
             android:name="classId"
+            android:defaultValue="0"
             app:argType="integer" />
     </fragment>
 </navigation>

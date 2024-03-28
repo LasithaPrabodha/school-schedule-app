@@ -106,7 +106,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/AssignmentRv"
+                android:id="@+id/rvHomeAssignments"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -122,10 +122,10 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:text="@string/cancel"
-                style="?attr/materialButtonOutlinedStyle"
                 android:textAllCaps="false"
+                style="?attr/materialButtonOutlinedStyle"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/AssignmentRv" />
+                app:layout_constraintTop_toBottomOf="@+id/rvHomeAssignments" />
 
             <Button
                 android:id="@+id/addAssignmentBtn"
@@ -138,7 +138,7 @@
                 android:textAllCaps="false"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/cancelBtn"
-                app:layout_constraintTop_toBottomOf="@+id/AssignmentRv" />
+                app:layout_constraintTop_toBottomOf="@+id/rvHomeAssignments" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

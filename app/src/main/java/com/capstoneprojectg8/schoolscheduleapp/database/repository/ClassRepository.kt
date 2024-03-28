@@ -2,15 +2,9 @@ package com.capstoneprojectg8.schoolscheduleapp.database.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
-import com.capstoneprojectg8.schoolscheduleapp.database.ClassesDatabase
-import com.capstoneprojectg8.schoolscheduleapp.database.dao.ClassDao
-import com.capstoneprojectg8.schoolscheduleapp.database.dao.ClassSlotDao
-import com.capstoneprojectg8.schoolscheduleapp.database.entities.AssignmentEntity
-import com.capstoneprojectg8.schoolscheduleapp.database.entities.ClassEntity
-import com.capstoneprojectg8.schoolscheduleapp.database.entities.ClassSlotEntity
-import com.capstoneprojectg8.schoolscheduleapp.models.Assignment
-import com.capstoneprojectg8.schoolscheduleapp.models.ClassSlot
-import com.capstoneprojectg8.schoolscheduleapp.models.Class
+import com.capstoneprojectg8.schoolscheduleapp.database.dao.*
+import com.capstoneprojectg8.schoolscheduleapp.database.entities.*
+import com.capstoneprojectg8.schoolscheduleapp.models.*
 import com.capstoneprojectg8.schoolscheduleapp.utils.fromEntity
 import javax.inject.Inject
 
@@ -34,8 +28,11 @@ class ClassRepository @Inject constructor(
     suspend fun deleteAssignment(assignmentEntity: AssignmentEntity) =
         classesDao.deleteAssignment(assignmentEntity)
 
-    fun getAllClasses(): LiveData<List<Class>> =
+    fun getAllClasses(): LiveData<List<SClass>> =
         classesDao.getAllClasses().map { list -> list.map { it.fromEntity() } }
+
+    fun getAllAssignmentsWithClasses(): LiveData<List<ClassAssignments>> =
+        classesDao.getAllAssignmentsWithClasses().map { list -> list.map { cl -> cl.fromEntity() } }
 
     fun getAssignmentListByClass(id: Int): LiveData<List<Assignment>> =
         classesDao.getAssignmentListByClass(id).map { list -> list.map { it.fromEntity() } }
