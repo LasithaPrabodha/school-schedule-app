@@ -14,7 +14,7 @@ import com.capstoneprojectg8.schoolscheduleapp.database.entities.ClassSlotEntity
         AssignmentEntity::class,
         ClassSlotEntity::class
     ],
-    version = 10
+    version = 12
 )
 abstract class ClassesDatabase : RoomDatabase() {
 

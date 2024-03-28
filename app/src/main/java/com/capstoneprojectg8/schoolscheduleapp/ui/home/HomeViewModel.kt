@@ -25,8 +25,8 @@ class HomeViewModel @Inject constructor(
 
     fun getAllAssignmentsWithClasses() = classRepository.getAllAssignmentsWithClasses()
 
-    fun getAssignmentListByClassId(classId: Int) =
-        classRepository.getAssignmentListByClass(classId)
+    fun getAssignmentListByClassId(classSlotId: Int) =
+        classRepository.getAssignmentListByClassSlot(classSlotId)
 
     fun deleteAssignment(assignment: Assignment) {
         viewModelScope.launch(Dispatchers.IO) {

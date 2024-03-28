@@ -44,8 +44,8 @@ interface ClassDao {
     fun getAllAssignments(): LiveData<List<AssignmentEntity>>
 
     @Transaction
-    @Query("SELECT * FROM ASSIGNMENT WHERE classId = :id")
-    fun getAssignmentListByClass(id: Int): LiveData<List<AssignmentEntity>>
+    @Query("SELECT * FROM ASSIGNMENT WHERE classSlotId = :id")
+    fun getAssignmentListByClassSlotId(id: Int): LiveData<List<AssignmentEntity>>
 
     @Transaction
     @Query("SELECT * FROM CLASS_SLOTS WHERE id = :id")

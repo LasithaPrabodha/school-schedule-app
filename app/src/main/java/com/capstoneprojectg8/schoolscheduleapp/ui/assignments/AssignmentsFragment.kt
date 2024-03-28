@@ -31,7 +31,6 @@ class AssignmentsFragment : Fragment(), ClassesAdapterDelegate {
         val root: View = binding.root
 
         setupClassRecyclerView()
-        onAddAssignmentClick()
         return root
     }
 
@@ -57,14 +56,6 @@ class AssignmentsFragment : Fragment(), ClassesAdapterDelegate {
             }
         }
 
-    }
-
-    private fun onAddAssignmentClick() {
-        binding.addAssignmentBtn.setOnClickListener {
-            findNavController().navigate(
-                AssignmentsFragmentDirections.actionNavigationAssignmentsToAddNewAssignmentFragment()
-            )
-        }
     }
 
 

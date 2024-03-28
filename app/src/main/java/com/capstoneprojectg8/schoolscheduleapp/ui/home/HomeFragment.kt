@@ -90,7 +90,10 @@ class HomeFragment : Fragment(), CalendarAdapterDelegate, ClassesAdapterDelegate
     }
 
     private fun onAddAssignmentClick(slot: ClassSlot) {
-        val action = HomeFragmentDirections.actionNavigationHomeToAddNewAssignmentFragment(slot.id)
+        val action = HomeFragmentDirections.actionNavigationHomeToAddNewAssignmentFragment(
+            slot.classId,
+            slot.id
+        )
         findNavController().navigate(action)
     }
 

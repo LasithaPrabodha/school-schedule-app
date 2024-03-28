@@ -54,5 +54,9 @@
             android:name="classId"
             android:defaultValue="0"
             app:argType="integer" />
+        <argument
+            android:name="classSlotId"
+            android:defaultValue="0"
+            app:argType="integer" />
     </fragment>
 </navigation>

@@ -40,7 +40,8 @@ class AssignmentsAdapter(
                 assignmentItem.detail,
                 assignmentItem.isPriority,
                 assignmentItem.isCompleted,
-                assignmentItem.classId
+                assignmentItem.classId,
+                assignmentItem.classSlotId
             )
             AlertDialog.Builder(context).apply {
                 setTitle("Delete assignment")
@@ -62,7 +63,8 @@ class AssignmentsAdapter(
                     assignmentItem.detail,
                     assignmentItem.isPriority,
                     false,
-                    assignmentItem.classId
+                    assignmentItem.classId,
+                    assignmentItem.classSlotId
                 )
                 classViewModel.editAssignment(editedAssignment)
             } else {
@@ -72,7 +74,8 @@ class AssignmentsAdapter(
                     assignmentItem.detail,
                     assignmentItem.isPriority,
                     true,
-                    assignmentItem.classId
+                    assignmentItem.classId,
+                    assignmentItem.classSlotId
                 )
                 classViewModel.editAssignment(editedAssignment)
             }

@@ -23,7 +23,7 @@ class AddNewAssignmentFragment : Fragment() {
     private val assignmentViewModel: AddNewAssignmentViewModel by activityViewModels()
     private val classSettingsViewModel: ClassSettingsViewModel by activityViewModels()
     private var selectedClass: ClassSlot? = null
-
+    private var classSlotId: Int? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,6 +34,7 @@ class AddNewAssignmentFragment : Fragment() {
         _binding = FragmentAddNewAssignmentBinding.inflate(inflater, container, false)
 
         val classId = arguments?.getInt("classId", 0)
+        classSlotId = arguments?.getInt("classSlotId", 0)
 
 
         val autocomplete = binding.autoCompleteClass
@@ -83,10 +84,18 @@ class AddNewAssignmentFragment : Fragment() {
             binding.classListInputLayout.error = "Please select class"
         }
 
-        if(assignmentTitle.isEmpty() || selectedClass == null) return
+        if (assignmentTitle.isEmpty() || selectedClass == null) return
 
         val newAssignment =
-            Assignment(0, assignmentTitle, assignmentDetail, false, false, selectedClass!!.id)
+            Assignment(
+                0,
+                assignmentTitle,
+                assignmentDetail,
+                false,
+                false,
+                selectedClass!!.id,
+                classSlotId!!
+            )
         assignmentViewModel.addAssignment(newAssignment)
         Toast.makeText(context, "Assignment added", Toast.LENGTH_SHORT).show()
         closeFragment()
