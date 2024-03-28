@@ -27,7 +27,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
         tools:ignore="TextSizeCheck"
-        tools:listitem="@layout/item_classes" />
+        tools:listitem="@layout/item_class_settings" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addClassBtn"

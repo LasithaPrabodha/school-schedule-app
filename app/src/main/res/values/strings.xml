@@ -41,7 +41,7 @@
     <string name="separation">-</string>
     <string name="addClassDialogTitle">Add a new Class</string>
     <string name="classCodeTextInput">Class code</string>
-    <string name="addBtnText">Add new class</string>
+    <string name="addBtnText">Add Class</string>
     <string name="classNameTextInput">Class Name</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -56,7 +56,7 @@
     <string name="assignmentName_hint">Assignment title</string>
     <string name="details">Details</string>
     <string name="select">Select class</string>
-    <string name="add_new_assignment_btn">Add New Assignment</string>
+    <string name="add_assignment_btn">Add Assignment</string>
     <string name="checkBoxText">Set as priority</string>
     <string name="new_class_slot">New Class Slot</string>
     <string name="title_activity_google_firebase_auth">GoogleFirebaseAuthActivity</string>
@@ -68,5 +68,7 @@
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
+    <string name="no_classes_scheduled">Yay! No classes scheduled for this date.</string>
+    <string name="completed_all_the_assignments">Yay! You\'ve completed all the assignments.</string>
 
 </resources>

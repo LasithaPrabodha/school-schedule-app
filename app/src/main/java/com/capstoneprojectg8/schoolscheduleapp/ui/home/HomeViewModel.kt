@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.capstoneprojectg8.schoolscheduleapp.database.repository.ClassRepository
-import com.capstoneprojectg8.schoolscheduleapp.models.Class
+import com.capstoneprojectg8.schoolscheduleapp.models.SClass
 import com.capstoneprojectg8.schoolscheduleapp.models.Assignment
 import com.capstoneprojectg8.schoolscheduleapp.utils.toEntity
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,10 +20,10 @@ class HomeViewModel @Inject constructor(
     ViewModel() {
 
 
-    private var _classes = MutableLiveData<List<Class>>()
-    val classes: LiveData<List<Class>> = _classes
+    private var _classes = MutableLiveData<List<SClass>>()
+    val classes: LiveData<List<SClass>> = _classes
 
-    fun getAllClasses() = classRepository.getAllClasses()
+    fun getAllAssignmentsWithClasses() = classRepository.getAllAssignmentsWithClasses()
 
     fun getAssignmentListByClassId(classId: Int) =
         classRepository.getAssignmentListByClass(classId)

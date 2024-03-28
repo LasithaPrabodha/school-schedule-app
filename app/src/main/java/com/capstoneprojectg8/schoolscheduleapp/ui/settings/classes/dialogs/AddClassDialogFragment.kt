@@ -8,7 +8,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import com.capstoneprojectg8.schoolscheduleapp.R
 import com.capstoneprojectg8.schoolscheduleapp.databinding.AddClassDialogBinding
-import com.capstoneprojectg8.schoolscheduleapp.models.Class
+import com.capstoneprojectg8.schoolscheduleapp.models.SClass
 import com.capstoneprojectg8.schoolscheduleapp.ui.settings.classes.ClassSettingsViewModel
 import kotlin.random.Random
 
@@ -28,6 +28,10 @@ class AddClassDialogFragment : DialogFragment() {
             addClass()
         }
 
+        binding.addNewClassCancelDialogBtn.setOnClickListener {
+            dismiss()
+        }
+
         return builder.create()
     }
 
@@ -39,8 +43,8 @@ class AddClassDialogFragment : DialogFragment() {
 
 
         if (classCode.isNotEmpty() && className.isNotEmpty()) {
-            val newClass = Class(0, classCode, className, getRandomColorName())
-            classSettingsViewModel.addClass(newClass)
+            val newSClass = SClass(0, classCode, className, getRandomColorName())
+            classSettingsViewModel.addClass(newSClass)
             Toast.makeText(context, "Class added", Toast.LENGTH_LONG).show()
             dismiss()
         }
@@ -50,13 +54,10 @@ class AddClassDialogFragment : DialogFragment() {
         val colorNames = arrayListOf(
             R.color.purple_200,
             R.color.purple_500,
-            R.color.purple_700,
             R.color.teal_200,
             R.color.teal_700,
-            R.color.black,
             R.color.aqua,
             R.color.Aquamarine,
-            R.color.Black,
             R.color.Blue,
             R.color.BlueViolet,
             R.color.Brown,
@@ -68,7 +69,6 @@ class AddClassDialogFragment : DialogFragment() {
             R.color.CornflowerBlue,
             R.color.Crimson,
             R.color.Cyan,
-            R.color.DarkBlue,
             R.color.DarkCyan,
             R.color.DarkGoldenrod,
             R.color.DarkGreen,
@@ -96,7 +96,6 @@ class AddClassDialogFragment : DialogFragment() {
             R.color.GreenYellow,
             R.color.HotPink,
             R.color.IndianRed,
-            R.color.Indigo,
             R.color.LawnGreen,
             R.color.LightCoral,
             R.color.LightGoldenrodYellow,
@@ -110,9 +109,7 @@ class AddClassDialogFragment : DialogFragment() {
             R.color.lime,
             R.color.LimeGreen,
             R.color.Magenta,
-            R.color.maroon,
             R.color.MediumAquamarine,
-            R.color.MediumBlue,
             R.color.MediumOrchid,
             R.color.MediumPurple,
             R.color.MediumSeaGreen,
@@ -120,8 +117,6 @@ class AddClassDialogFragment : DialogFragment() {
             R.color.MediumSpringGreen,
             R.color.MediumTurquoise,
             R.color.MediumVioletRed,
-            R.color.MidnightBlue,
-            R.color.navy,
             R.color.olive,
             R.color.Olive,
             R.color.OliveDrab,
@@ -135,7 +130,6 @@ class AddClassDialogFragment : DialogFragment() {
             R.color.Pink,
             R.color.Plum,
             R.color.purple,
-            R.color.Purple,
             R.color.red,
             R.color.RosyBrown,
             R.color.RoyalBlue,

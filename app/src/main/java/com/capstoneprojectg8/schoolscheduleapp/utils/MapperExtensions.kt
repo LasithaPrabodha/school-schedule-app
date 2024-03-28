@@ -3,16 +3,18 @@ package com.capstoneprojectg8.schoolscheduleapp.utils
 import com.capstoneprojectg8.schoolscheduleapp.database.entities.AssignmentEntity
 import com.capstoneprojectg8.schoolscheduleapp.database.entities.ClassEntity
 import com.capstoneprojectg8.schoolscheduleapp.database.entities.ClassSlotEntity
+import com.capstoneprojectg8.schoolscheduleapp.database.relations.ClassWithAssignments
 import com.capstoneprojectg8.schoolscheduleapp.models.Assignment
-import com.capstoneprojectg8.schoolscheduleapp.models.Class
+import com.capstoneprojectg8.schoolscheduleapp.models.ClassAssignments
+import com.capstoneprojectg8.schoolscheduleapp.models.SClass
 import com.capstoneprojectg8.schoolscheduleapp.models.ClassSlot
 
 fun Assignment.toEntity(): AssignmentEntity {
     return AssignmentEntity(id, title, detail, isPriority, isCompleted, classId)
 }
 
-fun Class.toEntity(): ClassEntity {
-    return ClassEntity(id, classCode, className, colour, isExpandable)
+fun SClass.toEntity(): ClassEntity {
+    return ClassEntity(id, code, name, colour)
 }
 
 fun ClassSlot.toEntity(): ClassSlotEntity {
@@ -25,8 +27,13 @@ fun AssignmentEntity.fromEntity(): Assignment {
     return Assignment(id, title, detail, isPriority, isCompleted, classId)
 }
 
-fun ClassEntity.fromEntity(): Class {
-    return Class(id, classCode, className, colour, isExpandable)
+fun ClassWithAssignments.fromEntity(): ClassAssignments {
+    return ClassAssignments(sclass = this.sclass.fromEntity(), assignments = this.assignments.map { it.fromEntity() })
+}
+
+
+fun ClassEntity.fromEntity(): SClass {
+    return SClass(id, code, name, colour)
 }
 
 fun ClassSlotEntity.fromEntity(): ClassSlot {

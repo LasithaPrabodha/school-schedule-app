@@ -4,19 +4,19 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.capstoneprojectg8.schoolscheduleapp.databinding.ItemClassesBinding
-import com.capstoneprojectg8.schoolscheduleapp.models.Class
+import com.capstoneprojectg8.schoolscheduleapp.databinding.ItemClassSettingsBinding
+import com.capstoneprojectg8.schoolscheduleapp.models.SClass
 
 class ClassesRvAdapter : RecyclerView.Adapter<ClassesRvAdapter.ViewHolder>() {
 
-    private val classesList: ArrayList<Class> = arrayListOf()
-    var onItemClick: ((Class) -> Unit)? = null
+    private val classesList: ArrayList<SClass> = arrayListOf()
+    var onItemClick: ((SClass) -> Unit)? = null
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
     ): ViewHolder {
-        val binding = ItemClassesBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = ItemClassSettingsBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 
@@ -30,18 +30,18 @@ class ClassesRvAdapter : RecyclerView.Adapter<ClassesRvAdapter.ViewHolder>() {
 
     override fun getItemCount(): Int = classesList.size
 
-    fun appendClass(newMovie: List<Class>) {
+    fun appendClass(newMovie: List<SClass>) {
         classesList.clear()
         classesList.addAll(newMovie)
         notifyDataSetChanged()
     }
 
-    class ViewHolder(private val binding: ItemClassesBinding) :
+    class ViewHolder(private val binding: ItemClassSettingsBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(classes: Class) {
+        fun bind(classes: SClass) {
             binding.apply {
-                classCodeTv.text = classes.classCode
-                classNameTv.text = classes.className
+                classCodeTv.text = classes.code
+                classNameTv.text = classes.name
 
                 constraintLayout.background =
                     ContextCompat.getDrawable(root.context, classes.colour)

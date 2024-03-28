@@ -14,7 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import com.capstoneprojectg8.schoolscheduleapp.databinding.FragmentAddClassSlotBinding
-import com.capstoneprojectg8.schoolscheduleapp.models.Class
+import com.capstoneprojectg8.schoolscheduleapp.models.SClass
 import com.capstoneprojectg8.schoolscheduleapp.models.ClassSlot
 import com.capstoneprojectg8.schoolscheduleapp.utils.DateHelper
 import kotlinx.coroutines.launch
@@ -30,7 +30,7 @@ class AddClassSlotFragment : Fragment() {
     private var _binding: FragmentAddClassSlotBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var classList: List<Class>
+    private lateinit var SClassList: List<SClass>
 
 
     private val viewModel: AddClassSlotViewModel by activityViewModels()
@@ -50,8 +50,8 @@ class AddClassSlotFragment : Fragment() {
 
         viewModel.getAllClasses().observe(viewLifecycleOwner) { classList ->
 
-            this.classList = classList
-            val classOptions = classList.map { it.className }
+            this.SClassList = classList
+            val classOptions = classList.map { it.name }
 
             Log.d("Add", classOptions.toString())
             val adapter = ArrayAdapter(
@@ -92,20 +92,22 @@ class AddClassSlotFragment : Fragment() {
 
 
             if ((duration == null || duration <= 0) || roomNumber.isBlank() || selectedClass.isBlank()) {
-                if (duration == null || duration <= 0) {
-                    binding.editTextDuration.error = "Please enter a valid duration"
+                if (selectedClass.isBlank()) {
+                    binding.textInputClass.error = "Please select a class"
                 }
 
                 if (roomNumber.isBlank()) {
-                    binding.editTextRoom.error = "Please enter a valid room number"
+                    binding.textInputRoom.error = "Please enter a valid room number"
                 }
 
-                if (selectedClass.isBlank()) {
-                    binding.editTextRoom.error = "Please select a class"
+                if (duration == null || duration <= 0) {
+                    binding.textInputDuration.error = "Please enter a valid duration"
                 }
+
+
                 return@setOnClickListener
             }
-            val color = classList.find { it.className == selectedClass }!!.colour
+            val color = SClassList.find { it.name == selectedClass }!!.colour
 
             val classSlot = ClassSlot(
                 id = 0,

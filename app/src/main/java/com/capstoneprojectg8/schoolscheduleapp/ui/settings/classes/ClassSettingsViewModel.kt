@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.capstoneprojectg8.schoolscheduleapp.database.repository.ClassRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import com.capstoneprojectg8.schoolscheduleapp.models.Class
+import com.capstoneprojectg8.schoolscheduleapp.models.SClass
 import com.capstoneprojectg8.schoolscheduleapp.utils.toEntity
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -14,21 +14,21 @@ import javax.inject.Inject
 class ClassSettingsViewModel @Inject constructor(private val classRepository: ClassRepository) :
     ViewModel() {
 
-    fun addClass(newClass: Class) {
+    fun addClass(newSClass: SClass) {
         viewModelScope.launch(Dispatchers.IO) {
-            classRepository.addClass(newClass.toEntity())
+            classRepository.addClass(newSClass.toEntity())
         }
     }
 
-    fun editClass(editingClass: Class) {
+    fun editClass(editingSClass: SClass) {
         viewModelScope.launch(Dispatchers.IO) {
-            classRepository.editClass(editingClass.toEntity())
+            classRepository.editClass(editingSClass.toEntity())
         }
     }
 
-    fun deleteClass(deletingClass: Class) {
+    fun deleteClass(deletingSClass: SClass) {
         viewModelScope.launch(Dispatchers.IO) {
-            classRepository.deleteClass(deletingClass.toEntity())
+            classRepository.deleteClass(deletingSClass.toEntity())
         }
     }
 

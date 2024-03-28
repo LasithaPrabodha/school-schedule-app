@@ -7,9 +7,8 @@ import androidx.room.PrimaryKey
 data class ClassEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int,
-    var classCode: String,
-    var className: String,
-    val colour: Int,
-    var isExpandable: Boolean = false,
+    var code: String,
+    var name: String,
+    val colour: Int
 )
 

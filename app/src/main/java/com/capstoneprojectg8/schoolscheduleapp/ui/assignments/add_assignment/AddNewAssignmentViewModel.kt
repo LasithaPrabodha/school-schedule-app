@@ -1,4 +1,4 @@
-package com.capstoneprojectg8.schoolscheduleapp.ui.assignments.addassignment
+package com.capstoneprojectg8.schoolscheduleapp.ui.assignments.add_assignment
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
