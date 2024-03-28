@@ -81,7 +81,7 @@ class AddClassSlotFragment : Fragment() {
         binding.editTextTime.setOnClickListener { showTimePicker() }
 
         binding.buttonSubmit.setOnClickListener {
-            val selectedClass = binding.autoCompleteTextViewClass.text.toString()
+            val selectedClassName = binding.autoCompleteTextViewClass.text.toString()
             val roomNumber = binding.editTextRoom.text.toString()
             val duration = binding.editTextDuration.text.toString().toIntOrNull()
 
@@ -91,8 +91,8 @@ class AddClassSlotFragment : Fragment() {
             val formattedTime = timeFormat.format(calendar.time)
 
 
-            if ((duration == null || duration <= 0) || roomNumber.isBlank() || selectedClass.isBlank()) {
-                if (selectedClass.isBlank()) {
+            if ((duration == null || duration <= 0) || roomNumber.isBlank() || selectedClassName.isBlank()) {
+                if (selectedClassName.isBlank()) {
                     binding.textInputClass.error = "Please select a class"
                 }
 
@@ -107,16 +107,17 @@ class AddClassSlotFragment : Fragment() {
 
                 return@setOnClickListener
             }
-            val color = SClassList.find { it.name == selectedClass }!!.colour
+            val selectedClass = SClassList.find { it.name == selectedClassName }
 
             val classSlot = ClassSlot(
                 id = 0,
                 startingHour = formattedTime.toInt(),
                 dayOfTheWeek = calendar.get(Calendar.DAY_OF_WEEK) - 1,
                 noOfHours = duration,
-                className = selectedClass,
+                classId = selectedClass!!.id,
+                className = selectedClass.name,
                 classRoom = roomNumber,
-                color = color,
+                color = selectedClass.colour,
                 date = formattedDate
             )
             lifecycleScope.launch {

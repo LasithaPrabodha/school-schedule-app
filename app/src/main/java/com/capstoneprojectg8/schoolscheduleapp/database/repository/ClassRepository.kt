@@ -34,8 +34,8 @@ class ClassRepository @Inject constructor(
     fun getAllAssignmentsWithClasses(): LiveData<List<ClassAssignments>> =
         classesDao.getAllAssignmentsWithClasses().map { list -> list.map { cl -> cl.fromEntity() } }
 
-    fun getAssignmentListByClass(id: Int): LiveData<List<Assignment>> =
-        classesDao.getAssignmentListByClass(id).map { list -> list.map { it.fromEntity() } }
+    fun getAssignmentListByClassSlot(classSlotId: Int): LiveData<List<Assignment>> =
+        classesDao.getAssignmentListByClassSlotId(classSlotId).map { list -> list.map { it.fromEntity() } }
 
     fun getDefaultListValue(id: Int): LiveData<ClassSlot> =
         classesDao.getDefaultListValue(id).map { list -> list.fromEntity() }

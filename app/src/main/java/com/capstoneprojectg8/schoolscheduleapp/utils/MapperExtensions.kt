@@ -10,7 +10,7 @@ import com.capstoneprojectg8.schoolscheduleapp.models.SClass
 import com.capstoneprojectg8.schoolscheduleapp.models.ClassSlot
 
 fun Assignment.toEntity(): AssignmentEntity {
-    return AssignmentEntity(id, title, detail, isPriority, isCompleted, classId)
+    return AssignmentEntity(id, title, detail, isPriority, isCompleted, classId, classSlotId)
 }
 
 fun SClass.toEntity(): ClassEntity {
@@ -19,12 +19,12 @@ fun SClass.toEntity(): ClassEntity {
 
 fun ClassSlot.toEntity(): ClassSlotEntity {
     return ClassSlotEntity(
-        id, startingHour, dayOfTheWeek, noOfHours, className, classRoom, color, date, isExpandable
+        id, startingHour, dayOfTheWeek, noOfHours, classId, className, classRoom, color, date, isExpandable
     )
 }
 
 fun AssignmentEntity.fromEntity(): Assignment {
-    return Assignment(id, title, detail, isPriority, isCompleted, classId)
+    return Assignment(id, title, detail, isPriority, isCompleted, classId, classSlotId)
 }
 
 fun ClassWithAssignments.fromEntity(): ClassAssignments {
@@ -38,6 +38,6 @@ fun ClassEntity.fromEntity(): SClass {
 
 fun ClassSlotEntity.fromEntity(): ClassSlot {
     return ClassSlot(
-        id, startingHour, dayOfTheWeek, noOfHours, className, classRoom, color, date, isExpandable
+        id, startingHour, dayOfTheWeek, noOfHours, classId, className, classRoom, color, date, isExpandable
     )
 }

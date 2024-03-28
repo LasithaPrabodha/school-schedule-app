@@ -11,6 +11,7 @@ data class AssignmentEntity(
     val detail: String,
     val isPriority: Boolean = false,
     val isCompleted: Boolean,
-    val classId: Int
+    val classId: Int,
+    val classSlotId: Int
 )
 

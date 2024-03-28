@@ -9,6 +9,7 @@ data class ClassSlot(
     val startingHour: Int,
     val dayOfTheWeek: Int,
     val noOfHours: Int,
+    val classId: Int,
     val className: String,
     val classRoom: String,
     val color: Int,
