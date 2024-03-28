@@ -1,7 +1,6 @@
 package com.capstoneprojectg8.schoolscheduleapp.ui.assignments
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,11 +10,10 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.capstoneprojectg8.schoolscheduleapp.databinding.FragmentAssignmentsBinding
 import com.capstoneprojectg8.schoolscheduleapp.models.ClassAssignments
-import com.capstoneprojectg8.schoolscheduleapp.models.SClass
 import com.capstoneprojectg8.schoolscheduleapp.ui.home.AssignmentsAdapter
 import com.capstoneprojectg8.schoolscheduleapp.ui.home.HomeViewModel
 
-class AssignmentsFragment : Fragment(), ClassesAdapter.ClassesAdapterDelegate {
+class AssignmentsFragment : Fragment(), ClassesAdapterDelegate {
 
     private var _binding: FragmentAssignmentsBinding? = null
     private val binding get() = _binding!!
@@ -39,11 +37,19 @@ class AssignmentsFragment : Fragment(), ClassesAdapter.ClassesAdapterDelegate {
 
     private fun setupClassRecyclerView() {
         viewModel.getAllAssignmentsWithClasses().observe(viewLifecycleOwner) { classes ->
+            val filteredClasses = classes.filter { it.assignments.isNotEmpty() }
+
+            if (filteredClasses.isEmpty()) {
+                binding.emptyAssignmentsMsg.visibility = View.VISIBLE
+            } else {
+                binding.emptyAssignmentsMsg.visibility = View.GONE
+
+            }
 
             classAdapter = ClassesAdapter(
                 this,
                 requireContext(),
-                classes
+                filteredClasses
             )
             binding.rvAssignments.apply {
                 layoutManager = LinearLayoutManager(context)

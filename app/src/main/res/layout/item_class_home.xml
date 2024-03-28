@@ -97,7 +97,7 @@
             app:layout_constraintTop_toBottomOf="@+id/tvRoom">
 
             <TextView
-                android:id="@+id/textView3"
+                android:id="@+id/textViewAssignments"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/assignments"
@@ -112,7 +112,7 @@
                 android:layout_marginTop="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView3"
+                app:layout_constraintTop_toBottomOf="@+id/textViewAssignments"
                 tools:listitem="@layout/assignment_list_item" />
 
             <Button

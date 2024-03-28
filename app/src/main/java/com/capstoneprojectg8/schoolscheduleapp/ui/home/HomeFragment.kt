@@ -7,18 +7,20 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.findViewTreeLifecycleOwner
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.capstoneprojectg8.schoolscheduleapp.databinding.FragmentHomeBinding
 import com.capstoneprojectg8.schoolscheduleapp.utils.DateHelper
 import com.capstoneprojectg8.schoolscheduleapp.models.CalendarData
 import com.capstoneprojectg8.schoolscheduleapp.models.ClassSlot
+import com.capstoneprojectg8.schoolscheduleapp.ui.assignments.ClassesAdapter
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
 
-class HomeFragment : Fragment(), CalendarAdapter.CalendarInterface {
+class HomeFragment : Fragment(), CalendarAdapterDelegate, ClassesAdapterDelegate {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
@@ -30,6 +32,7 @@ class HomeFragment : Fragment(), CalendarAdapter.CalendarInterface {
     private val calendarList = ArrayList<CalendarData>()
     private val cal = Calendar.getInstance(Locale.ENGLISH)
     private var mStartD: Date? = null
+    private lateinit var classSlots: List<ClassSlot>
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,15 +47,19 @@ class HomeFragment : Fragment(), CalendarAdapter.CalendarInterface {
         initCalendar()
         setupClassRecyclerView()
 
+        classViewModel.getAllClassSlots().observe(viewLifecycleOwner) { classSlots ->
+            this.classSlots = classSlots
+        }
+
         return root
     }
 
     private fun setupClassRecyclerView() {
         classAdapter = ClassSlotsAdapter(
+            this,
             requireContext(),
             onItemClicked = { onAddAssignmentClick(it) },
             emptyList(),
-            classViewModel
         )
         binding.rvHomeAssignments.apply {
             layoutManager = LinearLayoutManager(context)
@@ -92,19 +99,46 @@ class HomeFragment : Fragment(), CalendarAdapter.CalendarInterface {
         calendarList.forEachIndexed { index, calendarData ->
             calendarData.isSelected = index == position
         }
+
         calendarAdapter.updateData(calendarList)
 
         val selectedDate = calendarData.data
         val formattedDate = DateHelper.formatDate(selectedDate)
 
-        classViewModel.getAllClassSlots().observe(viewLifecycleOwner) { classSlot ->
-            val filtered = classSlot.filter { it.date == formattedDate }
-            classAdapter.updateData(filtered)
+        val filtered = classSlots.filter { it.date == formattedDate }
+
+        if (filtered.isEmpty()) {
+            binding.emptyScheduleMsg.visibility = View.VISIBLE
+        } else {
+            binding.emptyScheduleMsg.visibility = View.GONE
+
         }
+
+        classAdapter.updateData(filtered)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onExpandable(holder: ClassSlotsAdapter.ViewHolder, item: ClassSlot) {
+        holder.itemView.findViewTreeLifecycleOwner()?.let { it1 ->
+            classViewModel.getAssignmentListByClassId(item.id)
+                .observe(it1) { assignments ->
+                    val assignmentList = assignments ?: emptyList()
+
+                    if (assignmentList.isEmpty()) {
+                        holder.binding.textViewAssignments.text = "No Assignments"
+                    } else {
+                        holder.binding.textViewAssignments.text = "Assignments"
+                    }
+
+                    val assignmentAdapter =
+                        AssignmentsAdapter(assignmentList, classViewModel, requireContext())
+                    holder.binding.rvHomeAssignments.adapter = assignmentAdapter
+                    assignmentAdapter.updateData(assignmentList)
+                }
+        }
     }
 }

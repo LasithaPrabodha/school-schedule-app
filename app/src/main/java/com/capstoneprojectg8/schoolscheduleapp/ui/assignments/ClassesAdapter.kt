@@ -10,12 +10,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.capstoneprojectg8.schoolscheduleapp.databinding.ItemClassAssignmentsBinding
 import com.capstoneprojectg8.schoolscheduleapp.models.ClassAssignments
 
+interface ClassesAdapterDelegate {
+    fun onBindViewHolder(holder: ClassesAdapter.ViewHolder, item: ClassAssignments)
+}
 
 class ClassesAdapter(
     private val classDelegate: ClassesAdapterDelegate,
     private val context: Context,
     private var items: List<ClassAssignments>,
 ) : RecyclerView.Adapter<ClassesAdapter.ViewHolder>() {
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding =
             ItemClassAssignmentsBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -34,9 +38,6 @@ class ClassesAdapter(
         holder.bind(item)
     }
 
-    interface ClassesAdapterDelegate {
-        fun onBindViewHolder(holder: ViewHolder, item: ClassAssignments)
-    }
     override fun getItemCount(): Int = items.size
 
     inner class ViewHolder(val binding: ItemClassAssignmentsBinding) :

@@ -9,7 +9,6 @@ data class SClass(
     var code: String,
     var name: String,
     val colour: Int,
-    var isExpandable: Boolean = false,
-    var assignments: List<Assignment> = listOf()
+    var isExpandable: Boolean = false
 ) : Parcelable
 

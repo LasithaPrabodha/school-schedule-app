@@ -47,7 +47,7 @@
     </fragment>
     <fragment
         android:id="@+id/navigation_add_new_assignment"
-        android:name="com.capstoneprojectg8.schoolscheduleapp.ui.assignments.addassignment.AddNewAssignmentFragment"
+        android:name="com.capstoneprojectg8.schoolscheduleapp.ui.assignments.add_assignment.AddNewAssignmentFragment"
         android:label="New Assignment"
         tools:layout="@layout/fragment_add_new_assignment" >
         <argument
