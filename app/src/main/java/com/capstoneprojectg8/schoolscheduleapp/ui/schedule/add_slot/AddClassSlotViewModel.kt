@@ -22,4 +22,8 @@ class AddClassSlotViewModel @Inject constructor(private val classRepository: Cla
         classRepository.addClassSlot(classSlot.toEntity())
     }
 
+
+    fun getAllClassSlots() =
+        classRepository.getAllClassSlots()
+
 }

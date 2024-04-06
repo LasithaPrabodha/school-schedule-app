@@ -30,7 +30,16 @@
         android:id="@+id/navigation_add_class_slot"
         android:name="com.capstoneprojectg8.schoolscheduleapp.ui.schedule.add_slot.AddClassSlotFragment"
         android:label="@string/new_class_slot"
-        tools:layout="@layout/fragment_add_class_slot"  />
+        tools:layout="@layout/fragment_add_class_slot"  >
+        <argument
+            android:name="hour"
+            android:defaultValue="9"
+            app:argType="integer" />
+        <argument
+            android:name="date"
+            android:defaultValue=""
+            app:argType="string" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_settings"

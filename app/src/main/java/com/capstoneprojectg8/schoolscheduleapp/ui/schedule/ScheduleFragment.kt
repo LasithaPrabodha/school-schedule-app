@@ -27,6 +27,8 @@ import com.capstoneprojectg8.schoolscheduleapp.R
 import com.capstoneprojectg8.schoolscheduleapp.databinding.FragmentScheduleBinding
 import com.capstoneprojectg8.schoolscheduleapp.models.ClassSlot
 import com.capstoneprojectg8.schoolscheduleapp.utils.DateHelper
+import com.capstoneprojectg8.schoolscheduleapp.utils.ToastHelper
+import com.capstoneprojectg8.schoolscheduleapp.utils.toTitleCase
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -55,13 +57,9 @@ class ScheduleFragment : Fragment() {
         weekGrid = binding.weekGrid
 
         setCellWidth()
-
         initRecycleViews()
-
         generateSlots()
-
         scrollToFirstSlot()
-
         setupListeners()
 
         return root
@@ -114,8 +112,9 @@ class ScheduleFragment : Fragment() {
 
     private fun generateSlots() {
         val today = LocalDate.now()
-        val startDate =  DateHelper.startOfTheWeek(today).plusWeeks(step.toLong()).with(DayOfWeek.MONDAY)
-        viewModel.getAllClassSlots().observe(viewLifecycleOwner) { slots ->
+        val startDate =
+            DateHelper.startOfTheWeek(today).plusWeeks(step.toLong()).with(DayOfWeek.MONDAY)
+        viewModel.classSlots.observe(viewLifecycleOwner) { slots ->
             val startOfWeek = DateHelper.startOfTheWeek(startDate)
             val endOfWeek = DateHelper.endOfTheWeek(startDate)
 
@@ -144,16 +143,41 @@ class ScheduleFragment : Fragment() {
     }
 
     private fun initRecycleViews() {
-        val timeline = viewModel.generateHourRows(step == 0)
-        calendarRowAdapter = CalendarRowAdapter(requireContext(), timeline)
+        val timeline = viewModel.generateHourRows()
+        val daysOfWeek: MutableList<Map<String, String>> = DateHelper.generateDaysOfTheWeek()
+
+        calendarRowAdapter =
+            CalendarRowAdapter(requireContext(), timeline, step == 0, cellWidth) { day, row ->
+                val date =
+                    daysOfWeek.find { it["weekdayFull"] == day.toTitleCase() }!!["fullDate"]!!
+
+                viewModel.classSlots.observe(viewLifecycleOwner) { slots ->
+                    val hour = row.hour.toIntOrNull() ?: 9
+                    val isConflict = DateHelper.checkConflicts(slots, date, hour, 1)
+                    if (isConflict) {
+                        ToastHelper.showCustomToast(
+                            requireContext(),
+                            getString(R.string.existing_slot)
+                        )
+
+                    } else {
+                        findNavController().navigate(
+                            ScheduleFragmentDirections.actionNavigationScheduleToAddClassSlot(
+                                hour,
+                                date
+                            )
+                        )
+                    }
+
+                }
+            }
 
         binding.hourList.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = calendarRowAdapter
         }
 
-        val dayOfWeek: MutableList<Map<String, String>> = DateHelper.generateDaysOfTheWeek()
-        weekTimelineAdapter = WeekTimelineAdapter(requireContext(), dayOfWeek, cellWidth)
+        weekTimelineAdapter = WeekTimelineAdapter(requireContext(), daysOfWeek, cellWidth)
 
         binding.dayList.apply {
             layoutManager = LinearLayoutManager(
@@ -179,7 +203,7 @@ class ScheduleFragment : Fragment() {
 
         weekTimelineAdapter.updateList(daysOfTheWeek)
 
-        val timeline = viewModel.generateHourRows(step == 0)
+        val timeline = viewModel.generateHourRows()
         calendarRowAdapter.updateList(timeline)
 
         generateSlots()
