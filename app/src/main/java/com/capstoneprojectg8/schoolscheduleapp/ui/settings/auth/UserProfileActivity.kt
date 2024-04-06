@@ -216,6 +216,7 @@ class UserProfileActivity : AppCompatActivity() {
             android.R.id.home -> finish()
             R.id.logout -> {
                 FirebaseAuth.getInstance().signOut()
+                googleSignInClient.signOut()
                 finish()
             }
         }
