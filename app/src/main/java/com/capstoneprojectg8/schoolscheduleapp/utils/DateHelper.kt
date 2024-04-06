@@ -2,6 +2,7 @@ package com.capstoneprojectg8.schoolscheduleapp.utils
 
 import com.capstoneprojectg8.schoolscheduleapp.databinding.FragmentHomeBinding
 import com.capstoneprojectg8.schoolscheduleapp.models.CalendarData
+import com.capstoneprojectg8.schoolscheduleapp.models.ClassSlot
 import com.capstoneprojectg8.schoolscheduleapp.ui.home.CalendarAdapter
 import java.text.SimpleDateFormat
 import java.time.DayOfWeek
@@ -15,7 +16,7 @@ import java.util.Date
 
 object DateHelper {
 
-    private val dateFormat = SimpleDateFormat("yyyy-MM-dd")
+    val dateFormat = SimpleDateFormat("yyyy-MM-dd")
 
     fun startOfTheWeek(date: LocalDate): LocalDate {
         return if (date.dayOfWeek == DayOfWeek.SATURDAY || date.dayOfWeek == DayOfWeek.SUNDAY) {
@@ -45,6 +46,7 @@ object DateHelper {
             val entry = mapOf(
                 "date" to formattedDate,
                 "weekday" to weekday.slice(IntRange(0, 2)),
+                "weekdayFull" to weekday,
                 "fullDate" to date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
             )
             weekData.add(entry)
@@ -58,7 +60,36 @@ object DateHelper {
         return today.format(DateTimeFormatter.ofPattern(pattern))
     }
 
-    fun getDates(mStartD: Date?, calendarList: ArrayList<CalendarData>, calendarAdapter: CalendarAdapter, binding: FragmentHomeBinding) {
+    fun getDaysOfWeek(): List<String> {
+        return listOf(
+            "monday",
+            "tuesday",
+            "wednesday",
+            "thursday",
+            "friday"
+        )
+    }
+
+    fun checkConflicts(list: List<ClassSlot>, date: String, hour: Int, duration: Int): Boolean {
+        val selectedDateTime = LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+        val selectedHourRange = hour until (hour + duration)
+
+        return list.any { slot ->
+            val slotDateTime = LocalDate.parse(slot.date, DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+            val slotHourRange = slot.startingHour until (slot.startingHour + slot.noOfHours)
+            val isSameDate = selectedDateTime == slotDateTime
+            val isOverlapping = selectedHourRange.intersect(slotHourRange).isNotEmpty()
+
+            isSameDate && isOverlapping
+        }
+    }
+
+    fun getDates(
+        mStartD: Date?,
+        calendarList: ArrayList<CalendarData>,
+        calendarAdapter: CalendarAdapter,
+        binding: FragmentHomeBinding
+    ) {
         val dateList = ArrayList<CalendarData>()
         val dates = ArrayList<Date>()
         val calendar = Calendar.getInstance()
@@ -96,7 +127,14 @@ object DateHelper {
         return dateFormat.format(date)
     }
 
-
+    fun toDate(date: String?): LocalDate? {
+        return try {
+            val pattern = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+            date?.let { LocalDate.parse(it, pattern) }
+        } catch (e: Exception) {
+            null
+        }
+    }
 
     fun convert(date: Date): LocalDate {
         return date.toInstant()

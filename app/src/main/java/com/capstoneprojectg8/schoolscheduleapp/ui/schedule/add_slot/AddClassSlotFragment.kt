@@ -3,7 +3,6 @@ package com.capstoneprojectg8.schoolscheduleapp.ui.schedule.add_slot
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,10 +12,12 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import com.capstoneprojectg8.schoolscheduleapp.R
 import com.capstoneprojectg8.schoolscheduleapp.databinding.FragmentAddClassSlotBinding
 import com.capstoneprojectg8.schoolscheduleapp.models.SClass
 import com.capstoneprojectg8.schoolscheduleapp.models.ClassSlot
 import com.capstoneprojectg8.schoolscheduleapp.utils.DateHelper
+import com.capstoneprojectg8.schoolscheduleapp.utils.ToastHelper
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.time.LocalDate
@@ -30,17 +31,21 @@ class AddClassSlotFragment : Fragment() {
     private var _binding: FragmentAddClassSlotBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var SClassList: List<SClass>
-
-
+    private lateinit var sClassList: List<SClass>
     private val viewModel: AddClassSlotViewModel by activityViewModels()
 
+    private var selectedDate: LocalDate? = null
+    private var selectedHour: Int = 9
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentAddClassSlotBinding.inflate(inflater, container, false)
+
+        selectedHour = arguments?.getInt("hour") ?: 9
+        selectedDate = DateHelper.toDate(arguments?.getString("date"))
+
         return binding.root
     }
 
@@ -50,10 +55,9 @@ class AddClassSlotFragment : Fragment() {
 
         viewModel.getAllClasses().observe(viewLifecycleOwner) { classList ->
 
-            this.SClassList = classList
+            this.sClassList = classList
             val classOptions = classList.map { it.name }
 
-            Log.d("Add", classOptions.toString())
             val adapter = ArrayAdapter(
                 requireContext(),
                 android.R.layout.simple_dropdown_item_1line,
@@ -65,18 +69,33 @@ class AddClassSlotFragment : Fragment() {
 
 
         calendar = Calendar.getInstance()
-        val today = LocalDate.now()
-        val localDate = DateHelper.startOfTheWeek(today)
-        if (localDate > today) {
-            calendar.set(localDate.year, localDate.monthValue - 1, localDate.dayOfMonth, 9, 0)
+
+
+        if (selectedDate != null) {
+            calendar.set(
+                selectedDate!!.year,
+                selectedDate!!.monthValue - 1,
+                selectedDate!!.dayOfMonth,
+                9,
+                0
+            )
         } else {
-            calendar.set(today.year, today.monthValue - 1, today.dayOfMonth, 9, 0)
+            val today = LocalDate.now()
+            val localDate = DateHelper.startOfTheWeek(today)
+            val finalDate = if (localDate > today) localDate else today
+            calendar.set(finalDate.year, finalDate.monthValue - 1, finalDate.dayOfMonth, 9, 0)
         }
+
 
         val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         binding.editTextDate.setText(dateFormat.format(calendar.time))
-        binding.editTextTime.setText("09:00")
+        binding.editTextTime.setText("${selectedHour}:00")
 
+        setListeners()
+
+    }
+
+    private fun setListeners() {
         binding.editTextDate.setOnClickListener { showDatePicker() }
         binding.editTextTime.setOnClickListener { showTimePicker() }
 
@@ -107,23 +126,37 @@ class AddClassSlotFragment : Fragment() {
 
                 return@setOnClickListener
             }
-            val selectedClass = SClassList.find { it.name == selectedClassName }
 
-            val classSlot = ClassSlot(
-                id = 0,
-                startingHour = formattedTime.toInt(),
-                dayOfTheWeek = calendar.get(Calendar.DAY_OF_WEEK) - 1,
-                noOfHours = duration,
-                classId = selectedClass!!.id,
-                className = selectedClass.name,
-                classRoom = roomNumber,
-                color = selectedClass.colour,
-                date = formattedDate
-            )
-            lifecycleScope.launch {
-                viewModel.addClassSlot(classSlot)
-                requireActivity().onBackPressedDispatcher.onBackPressed()
+            viewModel.getAllClassSlots().observe(viewLifecycleOwner) { slots ->
+
+                val hour = formattedTime.toInt()
+                val isConflict = DateHelper.checkConflicts(slots, formattedDate, hour, duration)
+                if (isConflict) {
+                    ToastHelper.showCustomToast(
+                        requireContext(),
+                        getString(R.string.existing_slot)
+                    )
+                } else {
+                    val selectedClass = sClassList.find { it.name == selectedClassName }
+
+                    val classSlot = ClassSlot(
+                        id = 0,
+                        startingHour = formattedTime.toInt(),
+                        dayOfTheWeek = calendar.get(Calendar.DAY_OF_WEEK) - 1,
+                        noOfHours = duration,
+                        classId = selectedClass!!.id,
+                        className = selectedClass.name,
+                        classRoom = roomNumber,
+                        color = selectedClass.colour,
+                        date = formattedDate
+                    )
+                    lifecycleScope.launch {
+                        viewModel.addClassSlot(classSlot)
+                        requireActivity().onBackPressedDispatcher.onBackPressed()
+                    }
+                }
             }
+
 
         }
         binding.buttonCancel.setOnClickListener {
