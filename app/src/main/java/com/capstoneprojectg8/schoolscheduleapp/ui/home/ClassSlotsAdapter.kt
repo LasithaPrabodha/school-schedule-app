@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.capstoneprojectg8.schoolscheduleapp.R
 import com.capstoneprojectg8.schoolscheduleapp.databinding.ItemClassHomeBinding
 import com.capstoneprojectg8.schoolscheduleapp.models.ClassSlot
 import java.text.SimpleDateFormat
@@ -85,12 +86,16 @@ class ClassSlotsAdapter(
                 expandableAssignmentContainter.visibility =
                     if (classItem.isExpandable) View.VISIBLE else View.GONE
                 dividerLine.setBackgroundColor(ContextCompat.getColor(context, classItem.color))
+                ivArrow.setImageResource(
+                    if (classItem.isExpandable) R.drawable.baseline_keyboard_arrow_down_24 else R.drawable.baseline_keyboard_arrow_right_24
+                )
 
             }
         }
 
         fun collapseExpandedViews() {
             binding.expandableAssignmentContainter.visibility = View.GONE
+            binding.ivArrow.setImageResource(R.drawable.baseline_keyboard_arrow_right_24)
         }
     }
 

@@ -1,74 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/cardViewAddDialog"
-    android:layout_width="0dp"
-    android:layout_height="wrap_content"
-    app:cardCornerRadius="24dp"
-    app:cardElevation="0dp">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardViewAddDialog"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:padding="16dp">
-
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="@string/addClassDialogTitle"
-            android:textColor="#000000"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
-        <EditText
-            android:id="@+id/classCodeAddDialogInputText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:ems="10"
-            android:hint="@string/classCodeTextInput"
-            android:inputType="text"
-            android:minHeight="48dp"
-            tools:ignore="Autofill" />
-
-        <EditText
-            android:id="@+id/classNameAddDialogInputText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:ems="10"
-            android:hint="@string/classNameTextInput"
-            android:inputType="text"
-            android:minHeight="48dp"
-            tools:ignore="Autofill" />
+        app:cardElevation="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
-            android:id="@+id/addClassBtns"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:gravity="center_horizontal">
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="16dp">
 
-            <Button
-                android:id="@+id/addNewClassCancelDialogBtn"
-                style="?attr/materialButtonOutlinedStyle"
+            <TextView
+                android:id="@+id/textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:text="@string/cancel" />
+                android:layout_marginTop="16dp"
+                android:text="@string/addClassDialogTitle"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="20dp"
+                style="@style/ClassesItemColorText"/>
 
-            <Button
-                android:id="@+id/addNewClassAddDialogBtn"
-                android:layout_width="wrap_content"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputClassCode"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/addBtnText" />
+                android:layout_marginBottom="16dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/classCodeAddDialogInputText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/classCodeTextInput"
+                    android:inputType="text" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputClassName"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/classNameAddDialogInputText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/classNameTextInput"
+                    android:inputType="text" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <LinearLayout
+                android:id="@+id/addClassBtns"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:gravity="center_horizontal">
+
+                <Button
+                    android:id="@+id/addNewClassCancelDialogBtn"
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:text="@string/cancel" />
+
+                <Button
+                    android:id="@+id/addNewClassAddDialogBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/addBtnText" />
+            </LinearLayout>
+
+
         </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
 
+</androidx.constraintlayout.widget.ConstraintLayout>
 
-    </LinearLayout>
-</com.google.android.material.card.MaterialCardView>

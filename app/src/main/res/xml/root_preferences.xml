@@ -7,13 +7,15 @@
             app:key="user"
             app:title=""
             app:summary="User profile"
-            app:useSimpleSummaryProvider="true" />
+            app:useSimpleSummaryProvider="true"
+            />
 
     </PreferenceCategory>
 
     <PreferenceCategory app:title="@string/classes_header">
 
         <Preference
+
             app:icon="@drawable/outline_library_books_24"
             app:key="classes"
             app:summary="@string/classes_summary"
@@ -21,18 +23,18 @@
 
     </PreferenceCategory>
 
-    <!--    <PreferenceCategory app:title="@string/app_settings_header">-->
+    <PreferenceCategory app:title="@string/app_settings_header">
 
-    <!--        <SwitchPreferenceCompat-->
-    <!--            app:key="dark_mode"-->
-    <!--            app:title="@string/dark_mode_switch"-->
-    <!--            app:icon="@drawable/outline_dark_mode_24"/>-->
+    <SwitchPreferenceCompat
+        app:key="switch_dark_mode"
+        app:title="@string/dark_mode_switch"
+        app:icon="@drawable/outline_dark_mode_24"/>
 
     <!--        <SwitchPreferenceCompat-->
     <!--            app:key="allow_notifications"-->
     <!--            app:title="@string/allow_notifications"-->
     <!--            app:icon="@drawable/outline_notifications_active_24"/>-->
 
-    <!--    </PreferenceCategory>-->
+    </PreferenceCategory>
 
 </PreferenceScreen>

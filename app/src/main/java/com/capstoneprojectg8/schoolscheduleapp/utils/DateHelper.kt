@@ -87,7 +87,7 @@ object DateHelper {
         for (item in dateList.indices) {
             if (dateList[item].data == mStartD) {
                 calendarAdapter.setPosition(item)
-                binding.calendarView.scrollToPosition(item)
+                binding.calendarView.scrollToPosition(item - 2)
             }
         }
     }

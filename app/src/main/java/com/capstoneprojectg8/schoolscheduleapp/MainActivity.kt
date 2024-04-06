@@ -1,9 +1,13 @@
 package com.capstoneprojectg8.schoolscheduleapp
 
+import android.content.Context
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO
+import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES
 import androidx.core.content.ContextCompat
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -37,6 +41,9 @@ class MainActivity : AppCompatActivity() {
             )
         )
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        val isDarkModeEnabled = isDarkModeEnabled()
+        AppCompatDelegate.setDefaultNightMode(if (isDarkModeEnabled) MODE_NIGHT_YES else MODE_NIGHT_NO)
     }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
@@ -73,6 +80,11 @@ class MainActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+    }
+
+    private fun isDarkModeEnabled(): Boolean {
+        val sharedPreferences = getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+        return sharedPreferences.getBoolean("dark_mode", false)
     }
 
 }

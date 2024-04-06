@@ -3,14 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:background="@color/black">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardViewAddDialog"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="24dp"
         app:cardElevation="0dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -21,46 +19,49 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-
-            <EditText
-                android:id="@+id/classCodeEditDialogInputText"
-                android:layout_width="308dp"
-                android:layout_height="48dp"
-                android:layout_marginTop="24dp"
-                android:ems="10"
-                android:hint="@string/classCodeTextInput"
-                android:inputType="text"
-                android:minHeight="48dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView"
-                tools:ignore="Autofill" />
-
-            <EditText
-                android:id="@+id/classNameEditDialogInputText"
-                android:layout_width="308dp"
-                android:layout_height="48dp"
-                android:layout_marginTop="24dp"
-                android:ems="10"
-                android:hint="@string/classNameTextInput"
-                android:inputType="text"
-                android:minHeight="48dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/classCodeEditDialogInputText"
-                tools:ignore="Autofill" />
-
-            <Button
-                android:id="@+id/saveEditClassDialogBtn"
-                android:layout_width="wrap_content"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputClassCode"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:layout_marginBottom="16dp"
-                android:text="@string/saveChangesBtn"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/classNameEditDialogInputText" />
+                app:layout_constraintTop_toBottomOf="@+id/textView">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/classCodeEditDialogInputText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/classCodeTextInput"
+                    android:inputType="text" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputClassName"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textInputClassCode">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/classNameEditDialogInputText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/classCodeTextInput"
+                    android:inputType="text" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+
 
             <TextView
                 android:id="@+id/textView"
@@ -68,12 +69,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="@string/editClassDialogTitle"
-                android:textColor="#000000"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                style="@style/ClassesItemColorText"/>
 
             <ImageView
                 android:id="@+id/deleteImg"
@@ -90,6 +91,38 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck"
                 app:tint="@color/red" />
+
+            <LinearLayout
+                android:id="@+id/editDeleteClassBtns"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textInputClassName">
+
+                <Button
+                    android:id="@+id/addNewClassCancelDialogBtn"
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:text="@string/cancel" />
+
+                <Button
+                    android:id="@+id/saveEditClassDialogBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:text="@string/saveChangesBtn"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textInputClassName" />
+
+            </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 

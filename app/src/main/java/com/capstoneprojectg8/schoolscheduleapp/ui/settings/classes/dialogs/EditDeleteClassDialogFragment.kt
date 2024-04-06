@@ -32,11 +32,14 @@ class EditDeleteClassDialogFragment : DialogFragment() {
 
         binding.saveEditClassDialogBtn.setOnClickListener {
             editClass(classId, classColour)
-            dismiss()
         }
 
         binding.deleteImg.setOnClickListener {
             deleteClass(classId, classCode, className, classColour)
+        }
+
+        binding.addNewClassCancelDialogBtn.setOnClickListener {
+            dismiss()
         }
 
         return builder.create()
@@ -52,8 +55,15 @@ class EditDeleteClassDialogFragment : DialogFragment() {
             classSettingsViewModel.editClass(editedSClass)
             Toast.makeText(context, "Class edited", Toast.LENGTH_LONG).show()
             dismiss()
-        } else {
-            Toast.makeText(context, "Insert class code or class name", Toast.LENGTH_LONG).show()
+        } else if (editedCode.isNotEmpty()) {
+            binding.textInputClassName.error = "Enter class name"
+            binding.textInputClassCode.error = null
+        } else if (editedName.isNotEmpty()) {
+            binding.textInputClassCode.error = "Enter class code"
+            binding.textInputClassName.error = null
+        } else if (editedCode.isEmpty() && editedName.isEmpty()) {
+            binding.textInputClassCode.error = "Enter class code"
+            binding.textInputClassName.error = "Enter class name"
         }
 
     }
@@ -65,7 +75,7 @@ class EditDeleteClassDialogFragment : DialogFragment() {
             setMessage("Are you sure you want to delete this class")
             setPositiveButton("Delete"){_,_ ->
                 classSettingsViewModel.deleteClass(currentSClass)
-                Toast.makeText(context, "Class deleted", Toast.LENGTH_LONG).show()
+                Toast.makeText(context, "Class deleted", Toast.LENGTH_SHORT).show()
                 dismiss()
             }
             setNegativeButton("Cancel", null)
