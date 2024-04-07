@@ -27,6 +27,15 @@
         <!-- color used by navigation icon and overflow icon -->
         <item name="colorOnPrimary">@color/black</item>
         <item name="android:textColorPrimary">@color/black</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+    
+    <style name="AssetTintColor">
+        <item name="tint">@color/black</item>
+    </style>
 
+    <style name="ClassesItemColorText">
+        <item name="android:textColor">@color/black</item>
     </style>
 </resources>

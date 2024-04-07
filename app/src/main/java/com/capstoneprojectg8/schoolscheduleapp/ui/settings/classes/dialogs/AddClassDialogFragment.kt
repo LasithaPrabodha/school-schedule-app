@@ -45,8 +45,17 @@ class AddClassDialogFragment : DialogFragment() {
         if (classCode.isNotEmpty() && className.isNotEmpty()) {
             val newSClass = SClass(0, classCode, className, getRandomColorName())
             classSettingsViewModel.addClass(newSClass)
-            Toast.makeText(context, "Class added", Toast.LENGTH_LONG).show()
+            Toast.makeText(context, "Class added", Toast.LENGTH_SHORT).show()
             dismiss()
+        } else if(classCode.isNotEmpty()) {
+            binding.textInputClassName.error = "Enter class name"
+            binding.textInputClassCode.error = null
+        } else if(className.isNotEmpty()){
+            binding.textInputClassCode.error = "Enter class code"
+            binding.textInputClassName.error = null
+        } else if (className.isEmpty() && classCode.isEmpty()) {
+            binding.textInputClassCode.error = "Enter class code"
+            binding.textInputClassName.error = "Enter class name"
         }
     }
 

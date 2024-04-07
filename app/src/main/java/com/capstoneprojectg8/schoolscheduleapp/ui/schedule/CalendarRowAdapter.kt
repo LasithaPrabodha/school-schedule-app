@@ -1,6 +1,7 @@
 package com.capstoneprojectg8.schoolscheduleapp.ui.schedule
 
 import android.content.Context
+import android.content.res.Configuration
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -43,7 +44,12 @@ class CalendarRowAdapter(
         val item = dataSet[position]
 
         val setBackground: (View) -> Unit = { cell ->
-            cell.setBackgroundColor(ContextCompat.getColor(context, R.color.background))
+            val isDarkMode = isDarkModeEnabled(context)
+            if (isDarkMode) {
+                cell.setBackgroundColor(ContextCompat.getColor(context, R.color.black))
+            } else {
+                cell.setBackgroundColor(ContextCompat.getColor(context, R.color.background))
+            }
         }
 
         val calendarCellAdapter =
@@ -69,4 +75,9 @@ class CalendarRowAdapter(
     }
 
     override fun getItemCount() = dataSet.size
+
+    private fun isDarkModeEnabled(context: Context): Boolean {
+        val mode = context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+        return mode == Configuration.UI_MODE_NIGHT_YES
+    }
 }

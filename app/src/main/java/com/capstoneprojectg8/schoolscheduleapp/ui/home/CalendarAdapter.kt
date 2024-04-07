@@ -1,5 +1,7 @@
 package com.capstoneprojectg8.schoolscheduleapp.ui.home
 
+import android.content.Context
+import android.content.res.Configuration
 import android.graphics.drawable.GradientDrawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -48,21 +50,43 @@ class CalendarAdapter(
             val date = binding.dateTextView
             val day = binding.weekdayTextView
             val linearLayout = binding.root
+            val isDarkMode = isDarkModeEnabled(binding.root.context)
+            val backgroundColor: Int
+            val textColor: Int
 
             if (pos == position) {
                 calendarDataModel.isSelected = true
             }
+
+
             if (calendarDataModel.isSelected) {
                 pos = -1
+
+                if (isDarkMode) {
+                    backgroundColor = ContextCompat.getColor(binding.root.context, R.color.black)
+                    textColor = ContextCompat.getColor(binding.root.context, R.color.white)
+                } else {
+                    backgroundColor = ContextCompat.getColor(binding.root.context, R.color.background)
+                    textColor = ContextCompat.getColor(binding.root.context, R.color.black)
+                }
+
                 val shape = GradientDrawable()
                 shape.shape = GradientDrawable.RECTANGLE
-                shape.setColor(ContextCompat.getColor(binding.root.context, R.color.background))
+                shape.setColor(backgroundColor)
                 shape.cornerRadii = floatArrayOf(16f, 16f, 16f, 16f, 0f, 0f, 0f, 0f)
                 ViewCompat.setBackground(linearLayout, shape)
+                date.setTextColor(textColor)
+                day.setTextColor(textColor)
             } else {
+                backgroundColor = if (isDarkMode) {
+                    ContextCompat.getColor(binding.root.context, R.color.AppBackG)
+                } else {
+                    ContextCompat.getColor(binding.root.context, R.color.white)
+                }
+
                 val shape = GradientDrawable()
                 shape.shape = GradientDrawable.RECTANGLE
-                shape.setColor(ContextCompat.getColor(binding.root.context, R.color.white))
+                shape.setColor(backgroundColor)
                 ViewCompat.setBackground(linearLayout, shape)
             }
 
@@ -75,8 +99,12 @@ class CalendarAdapter(
         }
     }
 
-
     fun setPosition(pos: Int) {
         this.pos = pos
+    }
+
+    private fun isDarkModeEnabled(context: Context): Boolean {
+        val mode = context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+        return mode == Configuration.UI_MODE_NIGHT_YES
     }
 }

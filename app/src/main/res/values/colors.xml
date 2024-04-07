@@ -171,4 +171,5 @@
     <color name="yellow">#FFFF00</color>
     <color name="Yellow">#FFFF00</color>
     <color name="YellowGreen">#9ACD32</color>
+    <color name="AppBackG">#303030</color>
 </resources>

@@ -1,6 +1,7 @@
 package com.capstoneprojectg8.schoolscheduleapp.ui.schedule
 
 import android.content.Context
+import android.content.res.Configuration
 import android.graphics.drawable.GradientDrawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -27,11 +28,27 @@ class WeekTimelineAdapter(
             binding.date.text = item["date"]
             binding.day.text = item["weekday"]
 
+
             if (today == item["fullDate"]) {
                 val shape = GradientDrawable()
+                val isDarkMode = isDarkModeEnabled(binding.root.context)
+                val textColor: Int
+
                 shape.shape = GradientDrawable.RECTANGLE
-                shape.setColor(ContextCompat.getColor(context, R.color.background))
                 shape.cornerRadii = floatArrayOf(16f, 16f, 16f, 16f, 0f, 0f, 0f, 0f)
+
+                if (isDarkMode){
+                    textColor = ContextCompat.getColor(binding.root.context, R.color.white)
+                    shape.setColor(ContextCompat.getColor(context, R.color.black))
+                } else {
+                    textColor = ContextCompat.getColor(binding.root.context, R.color.black)
+                    shape.setColor(ContextCompat.getColor(context, R.color.background))
+                }
+
+                binding.apply {
+                    date.setTextColor(textColor)
+                    day.setTextColor(textColor)
+                }
 
                 binding.root.background = shape
             } else {
@@ -70,5 +87,10 @@ class WeekTimelineAdapter(
 
     override fun getItemCount(): Int {
         return dayList.size
+    }
+
+    private fun isDarkModeEnabled(context: Context): Boolean {
+        val mode = context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+        return mode == Configuration.UI_MODE_NIGHT_YES
     }
 }
