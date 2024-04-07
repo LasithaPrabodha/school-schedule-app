@@ -44,7 +44,12 @@ class CalendarRowAdapter(
         val item = dataSet[position]
 
         val setBackground: (View) -> Unit = { cell ->
-            cell.setBackgroundColor(ContextCompat.getColor(context, R.color.background))
+            val isDarkMode = isDarkModeEnabled(context)
+            if (isDarkMode) {
+                cell.setBackgroundColor(ContextCompat.getColor(context, R.color.black))
+            } else {
+                cell.setBackgroundColor(ContextCompat.getColor(context, R.color.background))
+            }
         }
 
         val calendarCellAdapter =

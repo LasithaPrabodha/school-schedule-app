@@ -1,5 +1,7 @@
 package com.capstoneprojectg8.schoolscheduleapp.ui.schedule
 
+import android.content.Context
+import android.content.res.Configuration
 import android.graphics.Typeface
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
@@ -73,6 +75,22 @@ class ScheduleFragment : Fragment() {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                 // Add menu items here
                 menuInflater.inflate(R.menu.calendar_nav, menu)
+
+                val previousItem = menu.findItem(R.id.previous)
+                val currentWeekItem = menu.findItem(R.id.current_week)
+                val nextItem = menu.findItem(R.id.next)
+                val isDarkMode = isDarkModeEnabled(requireContext())
+
+                if (isDarkMode) {
+                    previousItem.icon?.setTint(ContextCompat.getColor(requireContext(), R.color.background))
+                    currentWeekItem.icon?.setTint(ContextCompat.getColor(requireContext(), R.color.background))
+                    nextItem.icon?.setTint(ContextCompat.getColor(requireContext(), R.color.background))
+                } else {
+                    previousItem.icon?.setTint(ContextCompat.getColor(requireContext(), R.color.black))
+                    currentWeekItem.icon?.setTint(ContextCompat.getColor(requireContext(), R.color.black))
+                    nextItem.icon?.setTint(ContextCompat.getColor(requireContext(), R.color.black))
+                }
+
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
@@ -276,6 +294,11 @@ class ScheduleFragment : Fragment() {
         }
 
         weekGrid.addView(linearLayout, linearLayoutParams)
+    }
+
+    private fun isDarkModeEnabled(context: Context): Boolean {
+        val mode = context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+        return mode == Configuration.UI_MODE_NIGHT_YES
     }
 
     override fun onDestroyView() {
