@@ -5,7 +5,7 @@ import androidx.room.Relation
 import com.capstoneprojectg8.schoolscheduleapp.database.entities.AssignmentEntity
 import com.capstoneprojectg8.schoolscheduleapp.database.entities.ClassEntity
 
-data class ClassWithAssignments(
+data class ClassWithAssignmentsRelation(
     @Embedded val sclass: ClassEntity,
     @Relation(
         parentColumn = "id",

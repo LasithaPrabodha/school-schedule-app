@@ -15,6 +15,7 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.capstoneprojectg8.schoolscheduleapp.databinding.ActivityMainBinding
+import com.capstoneprojectg8.schoolscheduleapp.utils.ThemeHelper.isDarkModeEnabled
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -42,7 +43,7 @@ class MainActivity : AppCompatActivity() {
         )
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        val isDarkModeEnabled = isDarkModeEnabled()
+        val isDarkModeEnabled = isDarkModeEnabled(this)
         AppCompatDelegate.setDefaultNightMode(if (isDarkModeEnabled) MODE_NIGHT_YES else MODE_NIGHT_NO)
     }
 
@@ -70,8 +71,6 @@ class MainActivity : AppCompatActivity() {
                 R.id.navigation_schedule -> navController.navigate(R.id.navigation_schedule)
                 R.id.navigation_settings -> navController.navigate(R.id.navigation_settings)
                 R.id.navigation_assignments -> navController.navigate(R.id.navigation_assignments)
-
-
             }
             true
         }
@@ -82,9 +81,5 @@ class MainActivity : AppCompatActivity() {
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
-    private fun isDarkModeEnabled(): Boolean {
-        val sharedPreferences = getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
-        return sharedPreferences.getBoolean("dark_mode", false)
-    }
 
 }

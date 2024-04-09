@@ -1,20 +1,28 @@
 package com.capstoneprojectg8.schoolscheduleapp.ui.home
 
+import android.content.Context
+import android.content.res.Configuration
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.findViewTreeLifecycleOwner
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.capstoneprojectg8.schoolscheduleapp.R
 import com.capstoneprojectg8.schoolscheduleapp.databinding.FragmentHomeBinding
-import com.capstoneprojectg8.schoolscheduleapp.utils.DateHelper
+import com.capstoneprojectg8.schoolscheduleapp.models.Assignment
 import com.capstoneprojectg8.schoolscheduleapp.models.CalendarData
 import com.capstoneprojectg8.schoolscheduleapp.models.ClassSlot
-import com.capstoneprojectg8.schoolscheduleapp.ui.assignments.ClassesAdapter
+import com.capstoneprojectg8.schoolscheduleapp.utils.DateHelper
+import com.capstoneprojectg8.schoolscheduleapp.utils.ThemeHelper.isDarkModeEnabled
+import kotlinx.coroutines.launch
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
@@ -43,13 +51,21 @@ class HomeFragment : Fragment(), CalendarAdapterDelegate, ClassesAdapterDelegate
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        (activity as AppCompatActivity).window.statusBarColor =
+            resources.getColor(R.color.background)
+
+        (activity as AppCompatActivity?)!!.supportActionBar?.setBackgroundDrawable(
+            ColorDrawable(
+                resources.getColor(
+                    R.color.background
+                )
+            )
+        )
+
+
         setupCalendarRecyclerView()
         initCalendar()
         setupClassRecyclerView()
-
-        classViewModel.getAllClassSlots().observe(viewLifecycleOwner) { classSlots ->
-            this.classSlots = classSlots
-        }
 
         return root
     }
@@ -63,13 +79,21 @@ class HomeFragment : Fragment(), CalendarAdapterDelegate, ClassesAdapterDelegate
         )
         binding.rvHomeAssignments.apply {
             layoutManager = LinearLayoutManager(context)
-            this.adapter = classAdapter
+            adapter = classAdapter
         }
 
         val today = DateHelper.getToday()
 
-        classViewModel.getAllClassSlots().observe(viewLifecycleOwner) { classSlot ->
-            val filtered = classSlot.filter { it.date == today }
+        classViewModel.getAllClassSlots().observe(viewLifecycleOwner) { slots ->
+            classSlots = slots
+
+            val filtered = slots.filter { it.date == today }
+
+            if (filtered.isEmpty()) {
+                binding.emptyScheduleMsg.visibility = View.VISIBLE
+            } else {
+                binding.emptyScheduleMsg.visibility = View.GONE
+            }
             classAdapter.updateData(filtered)
         }
 
@@ -91,7 +115,6 @@ class HomeFragment : Fragment(), CalendarAdapterDelegate, ClassesAdapterDelegate
 
     private fun onAddAssignmentClick(slot: ClassSlot) {
         val action = HomeFragmentDirections.actionNavigationHomeToAddNewAssignmentFragment(
-            slot.classId,
             slot.id
         )
         findNavController().navigate(action)
@@ -122,8 +145,31 @@ class HomeFragment : Fragment(), CalendarAdapterDelegate, ClassesAdapterDelegate
 
     override fun onDestroyView() {
         super.onDestroyView()
+        (activity as AppCompatActivity).window.statusBarColor =
+            resources.getColor(R.color.transparent)
+
+        if (isDarkModeEnabled(requireContext())) {
+            (activity as AppCompatActivity?)!!.supportActionBar?.setBackgroundDrawable(
+                ColorDrawable(
+                    resources.getColor(
+                        com.google.android.material.R.color.background_material_dark
+                    )
+                )
+            )
+        } else {
+            (activity as AppCompatActivity?)!!.supportActionBar?.setBackgroundDrawable(
+                ColorDrawable(
+                    resources.getColor(
+                        com.google.android.material.R.color.design_default_color_background
+                    )
+                )
+            )
+        }
+
+
         _binding = null
     }
+
 
     override fun onExpandable(holder: ClassSlotsAdapter.ViewHolder, item: ClassSlot) {
         holder.itemView.findViewTreeLifecycleOwner()?.let { it1 ->
@@ -138,7 +184,19 @@ class HomeFragment : Fragment(), CalendarAdapterDelegate, ClassesAdapterDelegate
                     }
 
                     val assignmentAdapter =
-                        AssignmentsAdapter(assignmentList, classViewModel, requireContext())
+                        AssignmentsAdapter(
+                            requireContext(),
+                            assignmentList,
+                            { assignment: Assignment ->
+                                lifecycleScope.launch {
+                                    classViewModel.editAssignment(assignment)
+                                }
+                            },
+                            { assignment: Assignment ->
+                                lifecycleScope.launch {
+                                    classViewModel.deleteAssignment(assignment)
+                                }
+                            })
                     holder.binding.rvHomeAssignments.adapter = assignmentAdapter
                     assignmentAdapter.updateData(assignmentList)
                 }

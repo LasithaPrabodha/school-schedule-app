@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.capstoneprojectg8.schoolscheduleapp.R
 import com.capstoneprojectg8.schoolscheduleapp.databinding.ItemWeekDayBinding
 import com.capstoneprojectg8.schoolscheduleapp.utils.DateHelper
+import com.capstoneprojectg8.schoolscheduleapp.utils.ThemeHelper.isDarkModeEnabled
 
 
 class WeekTimelineAdapter(
@@ -89,8 +90,4 @@ class WeekTimelineAdapter(
         return dayList.size
     }
 
-    private fun isDarkModeEnabled(context: Context): Boolean {
-        val mode = context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
-        return mode == Configuration.UI_MODE_NIGHT_YES
-    }
 }

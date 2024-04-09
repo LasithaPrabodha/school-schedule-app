@@ -14,6 +14,7 @@ import androidx.preference.SwitchPreferenceCompat
 import com.capstoneprojectg8.schoolscheduleapp.R
 import com.capstoneprojectg8.schoolscheduleapp.ui.settings.auth.UserProfileActivity
 import com.capstoneprojectg8.schoolscheduleapp.ui.settings.classes.ClassSettingsActivity
+import com.capstoneprojectg8.schoolscheduleapp.utils.ThemeHelper.isDarkModeEnabled
 import com.google.firebase.auth.FirebaseAuth
 
 class SettingsFragment : PreferenceFragmentCompat() {
@@ -50,10 +51,10 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
         val switchDarkModePreference: SwitchPreferenceCompat? = findPreference("switch_dark_mode")
 
-        switchDarkModePreference?.isChecked = isDarkModeEnabled()
+        switchDarkModePreference?.isChecked = isDarkModeEnabled(requireContext())
 
-        switchDarkModePreference?.setOnPreferenceChangeListener { _ , isSelected ->
-            if(isSelected as Boolean){
+        switchDarkModePreference?.setOnPreferenceChangeListener { _, isSelected ->
+            if (isSelected as Boolean) {
                 enableDarkMode()
             } else {
                 disableDarkMode()
@@ -77,20 +78,16 @@ class SettingsFragment : PreferenceFragmentCompat() {
     }
 
     private fun saveDarkModePreference(isDarkModeEnabled: Boolean) {
-        val sharedPreferences = activity?.getSharedPreferences("app_prefs", Context.MODE_PRIVATE) ?: return
+        val sharedPreferences =
+            activity?.getSharedPreferences("app_prefs", Context.MODE_PRIVATE) ?: return
         with(sharedPreferences.edit()) {
             putBoolean("dark_mode", isDarkModeEnabled)
             apply()
         }
     }
 
-    private fun isDarkModeEnabled(): Boolean {
-        val sharedPreferences = activity?.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
-        return sharedPreferences?.getBoolean("dark_mode", false) ?: false
-    }
-
     private fun updateAssetTint() {
-        val isDarkModeEnabled = isDarkModeEnabled()
+        val isDarkModeEnabled = isDarkModeEnabled(requireContext())
         val tintResId = if (isDarkModeEnabled) R.color.background else R.color.black
 
         val switchDarkModePreference: SwitchPreferenceCompat? = findPreference("switch_dark_mode")
@@ -98,7 +95,12 @@ class SettingsFragment : PreferenceFragmentCompat() {
         val userDarkModePreference: Preference? = findPreference("user")
 
         switchDarkModePreference?.icon?.setTint(ContextCompat.getColor(requireContext(), tintResId))
-        classesDarkModePreference?.icon?.setTint(ContextCompat.getColor(requireContext(), tintResId))
+        classesDarkModePreference?.icon?.setTint(
+            ContextCompat.getColor(
+                requireContext(),
+                tintResId
+            )
+        )
         userDarkModePreference?.icon?.setTint(ContextCompat.getColor(requireContext(), tintResId))
 
         (requireActivity() as AppCompatActivity).supportActionBar?.setHomeAsUpIndicator(tintResId)
@@ -110,7 +112,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
             val userPreference: Preference? = findPreference("user")
             if (it.currentUser != null) {
                 userPreference?.title = it.currentUser?.email
-            }else{
+            } else {
                 userPreference?.title = ""
             }
         }

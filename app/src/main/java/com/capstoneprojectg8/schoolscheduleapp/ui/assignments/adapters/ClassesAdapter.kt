@@ -1,39 +1,36 @@
-package com.capstoneprojectg8.schoolscheduleapp.ui.assignments
+package com.capstoneprojectg8.schoolscheduleapp.ui.assignments.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.capstoneprojectg8.schoolscheduleapp.databinding.ItemClassAssignmentsBinding
-import com.capstoneprojectg8.schoolscheduleapp.models.ClassAssignments
-
-interface ClassesAdapterDelegate {
-    fun onBindViewHolder(holder: ClassesAdapter.ViewHolder, item: ClassAssignments)
-}
+import com.capstoneprojectg8.schoolscheduleapp.models.Assignment
+import com.capstoneprojectg8.schoolscheduleapp.models.ClassWithAssignments
 
 class ClassesAdapter(
-    private val classDelegate: ClassesAdapterDelegate,
     private val context: Context,
-    private var items: List<ClassAssignments>,
+    private var items: MutableList<ClassWithAssignments>,
+    private val onEdit: (Assignment) -> Unit,
+    private val onDelete: (Assignment) -> Unit,
 ) : RecyclerView.Adapter<ClassesAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding =
             ItemClassAssignmentsBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        val viewHolder = ViewHolder(binding)
 
-        viewHolder.binding.rvAssignments.layoutManager = LinearLayoutManager(parent.context)
-
-        return viewHolder
+        return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = items[position]
 
-        classDelegate.onBindViewHolder(holder, item)
+        val assignmentAdapter =
+            AssignmentsAdapter(context, mutableListOf(), onEdit, onDelete)
+
+        assignmentAdapter.updateList(item.assignments.toMutableList())
+        holder.binding.rvAssignments.adapter = assignmentAdapter
 
         holder.bind(item)
     }
@@ -43,18 +40,18 @@ class ClassesAdapter(
     inner class ViewHolder(val binding: ItemClassAssignmentsBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(classItem: ClassAssignments) {
+        fun bind(classItem: ClassWithAssignments) {
             binding.apply {
                 tvCourseName.setTextColor(ContextCompat.getColor(context, classItem.sclass.colour))
                 tvCourseName.text = classItem.sclass.name
-                expandableAssignmentContainter.visibility = View.VISIBLE
             }
         }
 
     }
 
-    fun updateData(newItems: List<ClassAssignments>) {
-        items = newItems
-        notifyDataSetChanged()
+    fun updateList(items: List<ClassWithAssignments>) {
+        this.items.clear()
+        this.items.addAll(items)
+        notifyItemRangeChanged(0, items.size)
     }
 }
