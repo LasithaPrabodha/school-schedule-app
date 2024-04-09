@@ -12,18 +12,15 @@ import com.capstoneprojectg8.schoolscheduleapp.R
 import com.capstoneprojectg8.schoolscheduleapp.databinding.ItemCalendarRowBinding
 import com.capstoneprojectg8.schoolscheduleapp.models.HourRow
 import com.capstoneprojectg8.schoolscheduleapp.utils.DateHelper
-import java.util.Locale
 
 class CalendarRowAdapter(
     private val context: Context,
-    private val dataSet: MutableList<HourRow>,
-    private val isCurrentWeek: Boolean,
+    private var dataSet: List<HourRow>,
     private val cellWidth: Int,
     private val onCellClick: (String, HourRow) -> Unit
 ) :
     RecyclerView.Adapter<CalendarRowAdapter.TimeViewHolder>() {
-
-    private val today: String = DateHelper.getToday("EEEE").lowercase(Locale.ROOT)
+    private val today: String = DateHelper.getToday()
 
     inner class TimeViewHolder(val binding: ItemCalendarRowBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -43,17 +40,9 @@ class CalendarRowAdapter(
     override fun onBindViewHolder(viewHolder: TimeViewHolder, position: Int) {
         val item = dataSet[position]
 
-        val setBackground: (View) -> Unit = { cell ->
-            val isDarkMode = isDarkModeEnabled(context)
-            if (isDarkMode) {
-                cell.setBackgroundColor(ContextCompat.getColor(context, R.color.black))
-            } else {
-                cell.setBackgroundColor(ContextCompat.getColor(context, R.color.background))
-            }
-        }
 
         val calendarCellAdapter =
-            CalendarCellAdapter(cellWidth, isCurrentWeek, today, setBackground) { day ->
+            CalendarCellAdapter(cellWidth, item.week, today) { day ->
                 onCellClick(day, item)
             }
 
@@ -69,15 +58,10 @@ class CalendarRowAdapter(
     }
 
     fun updateList(list: List<HourRow>) {
-        dataSet.clear()
-        dataSet.addAll(list)
+        dataSet = list
         notifyItemRangeChanged(0, 24)
     }
 
-    override fun getItemCount() = dataSet.size
+    override fun getItemCount() = 24
 
-    private fun isDarkModeEnabled(context: Context): Boolean {
-        val mode = context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
-        return mode == Configuration.UI_MODE_NIGHT_YES
-    }
 }

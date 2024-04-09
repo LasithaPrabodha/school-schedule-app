@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
 import com.capstoneprojectg8.schoolscheduleapp.database.dao.*
 import com.capstoneprojectg8.schoolscheduleapp.database.entities.*
+import com.capstoneprojectg8.schoolscheduleapp.database.relations.ClassWithAssignmentsRelation
 import com.capstoneprojectg8.schoolscheduleapp.models.*
 import com.capstoneprojectg8.schoolscheduleapp.utils.fromEntity
 import javax.inject.Inject
@@ -31,14 +32,14 @@ class ClassRepository @Inject constructor(
     fun getAllClasses(): LiveData<List<SClass>> =
         classesDao.getAllClasses().map { list -> list.map { it.fromEntity() } }
 
-    fun getAllAssignmentsWithClasses(): LiveData<List<ClassAssignments>> =
+    fun getAllAssignmentsWithClasses(): LiveData<List<ClassWithAssignments>> =
         classesDao.getAllAssignmentsWithClasses().map { list -> list.map { cl -> cl.fromEntity() } }
 
     fun getAssignmentListByClassSlot(classSlotId: Int): LiveData<List<Assignment>> =
         classesDao.getAssignmentListByClassSlotId(classSlotId).map { list -> list.map { it.fromEntity() } }
 
-    fun getDefaultListValue(id: Int): LiveData<ClassSlot> =
-        classesDao.getDefaultListValue(id).map { list -> list.fromEntity() }
+    fun getClassSlotById(id: Int): LiveData<ClassSlot> =
+        classSlotDao.getClassSlotById(id).map { list -> list.fromEntity() }
 
     suspend fun addClassSlot(classSlot: ClassSlotEntity) =
         classSlotDao.addClassSlot(classSlot)

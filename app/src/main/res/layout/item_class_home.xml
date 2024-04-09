@@ -5,26 +5,27 @@
     android:id="@+id/cardViewId"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    android:background="#FFFFFF"
+    android:layout_marginVertical="8dp"
+    android:backgroundTint="@color/background"
     app:cardCornerRadius="8dp"
-    app:cardElevation="4dp">
+    app:cardElevation="0dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp">
+        android:paddingHorizontal="8dp"
+        android:paddingVertical="16dp">
 
         <ImageView
             android:id="@+id/ivArrow"
+            style="@style/AssetTintColor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="@null"
             android:src="@drawable/baseline_keyboard_arrow_right_24"
             app:layout_constraintBottom_toBottomOf="@id/tvStartTime"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            style="@style/AssetTintColor"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tvStartTime"
@@ -33,8 +34,6 @@
             android:layout_marginStart="24dp"
             android:fontFamily="sans-serif"
             android:text="@string/start_time_example"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:textSize="11sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -46,8 +45,6 @@
             android:layout_marginStart="24dp"
             android:fontFamily="sans-serif"
             android:text="@string/end_time_example"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:textSize="11sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
@@ -56,8 +53,6 @@
             android:layout_width="1dp"
             android:layout_height="0dp"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
             android:background="@android:color/darker_gray"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/tvStartTime"
@@ -67,7 +62,7 @@
             android:id="@+id/tvCourseName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="12dp"
             android:fontFamily="sans-serif"
             android:text="@string/course_example"
             android:textSize="16sp"
@@ -88,10 +83,10 @@
             app:layout_constraintTop_toBottomOf="@id/tvCourseName" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/expandableAssignmentContainter"
+            android:id="@+id/expandableAssignmentContainer"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="12dp"
             android:layout_marginTop="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/dividerLine"
@@ -102,6 +97,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/assignments"
+                android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -111,6 +107,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textViewAssignments"
@@ -118,13 +115,12 @@
 
             <Button
                 android:id="@+id/cancelBtn"
+                style="?attr/materialButtonOutlinedStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:text="@string/cancel"
                 android:textAllCaps="false"
-                style="?attr/materialButtonOutlinedStyle"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/rvHomeAssignments" />
 
@@ -137,7 +133,6 @@
                 android:backgroundTint="@color/color_action"
                 android:text="@string/addAsignmentTextButton"
                 android:textAllCaps="false"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/cancelBtn"
                 app:layout_constraintTop_toBottomOf="@+id/rvHomeAssignments" />
         </androidx.constraintlayout.widget.ConstraintLayout>

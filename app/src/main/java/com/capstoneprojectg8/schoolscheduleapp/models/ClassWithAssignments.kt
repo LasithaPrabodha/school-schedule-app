@@ -1,6 +1,6 @@
 package com.capstoneprojectg8.schoolscheduleapp.models
 
-data class ClassAssignments(
+data class ClassWithAssignments(
     val sclass: SClass,
     val assignments: List<Assignment>
 )

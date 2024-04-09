@@ -9,6 +9,7 @@ data class AssignmentEntity(
     val id: Int,
     val title: String,
     val detail: String,
+    val dueDate: String,
     val isPriority: Boolean = false,
     val isCompleted: Boolean,
     val classId: Int,

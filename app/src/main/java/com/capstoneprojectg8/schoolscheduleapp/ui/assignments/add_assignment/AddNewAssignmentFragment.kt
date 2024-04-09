@@ -1,5 +1,6 @@
 package com.capstoneprojectg8.schoolscheduleapp.ui.assignments.add_assignment
 
+import android.app.DatePickerDialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -9,12 +10,19 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.capstoneprojectg8.schoolscheduleapp.R
 import com.capstoneprojectg8.schoolscheduleapp.databinding.FragmentAddNewAssignmentBinding
 import com.capstoneprojectg8.schoolscheduleapp.models.Assignment
 import com.capstoneprojectg8.schoolscheduleapp.models.ClassSlot
 import com.capstoneprojectg8.schoolscheduleapp.ui.settings.classes.ClassSettingsViewModel
+import com.capstoneprojectg8.schoolscheduleapp.utils.DateHelper
+import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.util.Calendar
+import java.util.Locale
 
 class AddNewAssignmentFragment : Fragment() {
 
@@ -22,8 +30,9 @@ class AddNewAssignmentFragment : Fragment() {
     private val binding get() = _binding!!
     private val assignmentViewModel: AddNewAssignmentViewModel by activityViewModels()
     private val classSettingsViewModel: ClassSettingsViewModel by activityViewModels()
-    private var selectedClass: ClassSlot? = null
+    private var selectedClassSlot: ClassSlot? = null
     private var classSlotId: Int? = null
+    private lateinit var calendar: Calendar
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,18 +41,27 @@ class AddNewAssignmentFragment : Fragment() {
 
 
         _binding = FragmentAddNewAssignmentBinding.inflate(inflater, container, false)
+        calendar = Calendar.getInstance()
+        val today = LocalDate.now()
+        val localDate = DateHelper.startOfTheWeek(today)
+        val finalDate = if (localDate > today) localDate else today
+        calendar.set(finalDate.year, finalDate.monthValue - 1, finalDate.dayOfMonth, 9, 0)
 
-        val classId = arguments?.getInt("classId", 0)
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        binding.editTextDate.setText(dateFormat.format(calendar.time))
+
+        binding.editTextDate.setOnClickListener { showDatePicker() }
+
         classSlotId = arguments?.getInt("classSlotId", 0)
 
 
         val autocomplete = binding.autoCompleteClass
 
         classSettingsViewModel.getAllClassSlots().observe(viewLifecycleOwner) { classes ->
-            if (classId != null && classId != 0) {
-                assignmentViewModel.getDefaultListValue(classId).observe(viewLifecycleOwner) {
+            if (classSlotId != null && classSlotId != 0) {
+                assignmentViewModel.getClassSlotById(classSlotId!!).observe(viewLifecycleOwner) {
                     autocomplete.setText(it.className, false)
-                    selectedClass = it
+                    selectedClassSlot = it
                 }
             } else {
                 binding.autoCompleteClass.isEnabled = true
@@ -57,12 +75,14 @@ class AddNewAssignmentFragment : Fragment() {
                 AdapterView.OnItemClickListener { adapterView, _, i, _ ->
                     val itemSelected = adapterView.getItemAtPosition(i) as String
                     val className = itemSelected.split(" - ")[0]
-                    selectedClass = classes.find { it.className == className }!!
+                    selectedClassSlot = classes.find { it.className == className }!!
                 }
         }
 
         binding.addNewAssignmentBtn.setOnClickListener {
-            addAssignment()
+            lifecycleScope.launch {
+                addAssignment()
+            }
         }
 
         binding.cancelAddAssignmentBtn.setOnClickListener {
@@ -72,28 +92,55 @@ class AddNewAssignmentFragment : Fragment() {
         return binding.root
     }
 
-    private fun addAssignment() {
+    private fun showDatePicker() {
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+        val datePickerDialog = DatePickerDialog(
+            requireContext(),
+            { _, _year, _month, dayOfMonth ->
+                calendar.set(_year, _month, dayOfMonth)
+                updateDateEditText()
+            },
+            year,
+            month,
+            day
+        )
+        datePickerDialog.show()
+    }
+
+    private fun updateDateEditText() {
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        binding.editTextDate.setText(dateFormat.format(calendar.time))
+    }
+
+    private suspend fun addAssignment() {
         val assignmentTitle = binding.assignmentTitleInputText.text.toString().trim()
         val assignmentDetail = binding.detailsTextInput.text.toString().trim()
+        val priority = binding.setPriorityCheckBox.isChecked
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val dueDate = dateFormat.format(calendar.time)
 
         if (assignmentTitle.isEmpty()) {
             binding.assignmentTitleInputLayout.error = "Please insert assignment title"
         }
 
-        if (selectedClass == null) {
+        if (selectedClassSlot == null) {
             binding.classListInputLayout.error = "Please select class"
         }
 
-        if (assignmentTitle.isEmpty() || selectedClass == null) return
+        if (assignmentTitle.isEmpty() || selectedClassSlot == null) return
 
         val newAssignment =
             Assignment(
                 0,
                 assignmentTitle,
                 assignmentDetail,
+                dueDate,
+                priority,
                 false,
-                false,
-                selectedClass!!.id,
+                selectedClassSlot!!.classId,
                 classSlotId!!
             )
         assignmentViewModel.addAssignment(newAssignment)

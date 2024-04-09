@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.capstoneprojectg8.schoolscheduleapp.R
 import com.capstoneprojectg8.schoolscheduleapp.databinding.ItemDayOfWeekBinding
 import com.capstoneprojectg8.schoolscheduleapp.models.CalendarData
+import com.capstoneprojectg8.schoolscheduleapp.utils.ThemeHelper.isDarkModeEnabled
 
 
 interface CalendarAdapterDelegate {
@@ -49,7 +50,7 @@ class CalendarAdapter(
         fun bind(calendarDataModel: CalendarData, position: Int) {
             val date = binding.dateTextView
             val day = binding.weekdayTextView
-            val linearLayout = binding.root
+            val cell = binding.root
             val isDarkMode = isDarkModeEnabled(binding.root.context)
             val backgroundColor: Int
             val textColor: Int
@@ -66,33 +67,30 @@ class CalendarAdapter(
                     backgroundColor = ContextCompat.getColor(binding.root.context, R.color.black)
                     textColor = ContextCompat.getColor(binding.root.context, R.color.white)
                 } else {
-                    backgroundColor = ContextCompat.getColor(binding.root.context, R.color.background)
+                    backgroundColor = ContextCompat.getColor(binding.root.context, R.color.color_action)
                     textColor = ContextCompat.getColor(binding.root.context, R.color.black)
                 }
 
                 val shape = GradientDrawable()
                 shape.shape = GradientDrawable.RECTANGLE
                 shape.setColor(backgroundColor)
-                shape.cornerRadii = floatArrayOf(16f, 16f, 16f, 16f, 0f, 0f, 0f, 0f)
-                ViewCompat.setBackground(linearLayout, shape)
+                shape.cornerRadii = floatArrayOf(16f, 16f, 16f, 16f, 16f, 16f, 16f, 16f)
+                ViewCompat.setBackground(cell, shape)
                 date.setTextColor(textColor)
                 day.setTextColor(textColor)
             } else {
-                backgroundColor = if (isDarkMode) {
-                    ContextCompat.getColor(binding.root.context, R.color.AppBackG)
-                } else {
-                    ContextCompat.getColor(binding.root.context, R.color.white)
-                }
+                backgroundColor =
+                    ContextCompat.getColor(binding.root.context, R.color.background)
+
 
                 val shape = GradientDrawable()
                 shape.shape = GradientDrawable.RECTANGLE
-                shape.setColor(backgroundColor)
-                ViewCompat.setBackground(linearLayout, shape)
+                ViewCompat.setBackground(cell, shape)
             }
 
             date.text = calendarDataModel.calendarDate
             day.text = calendarDataModel.calendarDay
-            linearLayout.setOnClickListener {
+            cell.setOnClickListener {
                 calendarAdapterDelegate.onSelect(calendarDataModel, adapterPosition, date)
             }
 
@@ -103,8 +101,4 @@ class CalendarAdapter(
         this.pos = pos
     }
 
-    private fun isDarkModeEnabled(context: Context): Boolean {
-        val mode = context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
-        return mode == Configuration.UI_MODE_NIGHT_YES
-    }
 }

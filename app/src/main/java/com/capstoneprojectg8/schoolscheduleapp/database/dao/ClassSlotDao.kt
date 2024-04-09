@@ -22,4 +22,7 @@ interface ClassSlotDao {
 
     @Query("SELECT * FROM CLASS_SLOTS ORDER BY id DESC")
     fun getAllClassSlots(): LiveData<List<ClassSlotEntity>>
+
+    @Query("SELECT * FROM CLASS_SLOTS WHERE id = :id")
+    fun getClassSlotById(id: Int): LiveData<ClassSlotEntity>
 }

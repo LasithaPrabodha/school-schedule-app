@@ -9,10 +9,10 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="transparent">#00000000</color>
-    <color name="background">#F3F3F9</color>
+    <color name="background">#21283FFF</color>
     <color name="text">#010618</color>
     <color name="grey">#A6A9B2</color>
-    <color name="toolbar_button">#FF000000</color>
+    <color name="toolbar_button">#FFFFFFFF</color>
 
     <color name="orange">#FFC374</color>
     <color name="green">#4AD2C9</color>

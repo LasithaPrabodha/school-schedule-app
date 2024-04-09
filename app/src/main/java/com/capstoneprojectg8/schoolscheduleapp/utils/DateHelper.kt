@@ -12,11 +12,12 @@ import java.time.format.DateTimeFormatter
 import java.time.temporal.TemporalAdjusters
 import java.util.Calendar
 import java.util.Date
+import java.util.Locale
 
 
 object DateHelper {
 
-    val dateFormat = SimpleDateFormat("yyyy-MM-dd")
+    private val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH)
 
     fun startOfTheWeek(date: LocalDate): LocalDate {
         return if (date.dayOfWeek == DayOfWeek.SATURDAY || date.dayOfWeek == DayOfWeek.SUNDAY) {
@@ -58,16 +59,6 @@ object DateHelper {
     fun getToday(pattern: String = "yyyy-MM-dd"): String {
         val today = LocalDate.now()
         return today.format(DateTimeFormatter.ofPattern(pattern))
-    }
-
-    fun getDaysOfWeek(): List<String> {
-        return listOf(
-            "monday",
-            "tuesday",
-            "wednesday",
-            "thursday",
-            "friday"
-        )
     }
 
     fun checkConflicts(list: List<ClassSlot>, date: String, hour: Int, duration: Int): Boolean {
@@ -136,9 +127,26 @@ object DateHelper {
         }
     }
 
-    fun convert(date: Date): LocalDate {
-        return date.toInstant()
-            .atZone(ZoneId.of("UTC"))
-            .toLocalDate()
+    fun getSmartDate(dateString: String): String {
+        val currentDate = LocalDate.now()
+
+        val inputDate = dateFormat.parse(dateString) ?: return dateString
+
+        val localDate = inputDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
+
+        val differenceInDays = currentDate.toEpochDay() - localDate.toEpochDay()
+
+        val output = when {
+            differenceInDays == 0L -> "Today"
+            differenceInDays == 1L -> "Yesterday"
+            differenceInDays == -1L -> "Tomorrow"
+            differenceInDays > 1L -> "$differenceInDays days ago"
+            else -> "in ${-differenceInDays} days"
+        }
+
+        val longDateFormat = SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH)
+        val fullDate = inputDate.let { longDateFormat.format(it) }
+
+        return "$output - $fullDate"
     }
 }

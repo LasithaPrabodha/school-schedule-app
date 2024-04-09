@@ -9,28 +9,31 @@
         android:id="@+id/navigation_home"
         android:name="com.capstoneprojectg8.schoolscheduleapp.ui.home.HomeFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" >
+        tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_navigation_home_to_addNewAssignmentFragment"
-            app:destination="@id/navigation_add_new_assignment" />
+            app:destination="@id/navigation_add_new_assignment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
     </fragment>
 
     <fragment
         android:id="@+id/navigation_schedule"
         android:name="com.capstoneprojectg8.schoolscheduleapp.ui.schedule.ScheduleFragment"
         android:label="@string/title_schedule"
-        tools:layout="@layout/fragment_schedule" >
+        tools:layout="@layout/fragment_schedule">
         <action
             android:id="@+id/action_navigation_schedule_to_add_class_slot"
             app:destination="@id/navigation_add_class_slot"
-            />
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
     </fragment>
 
     <fragment
         android:id="@+id/navigation_add_class_slot"
         android:name="com.capstoneprojectg8.schoolscheduleapp.ui.schedule.add_slot.AddClassSlotFragment"
         android:label="@string/new_class_slot"
-        tools:layout="@layout/fragment_add_class_slot"  >
+        tools:layout="@layout/fragment_add_class_slot">
         <argument
             android:name="hour"
             android:defaultValue="9"
@@ -44,25 +47,19 @@
     <fragment
         android:id="@+id/navigation_settings"
         android:name="com.capstoneprojectg8.schoolscheduleapp.ui.settings.SettingsFragment"
-        android:label="@string/title_settings"  />
+        android:label="@string/title_settings" />
     <fragment
         android:id="@+id/navigation_assignments"
         android:name="com.capstoneprojectg8.schoolscheduleapp.ui.assignments.AssignmentsFragment"
         android:label="Assignments"
-        tools:layout="@layout/fragment_assignments" >
-        <action
-            android:id="@+id/action_navigation_assignments_to_addNewAssignmentFragment"
-            app:destination="@id/navigation_add_new_assignment" />
+        tools:layout="@layout/fragment_assignment_tabs">
+
     </fragment>
     <fragment
         android:id="@+id/navigation_add_new_assignment"
         android:name="com.capstoneprojectg8.schoolscheduleapp.ui.assignments.add_assignment.AddNewAssignmentFragment"
         android:label="New Assignment"
-        tools:layout="@layout/fragment_add_new_assignment" >
-        <argument
-            android:name="classId"
-            android:defaultValue="0"
-            app:argType="integer" />
+        tools:layout="@layout/fragment_add_new_assignment">
         <argument
             android:name="classSlotId"
             android:defaultValue="0"

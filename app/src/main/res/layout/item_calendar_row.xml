@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -41,13 +42,14 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/weekdays"
             android:layout_width="fill_parent"
-            android:layout_height="@dimen/grid_time_indicator_layout_height" />
+            android:layout_height="@dimen/grid_time_indicator_layout_height"
+            tools:listitem="@layout/item_week_day_cell" />
 
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:background="@color/grey"
+        android:background="@color/background"
         app:layout_constraintTop_toBottomOf="@+id/row" />
 </androidx.constraintlayout.widget.ConstraintLayout>

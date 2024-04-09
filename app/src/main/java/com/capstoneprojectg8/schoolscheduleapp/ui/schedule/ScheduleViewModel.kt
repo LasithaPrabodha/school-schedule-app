@@ -28,7 +28,7 @@ class ScheduleViewModel @Inject constructor(private val classRepository: ClassRe
     fun getAllClassSlots() =
         classRepository.getAllClassSlots()
 
-    fun generateHourRows(): MutableList<HourRow> {
+    fun generateHourRows(daysOfWeek: MutableList<Map<String, String>>): MutableList<HourRow> {
         val list = mutableListOf<HourRow>()
         for (index in 0..24) {
             val hour = if (index == 0) {
@@ -48,6 +48,7 @@ class ScheduleViewModel @Inject constructor(private val classRepository: ClassRe
                 HourRow(
                     amPm = amPm,
                     hour = hour,
+                    week = daysOfWeek
                 )
             )
         }

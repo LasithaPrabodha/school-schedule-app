@@ -12,7 +12,9 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewGroup.GONE
 import android.view.ViewGroup.LayoutParams
+import android.view.ViewGroup.VISIBLE
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
@@ -61,6 +63,7 @@ class ScheduleFragment : Fragment() {
         setCellWidth()
         initRecycleViews()
         generateSlots()
+
         scrollToFirstSlot()
         setupListeners()
 
@@ -79,17 +82,26 @@ class ScheduleFragment : Fragment() {
                 val previousItem = menu.findItem(R.id.previous)
                 val currentWeekItem = menu.findItem(R.id.current_week)
                 val nextItem = menu.findItem(R.id.next)
-                val isDarkMode = isDarkModeEnabled(requireContext())
 
-                if (isDarkMode) {
-                    previousItem.icon?.setTint(ContextCompat.getColor(requireContext(), R.color.background))
-                    currentWeekItem.icon?.setTint(ContextCompat.getColor(requireContext(), R.color.background))
-                    nextItem.icon?.setTint(ContextCompat.getColor(requireContext(), R.color.background))
-                } else {
-                    previousItem.icon?.setTint(ContextCompat.getColor(requireContext(), R.color.black))
-                    currentWeekItem.icon?.setTint(ContextCompat.getColor(requireContext(), R.color.black))
-                    nextItem.icon?.setTint(ContextCompat.getColor(requireContext(), R.color.black))
-                }
+                previousItem.icon?.setTint(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.toolbar_button
+                    )
+                )
+                currentWeekItem.icon?.setTint(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.toolbar_button
+                    )
+                )
+                nextItem.icon?.setTint(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.toolbar_button
+                    )
+                )
+
 
             }
 
@@ -161,11 +173,20 @@ class ScheduleFragment : Fragment() {
     }
 
     private fun initRecycleViews() {
-        val timeline = viewModel.generateHourRows()
         val daysOfWeek: MutableList<Map<String, String>> = DateHelper.generateDaysOfTheWeek()
+        weekTimelineAdapter = WeekTimelineAdapter(requireContext(), daysOfWeek, cellWidth)
 
+        binding.dayList.apply {
+            layoutManager = LinearLayoutManager(
+                requireContext(),
+                LinearLayoutManager.HORIZONTAL, false
+            )
+            adapter = weekTimelineAdapter
+        }
+
+        val timeline = viewModel.generateHourRows(daysOfWeek)
         calendarRowAdapter =
-            CalendarRowAdapter(requireContext(), timeline, step == 0, cellWidth) { day, row ->
+            CalendarRowAdapter(requireContext(), timeline, cellWidth) { day, row ->
                 val date =
                     daysOfWeek.find { it["weekdayFull"] == day.toTitleCase() }!!["fullDate"]!!
 
@@ -193,17 +214,10 @@ class ScheduleFragment : Fragment() {
         binding.hourList.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = calendarRowAdapter
+            setHasFixedSize(true)
         }
 
-        weekTimelineAdapter = WeekTimelineAdapter(requireContext(), daysOfWeek, cellWidth)
 
-        binding.dayList.apply {
-            layoutManager = LinearLayoutManager(
-                requireContext(),
-                LinearLayoutManager.HORIZONTAL, false
-            )
-            adapter = weekTimelineAdapter
-        }
     }
 
     private fun scrollToFirstSlot() {
@@ -221,7 +235,7 @@ class ScheduleFragment : Fragment() {
 
         weekTimelineAdapter.updateList(daysOfTheWeek)
 
-        val timeline = viewModel.generateHourRows()
+        val timeline = viewModel.generateHourRows(daysOfTheWeek)
         calendarRowAdapter.updateList(timeline)
 
         generateSlots()
@@ -296,10 +310,6 @@ class ScheduleFragment : Fragment() {
         weekGrid.addView(linearLayout, linearLayoutParams)
     }
 
-    private fun isDarkModeEnabled(context: Context): Boolean {
-        val mode = context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
-        return mode == Configuration.UI_MODE_NIGHT_YES
-    }
 
     override fun onDestroyView() {
         super.onDestroyView()

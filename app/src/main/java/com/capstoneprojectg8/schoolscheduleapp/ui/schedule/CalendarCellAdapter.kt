@@ -5,37 +5,45 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.GridLayout.LayoutParams
 import android.widget.LinearLayout
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.capstoneprojectg8.schoolscheduleapp.R
 import com.capstoneprojectg8.schoolscheduleapp.databinding.ItemWeekDayCellBinding
+import com.capstoneprojectg8.schoolscheduleapp.models.HourRow
 import com.capstoneprojectg8.schoolscheduleapp.utils.DateHelper
+import com.capstoneprojectg8.schoolscheduleapp.utils.ThemeHelper.isDarkModeEnabled
 
 class CalendarCellAdapter(
     private val cellWidth: Int,
-    private val isCurrentWeek: Boolean,
+    private val week: List<Map<String, String>>,
     private val today: String,
-    private val setBackgroundColor: (view: View) -> Unit,
     private val onClick: (day: String) -> Unit
 ) :
     RecyclerView.Adapter<CalendarCellAdapter.CellViewHolder>() {
 
-    private val dataSet = DateHelper.getDaysOfWeek()
-
     inner class CellViewHolder(val binding: ItemWeekDayCellBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(day: String) {
-            binding.day = day
+        fun bind(day: Map<String, String>) {
+            binding.day = day["weekdayFull"]?.lowercase()
 
             binding.root.layoutParams = LinearLayout.LayoutParams(
                 cellWidth,
                 LayoutParams.MATCH_PARENT
             )
+            val isDarkMode = isDarkModeEnabled(binding.root.context)
 
-            if (isCurrentWeek && day == today) {
-                setBackgroundColor(binding.root)
+
+            if (day["fullDate"] == today) {
+                binding.root.setBackgroundColor(
+                    ContextCompat.getColor(
+                        binding.root.context,
+                        if (isDarkMode) R.color.black else R.color.background
+                    )
+                )
             }
 
             binding.weekCell.setOnClickListener {
-                onClick(day)
+                onClick(day["weekdayFull"]!!.lowercase())
             }
         }
     }
@@ -50,10 +58,10 @@ class CalendarCellAdapter(
         return CellViewHolder(binding)
     }
 
-    override fun getItemCount(): Int = dataSet.count()
+    override fun getItemCount(): Int = week.count()
 
     override fun onBindViewHolder(holder: CalendarCellAdapter.CellViewHolder, position: Int) {
-        val item = dataSet[position]
+        val item = week[position]
 
         holder.bind(item)
     }

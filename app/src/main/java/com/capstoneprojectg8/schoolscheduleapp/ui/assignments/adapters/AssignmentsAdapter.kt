@@ -1,4 +1,4 @@
-package com.capstoneprojectg8.schoolscheduleapp.ui.home
+package com.capstoneprojectg8.schoolscheduleapp.ui.assignments.adapters
 
 import android.app.AlertDialog
 import android.content.Context
@@ -10,18 +10,15 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.capstoneprojectg8.schoolscheduleapp.databinding.AssignmentListItemBinding
 import com.capstoneprojectg8.schoolscheduleapp.models.Assignment
+import com.capstoneprojectg8.schoolscheduleapp.models.ClassWithAssignments
 
 class AssignmentsAdapter(
     private val context: Context,
-    private var assignmentList: List<Assignment>,
+    private var assignmentList: MutableList<Assignment>,
     private val onEdit: (Assignment) -> Unit,
     private val onDelete: (Assignment) -> Unit,
 ) : RecyclerView.Adapter<AssignmentsAdapter.ViewHolder>() {
 
-    fun updateData(newAssignmentList: List<Assignment>) {
-        assignmentList = newAssignmentList
-        notifyDataSetChanged()
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding =
@@ -33,7 +30,6 @@ class AssignmentsAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val assignmentItem = assignmentList[position]
-        holder.bind(assignmentItem)
 
         holder.binding.imageButton.setOnClickListener {
             val currentAssignment = assignmentItem.copy()
@@ -54,13 +50,14 @@ class AssignmentsAdapter(
             editedAssignment.isCompleted = !editedAssignment.isCompleted
 
             onEdit(editedAssignment)
-
         }
+
+        holder.bind(assignmentItem)
     }
 
     override fun getItemCount(): Int = assignmentList.size
 
-    class ViewHolder(val binding: AssignmentListItemBinding) :
+    inner class ViewHolder(val binding: AssignmentListItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(assignment: Assignment) {
@@ -90,5 +87,10 @@ class AssignmentsAdapter(
         }
     }
 
+    fun updateList(items: List<Assignment>) {
+        this.assignmentList.clear()
+        this.assignmentList.addAll(items)
+        notifyItemRangeChanged(0, items.size)
+    }
 
 }

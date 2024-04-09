@@ -1,73 +1,52 @@
 package com.capstoneprojectg8.schoolscheduleapp.ui.assignments
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.activityViewModels
-import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.capstoneprojectg8.schoolscheduleapp.databinding.FragmentAssignmentsBinding
-import com.capstoneprojectg8.schoolscheduleapp.models.ClassAssignments
-import com.capstoneprojectg8.schoolscheduleapp.ui.home.AssignmentsAdapter
-import com.capstoneprojectg8.schoolscheduleapp.ui.home.HomeViewModel
+import androidx.fragment.app.Fragment
+import androidx.viewpager.widget.ViewPager
+import com.capstoneprojectg8.schoolscheduleapp.databinding.FragmentAssignmentTabsBinding
+import com.capstoneprojectg8.schoolscheduleapp.ui.assignments.classes.TabClasses
+import com.capstoneprojectg8.schoolscheduleapp.ui.assignments.due_date.TabDueDate
+import com.capstoneprojectg8.schoolscheduleapp.ui.assignments.priority.TabPriority
+import com.google.android.material.tabs.TabLayout
 
-class AssignmentsFragment : Fragment(), ClassesAdapterDelegate {
+class AssignmentsFragment : Fragment() {
 
-    private var _binding: FragmentAssignmentsBinding? = null
+    private lateinit var pager: ViewPager // creating object of ViewPager
+    private lateinit var tab: TabLayout  // creating object of TabLayout
+
+    private var _binding: FragmentAssignmentTabsBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var classAdapter: ClassesAdapter
-    private val viewModel: HomeViewModel by activityViewModels()
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
+        inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
-        _binding = FragmentAssignmentsBinding.inflate(inflater, container, false)
+        _binding = FragmentAssignmentTabsBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        setupClassRecyclerView()
+        pager = binding.viewPager
+        tab = binding.tabLayout
+
+
+        // Initializing the ViewPagerAdapter
+        val adapter = TabFragmentAdapter(requireActivity().supportFragmentManager)
+
+        // add fragment to the list
+        adapter.addFragment(TabDueDate(), "Due Date")
+        adapter.addFragment(TabClasses(), "Classes")
+        adapter.addFragment(TabPriority(), "Priority")
+
+        // Adding the Adapter to the ViewPager
+        pager.adapter = adapter
+
+        // bind the viewPager with the TabLayout.
+        tab.setupWithViewPager(pager)
+
         return root
     }
 
-    private fun setupClassRecyclerView() {
-        viewModel.getAllAssignmentsWithClasses().observe(viewLifecycleOwner) { classes ->
-            val filteredClasses = classes.filter { it.assignments.isNotEmpty() }
-
-            if (filteredClasses.isEmpty()) {
-                binding.emptyAssignmentsMsg.visibility = View.VISIBLE
-            } else {
-                binding.emptyAssignmentsMsg.visibility = View.GONE
-
-            }
-
-            classAdapter = ClassesAdapter(
-                this,
-                requireContext(),
-                filteredClasses
-            )
-            binding.rvAssignments.apply {
-                layoutManager = LinearLayoutManager(context)
-                adapter = classAdapter
-            }
-        }
-
-    }
-
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
-    override fun onBindViewHolder(holder: ClassesAdapter.ViewHolder, item: ClassAssignments) {
-        val assignmentAdapter =
-            AssignmentsAdapter(item.assignments, viewModel, requireContext())
-        holder.binding.rvAssignments.adapter = assignmentAdapter
-        assignmentAdapter.updateData(item.assignments)
-    }
 }

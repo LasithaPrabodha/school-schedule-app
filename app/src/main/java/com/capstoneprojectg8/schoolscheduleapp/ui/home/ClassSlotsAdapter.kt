@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.capstoneprojectg8.schoolscheduleapp.R
 import com.capstoneprojectg8.schoolscheduleapp.databinding.ItemClassHomeBinding
@@ -28,11 +27,8 @@ class ClassSlotsAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding =
             ItemClassHomeBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        val viewHolder = ViewHolder(binding)
 
-        viewHolder.binding.rvHomeAssignments.layoutManager = LinearLayoutManager(parent.context)
-
-        return viewHolder
+        return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -47,8 +43,6 @@ class ClassSlotsAdapter(
             notifyItemChanged(position, Unit)
         }
 
-        holder.bind(item)
-
         holder.binding.addAssignmentBtn.setOnClickListener {
             onItemClicked.invoke(item)
         }
@@ -57,6 +51,8 @@ class ClassSlotsAdapter(
             item.isExpandable = false
             notifyItemChanged(position, Unit)
         }
+
+        holder.bind(item)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int, payloads: MutableList<Any>) {
@@ -83,7 +79,7 @@ class ClassSlotsAdapter(
                 tvEndTime.text = sdf.format(Date().apply { hours = endTime; minutes = 0 })
                 tvRoom.text = "Room: " + classItem.classRoom
                 tvCourseName.text = classItem.className
-                expandableAssignmentContainter.visibility =
+                expandableAssignmentContainer.visibility =
                     if (classItem.isExpandable) View.VISIBLE else View.GONE
                 dividerLine.setBackgroundColor(ContextCompat.getColor(context, classItem.color))
                 ivArrow.setImageResource(
@@ -94,7 +90,7 @@ class ClassSlotsAdapter(
         }
 
         fun collapseExpandedViews() {
-            binding.expandableAssignmentContainter.visibility = View.GONE
+            binding.expandableAssignmentContainer.visibility = View.GONE
             binding.ivArrow.setImageResource(R.drawable.baseline_keyboard_arrow_right_24)
         }
     }
