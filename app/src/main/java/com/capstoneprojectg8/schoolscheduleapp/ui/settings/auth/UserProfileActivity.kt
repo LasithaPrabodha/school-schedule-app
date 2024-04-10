@@ -24,6 +24,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.auth
+import com.google.firebase.firestore.firestore
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -52,7 +53,7 @@ class UserProfileActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken("53599845427-cm626895kfifqdfkthtt29sve7vuepak.apps.googleusercontent.com")
+            .requestIdToken(getString(R.string.google_client_id))
             .requestEmail()
             .build()
 
@@ -64,7 +65,6 @@ class UserProfileActivity : AppCompatActivity() {
         signIn()
         setupAutoComplete()
         observeSearchResult()
-        loadSaveInfo()
         onSaveButtonTapped()
 
         binding.buttonCancel.setOnClickListener {
@@ -75,13 +75,28 @@ class UserProfileActivity : AppCompatActivity() {
     private fun loadSaveInfo() {
 
         try {
+            val currentUser = auth.currentUser
+            currentUser?.let {
+                val db = Firebase.firestore
+                db.collection("users").document(currentUser.uid)
+                    .get()
+                    .addOnSuccessListener { document ->
+                        if (document != null) {
+                            Log.d(TAG, "DocumentSnapshot data: ${document.data}")
 
-            val sh = getSharedPreferences("UserUniversity", MODE_PRIVATE)
-            val university = sh.getString("university", "")
-            val year = sh.getInt("year", 0)
+                            binding.textInputUniversity.editText?.setText(document.data!!["university"].toString())
+                            binding.editTextYear.setText(document.data!!["year"].toString())
+                        } else {
+                            Log.d(TAG, "No such document")
+                        }
+                    }
+                    .addOnFailureListener { exception ->
+                        Log.d(TAG, "get failed with ", exception)
+                    }
 
-            binding.textInputUniversity.editText?.setText(university)
-            binding.editTextYear.setText(year.toString())
+
+            }
+
         } catch (e: Exception) {
             Log.e(TAG, e.message.toString())
         }
@@ -89,14 +104,25 @@ class UserProfileActivity : AppCompatActivity() {
 
     private fun onSaveButtonTapped() {
         binding.buttonSubmit.setOnClickListener {
-            val sharedPreferences = getSharedPreferences("UserUniversity", MODE_PRIVATE)
-            val myEdit = sharedPreferences.edit()
 
-            myEdit.putString("university", binding.textInputUniversity.editText?.text.toString())
-            myEdit.putInt("year", binding.editTextYear.text.toString().toInt())
-            myEdit.apply()
+            val currentUser = auth.currentUser
+            currentUser?.let {
+                val userInfo = hashMapOf(
+                    "university" to binding.textInputUniversity.editText?.text.toString(),
+                    "year" to binding.editTextYear.text.toString().toInt(),
+                )
 
-            finish()
+                val db = Firebase.firestore
+                db.collection("users").document(currentUser.uid)
+                    .set(userInfo)
+                    .addOnSuccessListener {
+                        Log.d(TAG, "DocumentSnapshot successfully written!")
+
+                        finish()
+                    }
+                    .addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }
+
+            }
         }
     }
 
@@ -184,6 +210,8 @@ class UserProfileActivity : AppCompatActivity() {
                     Log.d(TAG, "signInWithCredential:success")
                     val user = auth.currentUser
                     updateUI(user)
+
+                    loadSaveInfo()
                 } else {
                     Log.w(TAG, "signInWithCredential:failure", task.exception)
                     updateUI(null)
