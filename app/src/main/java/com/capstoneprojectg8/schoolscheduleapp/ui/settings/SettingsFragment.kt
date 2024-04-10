@@ -88,7 +88,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
     private fun updateAssetTint() {
         val isDarkModeEnabled = isDarkModeEnabled(requireContext())
-        val tintResId = if (isDarkModeEnabled) R.color.background else R.color.black
+        val tintResId = if (isDarkModeEnabled) R.color.white else R.color.black
 
         val switchDarkModePreference: SwitchPreferenceCompat? = findPreference("switch_dark_mode")
         val classesDarkModePreference: Preference? = findPreference("classes")
