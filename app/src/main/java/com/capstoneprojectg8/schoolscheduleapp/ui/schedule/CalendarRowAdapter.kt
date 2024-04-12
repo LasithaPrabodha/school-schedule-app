@@ -14,7 +14,6 @@ import com.capstoneprojectg8.schoolscheduleapp.models.HourRow
 import com.capstoneprojectg8.schoolscheduleapp.utils.DateHelper
 
 class CalendarRowAdapter(
-    private val context: Context,
     private var dataSet: List<HourRow>,
     private val cellWidth: Int,
     private val onCellClick: (String, HourRow) -> Unit

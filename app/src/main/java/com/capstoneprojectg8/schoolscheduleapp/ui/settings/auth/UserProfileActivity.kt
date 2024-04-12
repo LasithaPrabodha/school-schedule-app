@@ -169,6 +169,8 @@ class UserProfileActivity : AppCompatActivity() {
                 is UserProfileViewModel.UniversitySearchState.Error -> {
                     Log.e(TAG, it.throwable.message.toString())
                 }
+
+                else -> {}
             }
         }
     }

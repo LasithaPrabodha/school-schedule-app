@@ -69,48 +69,12 @@ object DateHelper {
             val slotDateTime = LocalDate.parse(slot.date, DateTimeFormatter.ofPattern("yyyy-MM-dd"))
             val slotHourRange = slot.startingHour until (slot.startingHour + slot.noOfHours)
             val isSameDate = selectedDateTime == slotDateTime
+            val hasRepeatingSlot =
+                slot.dayOfTheWeek == selectedDateTime.dayOfWeek.value && slot.isRepeating
+
             val isOverlapping = selectedHourRange.intersect(slotHourRange).isNotEmpty()
 
-            isSameDate && isOverlapping
-        }
-    }
-
-    fun getDates(
-        mStartD: Date?,
-        calendarList: ArrayList<CalendarData>,
-        calendarAdapter: CalendarAdapter,
-        binding: FragmentHomeBinding
-    ) {
-        val dateList = ArrayList<CalendarData>()
-        val dates = ArrayList<Date>()
-        val calendar = Calendar.getInstance()
-
-        val maxDaysToShow = 100
-
-        calendar.time = mStartD ?: Date()
-        calendar.set(Calendar.DAY_OF_MONTH, 1)
-        val firstDayOfMonth = calendar.get(Calendar.DAY_OF_WEEK)
-
-        val prevMonthDays = firstDayOfMonth - 1
-        val totalDays = maxDaysToShow - prevMonthDays
-
-        calendar.add(Calendar.DATE, -prevMonthDays)
-
-        for (i in 0 until totalDays) {
-            dates.add(calendar.time)
-            dateList.add(CalendarData(calendar.time))
-            calendar.add(Calendar.DATE, 1)
-        }
-
-        calendarList.clear()
-        calendarList.addAll(dateList)
-        calendarAdapter.updateData(dateList)
-
-        for (item in dateList.indices) {
-            if (dateList[item].data == mStartD) {
-                calendarAdapter.setPosition(item)
-                binding.calendarView.scrollToPosition(item - 2)
-            }
+            (isSameDate && isOverlapping) || (isOverlapping && hasRepeatingSlot)
         }
     }
 
@@ -125,6 +89,16 @@ object DateHelper {
         } catch (e: Exception) {
             null
         }
+    }
+
+    fun isSameDate(date1: Date, date2: Date): Boolean {
+        val cal1 = Calendar.getInstance()
+        cal1.time = date1
+        val cal2 = Calendar.getInstance()
+        cal2.time = date2
+        return cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) &&
+                cal1.get(Calendar.MONTH) == cal2.get(Calendar.MONTH) &&
+                cal1.get(Calendar.DAY_OF_MONTH) == cal2.get(Calendar.DAY_OF_MONTH)
     }
 
     fun getSmartDate(dateString: String): String {

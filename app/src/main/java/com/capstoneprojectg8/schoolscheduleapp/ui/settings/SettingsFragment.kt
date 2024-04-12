@@ -2,6 +2,7 @@ package com.capstoneprojectg8.schoolscheduleapp.ui.settings
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -10,6 +11,7 @@ import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES
 import androidx.core.content.ContextCompat
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.PreferenceManager
 import androidx.preference.SwitchPreferenceCompat
 import com.capstoneprojectg8.schoolscheduleapp.R
 import com.capstoneprojectg8.schoolscheduleapp.ui.settings.auth.UserProfileActivity
@@ -59,27 +61,25 @@ class SettingsFragment : PreferenceFragmentCompat() {
             } else {
                 disableDarkMode()
             }
+            requireActivity().recreate()
+            updateAssetTint()
             true
         }
     }
 
     private fun enableDarkMode() {
         AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_YES)
-        requireActivity().recreate()
         saveDarkModePreference(true)
-        updateAssetTint()
     }
 
     private fun disableDarkMode() {
         AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_NO)
-        requireActivity().recreate()
         saveDarkModePreference(false)
-        updateAssetTint()
     }
 
     private fun saveDarkModePreference(isDarkModeEnabled: Boolean) {
-        val sharedPreferences =
-            activity?.getSharedPreferences("app_prefs", Context.MODE_PRIVATE) ?: return
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireActivity())
+
         with(sharedPreferences.edit()) {
             putBoolean("dark_mode", isDarkModeEnabled)
             apply()
@@ -104,6 +104,9 @@ class SettingsFragment : PreferenceFragmentCompat() {
         userDarkModePreference?.icon?.setTint(ContextCompat.getColor(requireContext(), tintResId))
 
         (requireActivity() as AppCompatActivity).supportActionBar?.setHomeAsUpIndicator(tintResId)
+
+        (activity as AppCompatActivity).window.statusBarColor =
+            resources.getColor(R.color.transparent)
     }
 
 

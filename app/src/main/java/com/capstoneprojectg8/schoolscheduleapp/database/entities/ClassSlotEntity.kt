@@ -15,5 +15,6 @@ data class ClassSlotEntity(
     val classRoom: String,
     val color: Int,
     val date: String,
+    var isRepeating: Boolean = true,
     var isExpandable: Boolean = false
 )

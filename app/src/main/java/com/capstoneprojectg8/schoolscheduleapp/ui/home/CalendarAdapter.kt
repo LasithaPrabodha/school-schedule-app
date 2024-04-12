@@ -1,7 +1,5 @@
 package com.capstoneprojectg8.schoolscheduleapp.ui.home
 
-import android.content.Context
-import android.content.res.Configuration
 import android.graphics.drawable.GradientDrawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -16,7 +14,7 @@ import com.capstoneprojectg8.schoolscheduleapp.utils.ThemeHelper.isDarkModeEnabl
 
 
 interface CalendarAdapterDelegate {
-    fun onSelect(calendarData: CalendarData, position: Int, day: TextView)
+    fun onSelect(calendarData: CalendarData, position: Int)
 }
 
 class CalendarAdapter(
@@ -39,7 +37,7 @@ class CalendarAdapter(
 
     override fun getItemCount(): Int = datesList.size
 
-    fun updateData(calendarList: ArrayList<CalendarData>) {
+    fun updateData(calendarList: MutableList<CalendarData>) {
         datesList.clear()
         datesList.addAll(calendarList)
         notifyDataSetChanged()
@@ -79,10 +77,6 @@ class CalendarAdapter(
                 date.setTextColor(textColor)
                 day.setTextColor(textColor)
             } else {
-                backgroundColor =
-                    ContextCompat.getColor(binding.root.context, R.color.background)
-
-
                 val shape = GradientDrawable()
                 shape.shape = GradientDrawable.RECTANGLE
                 ViewCompat.setBackground(cell, shape)
@@ -91,7 +85,7 @@ class CalendarAdapter(
             date.text = calendarDataModel.calendarDate
             day.text = calendarDataModel.calendarDay
             cell.setOnClickListener {
-                calendarAdapterDelegate.onSelect(calendarDataModel, adapterPosition, date)
+                calendarAdapterDelegate.onSelect(calendarDataModel, adapterPosition)
             }
 
         }

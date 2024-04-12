@@ -37,7 +37,6 @@ class TabDueDate : Fragment() {
 
     private fun setupClassRecyclerView() {
         viewModel.filterAssignmentsByDueDate().observe(viewLifecycleOwner) { classes ->
-println(classes)
             if (classes.isEmpty()) {
                 binding.emptyAssignmentsMsg.visibility = View.VISIBLE
             } else {

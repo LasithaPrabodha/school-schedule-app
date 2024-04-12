@@ -29,6 +29,7 @@ class ClassSettingsActivity : AppCompatActivity() {
         setSupportActionBar(findViewById(R.id.toolbar))
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        this.window.statusBarColor = resources.getColor(R.color.transparent)
 
 
         setUpAdapter()

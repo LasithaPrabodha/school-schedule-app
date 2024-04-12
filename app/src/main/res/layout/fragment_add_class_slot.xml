@@ -88,26 +88,41 @@
             android:inputType="numberDecimal" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <LinearLayout
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/sRepeatingCheckBox"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/textInputDuration"
-        android:layout_marginTop="24dp"
+        android:layout_marginBottom="16dp">
+
+        <CheckBox
+            android:id="@+id/setRepeatingCheckBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            android:text="@string/is_repeating" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/sRepeatingCheckBox"
         android:gravity="end">
 
 
         <Button
-            style="?attr/materialButtonOutlinedStyle"
             android:id="@+id/buttonCancel"
+            style="?attr/materialButtonOutlinedStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Cancel" />
 
         <Button
-            android:layout_marginStart="12dp"
             android:id="@+id/buttonSubmit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
             android:text="Add Slot" />
     </LinearLayout>
 

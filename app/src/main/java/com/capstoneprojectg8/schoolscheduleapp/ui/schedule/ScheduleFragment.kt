@@ -76,33 +76,7 @@ class ScheduleFragment : Fragment() {
 
         menuHost.addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                // Add menu items here
                 menuInflater.inflate(R.menu.calendar_nav, menu)
-
-                val previousItem = menu.findItem(R.id.previous)
-                val currentWeekItem = menu.findItem(R.id.current_week)
-                val nextItem = menu.findItem(R.id.next)
-
-                previousItem.icon?.setTint(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.toolbar_button
-                    )
-                )
-                currentWeekItem.icon?.setTint(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.toolbar_button
-                    )
-                )
-                nextItem.icon?.setTint(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.toolbar_button
-                    )
-                )
-
-
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
@@ -152,7 +126,7 @@ class ScheduleFragment : Fragment() {
                 val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
                 val ld = LocalDate.parse(slot.date, formatter)
 
-                ld >= startOfWeek && ld <= endOfWeek
+                (ld >= startOfWeek && ld <= endOfWeek) || slot.isRepeating
             }
 
             weekGrid.removeViews(1, weekGrid.childCount - 1)
@@ -173,7 +147,10 @@ class ScheduleFragment : Fragment() {
     }
 
     private fun initRecycleViews() {
-        val daysOfWeek: MutableList<Map<String, String>> = DateHelper.generateDaysOfTheWeek()
+        val today = LocalDate.now()
+        val startDate = today.plusWeeks(step.toLong()).with(DayOfWeek.MONDAY)
+        val daysOfWeek: MutableList<Map<String, String>> =
+            DateHelper.generateDaysOfTheWeek(startDate)
         weekTimelineAdapter = WeekTimelineAdapter(requireContext(), daysOfWeek, cellWidth)
 
         binding.dayList.apply {
@@ -186,12 +163,12 @@ class ScheduleFragment : Fragment() {
 
         val timeline = viewModel.generateHourRows(daysOfWeek)
         calendarRowAdapter =
-            CalendarRowAdapter(requireContext(), timeline, cellWidth) { day, row ->
+            CalendarRowAdapter(timeline, cellWidth) { day, row ->
                 val date =
                     daysOfWeek.find { it["weekdayFull"] == day.toTitleCase() }!!["fullDate"]!!
 
                 viewModel.classSlots.observe(viewLifecycleOwner) { slots ->
-                    val hour = row.hour.toIntOrNull() ?: 9
+                    val hour = if (row.amPm == "PM") 12 + row.hour.toInt() else row.hour.toInt()
                     val isConflict = DateHelper.checkConflicts(slots, date, hour, 1)
                     if (isConflict) {
                         ToastHelper.showCustomToast(

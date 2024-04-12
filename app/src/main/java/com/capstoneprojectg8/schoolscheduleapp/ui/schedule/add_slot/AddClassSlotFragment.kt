@@ -76,7 +76,7 @@ class AddClassSlotFragment : Fragment() {
                 selectedDate!!.year,
                 selectedDate!!.monthValue - 1,
                 selectedDate!!.dayOfMonth,
-                9,
+                selectedHour,
                 0
             )
         } else {
@@ -103,6 +103,7 @@ class AddClassSlotFragment : Fragment() {
             val selectedClassName = binding.autoCompleteTextViewClass.text.toString()
             val roomNumber = binding.editTextRoom.text.toString()
             val duration = binding.editTextDuration.text.toString().toIntOrNull()
+            val isRepeating = binding.setRepeatingCheckBox.isChecked
 
             val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
             val timeFormat = SimpleDateFormat("HH", Locale.getDefault())
@@ -148,7 +149,8 @@ class AddClassSlotFragment : Fragment() {
                         className = selectedClass.name,
                         classRoom = roomNumber,
                         color = selectedClass.colour,
-                        date = formattedDate
+                        date = formattedDate,
+                        isRepeating = isRepeating
                     )
                     lifecycleScope.launch {
                         viewModel.addClassSlot(classSlot)
