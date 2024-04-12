@@ -49,9 +49,9 @@ class ClassesAdapter(
 
     }
 
-    fun updateList(items: List<ClassWithAssignments>) {
+    fun updateList(_items: List<ClassWithAssignments>) {
         this.items.clear()
-        this.items.addAll(items)
-        notifyItemRangeChanged(0, items.size)
+        this.items.addAll(_items)
+        notifyDataSetChanged()
     }
 }

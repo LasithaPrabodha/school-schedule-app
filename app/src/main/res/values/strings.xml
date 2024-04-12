@@ -74,4 +74,7 @@
     <string name="existing_slot">The selected time slot conflicts with an existing class slot. Please choose a different slot.</string>
 
     <string name="google_client_id">53599845427-cm626895kfifqdfkthtt29sve7vuepak.apps.googleusercontent.com</string>
+    <string name="class_name">Class name</string>
+    <string name="manage_class">Manage Class</string>
+    <string name="is_repeating">Is Repeating</string>
 </resources>

@@ -90,7 +90,7 @@ class AssignmentsAdapter(
     fun updateList(items: List<Assignment>) {
         this.assignmentList.clear()
         this.assignmentList.addAll(items)
-        notifyItemRangeChanged(0, items.size)
+        notifyDataSetChanged()
     }
 
 }

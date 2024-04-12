@@ -37,6 +37,7 @@ fun ClassSlot.toEntity(): ClassSlotEntity {
         classRoom,
         color,
         date,
+        isRepeating,
         isExpandable
     )
 }
@@ -67,6 +68,7 @@ fun ClassSlotEntity.fromEntity(): ClassSlot {
         classRoom,
         color,
         date,
+        isRepeating,
         isExpandable
     )
 }

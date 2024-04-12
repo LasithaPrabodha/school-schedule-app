@@ -48,6 +48,6 @@ class DateAdapter(
     fun updateList(items: List<ClassWithAssignmentsByDate>) {
         this.items.clear()
         this.items.addAll(items)
-        notifyItemRangeChanged(0, items.size)
+        notifyDataSetChanged()
     }
 }
